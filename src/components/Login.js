@@ -16,7 +16,7 @@ export default class Login extends PureComponent {
           />
           <TextField
             id="outlined-name"
-            label="Telefone"
+            label="Phone number"
             margin="normal"
             variant="outlined"
           />
