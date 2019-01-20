@@ -1,11 +1,8 @@
-* {
-  box-sizing: border-box;
+.container {
+  width: 85%;
+  margin: 15px auto;
 }
 
-html,
-body,
-#root {
-  width: 100%;
-  height: 100%;
-  font-family: 'Roboto', sans-serif;
+.content {
+  margin: 0 50px;
 }
