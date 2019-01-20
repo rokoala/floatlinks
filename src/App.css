@@ -3,6 +3,14 @@
   margin: 15px auto;
 }
 
-.content {
-  margin: 0 50px;
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.align-items-center {
+  align-items: center;
 }

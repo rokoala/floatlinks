@@ -1,0 +1,19 @@
+.welcome-scene header {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  box-shadow: 1px 1px 1px lightgray;
+}
+
+.welcome-scene header button {
+  margin-left: auto;
+}
+
+.welcome-scene .client-name {
+  margin: 15px;
+}
+
+.welcome-scene .welcome {
+  text-align: center;
+  margin: 35px 0;
+}

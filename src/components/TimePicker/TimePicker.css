@@ -1,0 +1,8 @@
+.timepicker {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 20px;
+  max-width: 100%;
+  border: 1px solid #a0a096;
+}

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import Login from './components/Login';
+// import Login from './components/Login';
+import Welcome from './scenes/Welcome';
 import './App.css';
 
 class App extends Component {
   render() {
-    return <Login />;
+    return <Welcome />;
   }
 }
 
