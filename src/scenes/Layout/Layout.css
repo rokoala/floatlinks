@@ -1,0 +1,20 @@
+.layout header {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  box-shadow: 1px 1px 1px lightgray;
+}
+
+.layout header .user-wrapper {
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+}
+
+.layout .professional-name {
+  margin: 15px;
+}
+
+.layout .content {
+  margin: 15px;
+}
