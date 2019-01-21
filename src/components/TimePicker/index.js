@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './TimePicker.css';
-import HourBtn from './TimeButton';
+import TimeButton from './TimeButton';
 
 export default class TimePicker extends Component {
   constructor(props) {
@@ -19,7 +19,7 @@ export default class TimePicker extends Component {
   }
   render() {
     const TimeButtons = this.props.hours.map(hour => (
-      <HourBtn
+      <TimeButton
         onClick={this.onClickHandler}
         key={hour.id}
         time={hour}
