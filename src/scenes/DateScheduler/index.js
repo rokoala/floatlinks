@@ -4,6 +4,7 @@ import Layout from '../Layout';
 import Calendar from 'react-calendar';
 import { Button } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
+import './DateScheduler.css';
 
 export default class DateScheduler extends PureComponent {
   constructor(props) {

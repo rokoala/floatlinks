@@ -1,0 +1,4 @@
+.react-calendar {
+  /* Hack to react-calendar width fix */
+  width: auto !important;
+}
