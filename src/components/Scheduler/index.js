@@ -21,12 +21,18 @@ export default class Scheduler extends PureComponent {
   }
   render() {
     return (
-      <Card className="scheduler">
-        <div className="content">
-          <Calendar onChange={this.handleOnChange} />
-          {this.state.showTimePicker && <TimePicker />}
-        </div>
-      </Card>
+      <React.Fragment>
+        <Card className="scheduler">
+          <div className="content">
+            <Calendar locale="pt-BR" onChange={this.handleOnChange} />
+          </div>
+        </Card>
+        {this.state.showTimePicker && (
+          <Card style={{ marginTop: 10, maxWidth: 400 }}>
+            <TimePicker />
+          </Card>
+        )}
+      </React.Fragment>
     );
   }
 }

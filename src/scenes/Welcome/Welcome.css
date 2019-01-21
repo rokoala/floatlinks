@@ -5,15 +5,12 @@
   box-shadow: 1px 1px 1px lightgray;
 }
 
-.welcome-scene header button {
+.welcome-scene header .user-wrapper {
+  display: flex;
   margin-left: auto;
+  align-items: center;
 }
 
 .welcome-scene .client-name {
   margin: 15px;
-}
-
-.welcome-scene .welcome {
-  text-align: center;
-  margin: 35px 0;
 }

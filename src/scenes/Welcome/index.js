@@ -9,27 +9,31 @@ export default class Welcome extends PureComponent {
     super(props);
 
     this.state = {
-      name: 'Joao'
+      client: {
+        name: 'Consultório Dra. Yasmin'
+      },
+      user: {
+        name: 'Joao'
+      }
     };
   }
   render() {
     return (
       <div className="welcome-scene">
         <header>
-          <Typography className="client-name" variant="h5">
-            Lorem Ipsum
+          <Typography className="client-name" variant="h6">
+            {this.state.client.name}
           </Typography>
-          <IconButton>
-            <ExitIcon />
-          </IconButton>
+          <div className="user-wrapper">
+            <Typography variant="subtitle1">{this.state.user.name}</Typography>
+            <IconButton>
+              <ExitIcon />
+            </IconButton>
+          </div>
         </header>
         <div className="flex flex-column align-items-center content">
-          <Typography className="welcome" variant="h5">
-            Bem vindo <br />
-            <b>{this.state.name}</b>
-          </Typography>
-          <Typography style={{ margin: '15px 0' }} variant="h6">
-            Disponibilidade
+          <Typography style={{ margin: '35px 0' }} variant="h5">
+            Agende sua consulta
           </Typography>
           <Scheduler />
         </div>
