@@ -76,7 +76,11 @@ export default class Scheduler extends PureComponent {
       <React.Fragment>
         <Card className="scheduler">
           <div className="content">
-            <Calendar locale="pt-BR" onChange={this.handleOnChange} />
+            <Calendar
+              locale="pt-BR"
+              value={this.state.date}
+              onChange={this.handleOnChange}
+            />
           </div>
         </Card>
         {this.state.showTimePicker && (
