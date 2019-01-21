@@ -14,9 +14,11 @@ export default class Welcome extends PureComponent {
       },
       user: {
         name: 'Joao'
-      }
+      },
+      schedule: null
     };
   }
+  handleSelect({ date, time }) {}
   render() {
     return (
       <div className="welcome-scene">
@@ -35,7 +37,7 @@ export default class Welcome extends PureComponent {
           <Typography style={{ margin: '35px 0' }} variant="h5">
             Agende sua consulta
           </Typography>
-          <Scheduler />
+          <Scheduler onSelect={this.handleSelect} />
         </div>
       </div>
     );
