@@ -9,19 +9,20 @@ export default class Welcome extends PureComponent {
   render() {
     return (
       <Layout {...this.props}>
-        <Card style={{ padding: 25 }}>
-          <Typography variant="subtitle1">Sem agendamentos</Typography>
-        </Card>
         <Button
           style={{ marginTop: 5 }}
           component={Link}
           to="/schedule/day"
           variant="outlined"
           color="primary"
+          size="large"
         >
           <AlarmIcon style={{ marginRight: 5 }} />
           Agendar
         </Button>
+        <Card style={{ margin: 15, padding: 25 }}>
+          <Typography variant="subtitle1">Sem agendamentos</Typography>
+        </Card>
       </Layout>
     );
   }
