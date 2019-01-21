@@ -10,15 +10,12 @@ export default class DateScheduler extends PureComponent {
   constructor(props) {
     super(props);
   }
-  handleOnChange(date) {
-    this.props.onSelect(date);
-  }
   render() {
     const CalendarRouter = withRouter(({ history }) => (
       <Calendar
         locale="pt-BR"
         onChange={date => {
-          this.handleOnChange(date);
+          this.props.onSelect(date);
           history.push('/schedule/time');
         }}
       />
