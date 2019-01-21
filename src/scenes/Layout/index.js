@@ -3,7 +3,7 @@ import { Typography, IconButton } from '@material-ui/core';
 import ExitIcon from '@material-ui/icons/ExitToApp';
 import './Layout.css';
 
-export default class WelcomeLayout extends PureComponent {
+export default class Layout extends PureComponent {
   render() {
     const { professional, user } = this.props;
     return (
