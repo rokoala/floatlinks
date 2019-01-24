@@ -2,3 +2,36 @@
   /* Hack to react-calendar width fix */
   width: auto !important;
 }
+
+.day-scheduled {
+  background-color: #37b3dc;
+}
+
+.day-unavailable {
+  background-color: gray;
+}
+
+.white-font {
+  color: white;
+}
+
+.legend {
+  display: flex;
+  padding: 0;
+  flex-direction: column;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  margin: 8px;
+  list-style-type: none;
+}
+
+.legend .block {
+  border: 1px solid lightgray;
+  margin: 0 5px;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+}
