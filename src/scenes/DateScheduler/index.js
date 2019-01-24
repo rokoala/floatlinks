@@ -7,9 +7,6 @@ import { withRouter } from 'react-router-dom';
 import './DateScheduler.css';
 
 export default class DateScheduler extends PureComponent {
-  constructor(props) {
-    super(props);
-  }
   render() {
     const CalendarRouter = withRouter(({ history }) => (
       <Calendar
