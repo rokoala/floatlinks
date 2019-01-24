@@ -1,7 +1,16 @@
 import React, { PureComponent } from 'react';
 import { Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 
-export default class TimeButton extends PureComponent {
+const styles = {
+  selected: {
+    color: 'blue',
+    borderColor: 'blue',
+    cursor: 'default'
+  }
+};
+
+class TimeButton extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -11,14 +20,14 @@ export default class TimeButton extends PureComponent {
     this.props.onClick(time);
   }
   render() {
-    const { time, selected } = this.props;
+    const { time, selected, classes } = this.props;
 
     return (
       <Button
         onClick={this.handleOnClick.bind(this, time)}
         key={time.id}
         disabled={!time.available}
-        color={selected ? 'primary' : 'default'}
+        classes={selected && { root: classes.selected }}
         style={{ margin: 5 }}
         variant="outlined"
         size="small"
@@ -28,3 +37,5 @@ export default class TimeButton extends PureComponent {
     );
   }
 }
+
+export default withStyles(styles)(TimeButton);

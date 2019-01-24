@@ -11,10 +11,6 @@ export default class TimePicker extends Component {
     this.onClickHandler = this.onClickHandler.bind(this);
   }
   onClickHandler(time) {
-    this.setState({
-      selectedTime: time
-    });
-
     this.props.onClick(time);
   }
   render() {
@@ -23,9 +19,7 @@ export default class TimePicker extends Component {
         onClick={this.onClickHandler}
         key={hour.id}
         time={hour}
-        selected={
-          this.state.selectedTime && this.state.selectedTime.id === hour.id
-        }
+        selected={hour.selected}
       />
     ));
 

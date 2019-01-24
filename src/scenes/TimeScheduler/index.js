@@ -22,7 +22,7 @@ export default class extends PureComponent {
     this.setState({
       client: {
         hours: [
-          { id: 0, label: '09:00 -> 10:00', available: true },
+          { id: 0, label: '09:00 -> 10:00', available: true, selected: true },
           { id: 1, label: '10:00 -> 11:00', available: true },
           { id: 2, label: '11:00 -> 12:00', available: false },
           { id: 3, label: '12:00 -> 13:00', available: false },
