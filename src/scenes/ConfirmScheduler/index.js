@@ -16,7 +16,13 @@ export default class ConfirmScheduler extends PureComponent {
           </Typography>
         </Card>
         <div style={{ marginTop: 15 }}>
-          <Button style={{ margin: 5 }} variant="contained" color="primary">
+          <Button
+            style={{ margin: 5 }}
+            component={Link}
+            to="/"
+            variant="contained"
+            color="primary"
+          >
             confirmo
           </Button>
           <Button
