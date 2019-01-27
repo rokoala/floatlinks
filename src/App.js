@@ -1,10 +1,32 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import Login from './scenes/Login';
 import Welcome from './scenes/Welcome';
 import DateScheduler from './scenes/DateScheduler';
 import TimeScheduler from './scenes/TimeScheduler';
 import ConfirmScheduler from './scenes/ConfirmScheduler';
+import User from './resources/User';
 import './App.css';
+
+const PrivateRoute = ({ component: Component, state, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={props => {
+        return User.isAuthenticated ? (
+          <Component {...props} {...state} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { from: props.location }
+            }}
+          />
+        );
+      }}
+    />
+  );
+};
 
 class App extends Component {
   constructor(props) {
@@ -34,47 +56,44 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          <Route
+          <Route path="/login" exact={true} component={Login} />
+          <PrivateRoute
+            component={Welcome}
             path="/"
             exact={true}
-            render={() => (
-              <Welcome
-                professional={this.state.professional}
-                user={this.state.user}
-              />
-            )}
+            state={{
+              professional: this.state.professional,
+              user: this.state.user
+            }}
           />
-          <Route
+          <PrivateRoute
             path="/schedule/day"
-            render={() => (
-              <DateScheduler
-                onSelect={this.handleSelectDate}
-                professional={this.state.professional}
-                user={this.state.user}
-              />
-            )}
+            component={DateScheduler}
+            state={{
+              onSelect: this.handleSelectDate,
+              professional: this.state.professional,
+              user: this.state.user
+            }}
           />
-          <Route
+          <PrivateRoute
             path="/schedule/time"
-            render={() => (
-              <TimeScheduler
-                onSelect={this.handleSelectTime}
-                professional={this.state.professional}
-                user={this.state.user}
-                date={this.state.date}
-              />
-            )}
+            component={TimeScheduler}
+            state={{
+              onSelect: this.handleSelectTime,
+              professional: this.state.professional,
+              user: this.state.user,
+              date: this.state.date
+            }}
           />
-          <Route
+          <PrivateRoute
             path="/schedule/confirm"
-            render={() => (
-              <ConfirmScheduler
-                professional={this.state.professional}
-                user={this.state.user}
-                date={this.state.date}
-                time={this.state.time}
-              />
-            )}
+            component={ConfirmScheduler}
+            state={{
+              professional: this.state.professional,
+              user: this.state.user,
+              date: this.state.date,
+              time: this.state.time
+            }}
           />
         </Switch>
       </BrowserRouter>
