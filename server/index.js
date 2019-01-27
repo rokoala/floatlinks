@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const customer = require('./routes/customer');
@@ -7,6 +8,7 @@ const PORT = 3001;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, '../build')));
 
 if (ENV === 'DEV') {
   app.use((req, res, next) => {
