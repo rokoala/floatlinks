@@ -1,0 +1,6 @@
+{
+  "server": "localhost:27017",
+  "database": "floatlinks",
+  "user": "floatlinks",
+  "password": "floatlinks"
+}
