@@ -1,10 +1,7 @@
 const CustomerModel = require('../models/customer.model');
 const express = require('express');
 const router = express.Router();
-const RouteMiddleware = require('../utils/RouteMiddleware');
-
-const validate = RouteMiddleware.validate;
-const promiseResultHandler = RouteMiddleware.promiseResultHandler;
+const { validate, promiseResultHandler } = require('../utils/RouteMiddleware');
 
 //Create a new customer
 router.post('/', (req, res) => {
