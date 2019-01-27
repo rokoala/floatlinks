@@ -5,7 +5,10 @@ const database = 'floatlinks';
 const user = 'floatlinks';
 const password = 'floatlinks';
 
-mongoose.connect(`mongodb://${user}:${password}@${server}/${database}`);
+mongoose.connect(
+  `mongodb://${user}:${password}@${server}/${database}`,
+  { useCreateIndex: true, useNewUrlParser: true }
+);
 
 const CustomerSchema = new mongoose.Schema({
   name: String,
