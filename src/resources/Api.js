@@ -3,10 +3,21 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL;
 
 const Api = {
-  login: ({ phone }) =>
-    axios.post(`${API_URL}/login`, {
-      phone
-    }),
+  isAuthenticated: false,
+  signout(cb) {
+    this.isAuthenticated = false;
+    setTimeout(cb, 100);
+  },
+  login(phone, cb) {
+    return axios
+      .post(`${API_URL}/login`, {
+        phone
+      })
+      .then(response => {
+        this.isAuthenticated = true;
+        cb(response.data);
+      });
+  },
   Customer: {
     add: body =>
       axios
@@ -19,7 +30,11 @@ const Api = {
       axios
         .get(`${API_URL}/customer`)
         .then(data => console.log(data))
-        .catch(err => console.error(err))
+        .catch(err => console.error(err)),
+    update: (phone, customer) =>
+      axios.put(`${API_URL}/customer/` + phone, {
+        ...customer
+      })
   }
 };
 

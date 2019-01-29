@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import MaskedInput from 'react-text-mask';
 import { Typography, Button, Input } from '@material-ui/core';
-import User from '../../resources/User';
 import { Redirect } from 'react-router-dom';
 import Logo from '../../components/Logo/logo.svg';
+import Api from '../../resources/Api';
 import './Login.css';
 
 function TextMaskCustom(props) {
@@ -37,11 +37,14 @@ function TextMaskCustom(props) {
   );
 }
 
+const parsePhone = phone => phone.replace(/(\(|\)|-)/g, '');
+
 export default class Login extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      textmask: '',
+      customer: null,
+      phone: '',
       serviceProviderName: 'consultório dra. yasmin',
       redirectToReferrer: false,
       showSetName: false
@@ -50,21 +53,37 @@ export default class Login extends PureComponent {
     this.login = this.login.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeName = this.handleChangeName.bind(this);
+    this.handleSetName = this.handleSetName.bind(this);
   }
   login() {
-    const phone = this.state.textmask.replace(/(\(|\)|-)/g, '');
-    User.authenticate(phone, data => {
-      if (data.newUser) {
-        //create new screen to set name
-        this.setState({ showSetName: true });
+    const phone = parsePhone(this.state.phone);
+    Api.login(phone, data => {
+      if (data.newUser || !data.customer.name) {
+        this.setState({ showSetName: true, customer: data.customer });
       } else {
         this.setState({ redirectToReferrer: true });
       }
     });
   }
+  handleChangeName(event) {
+    this.setState({
+      name: event.target.value
+    });
+  }
+  handleSetName(event) {
+    event.preventDefault();
+
+    Api.Customer.update(parsePhone(this.state.phone), {
+      ...this.state.customer,
+      name: this.state.name
+    }).then(response => {
+      this.setState({ redirectToReferrer: true });
+    });
+  }
   handleChange(event) {
     this.setState({
-      textmask: event.target.value
+      phone: event.target.value
     });
   }
   handleLogin(event) {
@@ -73,7 +92,7 @@ export default class Login extends PureComponent {
   }
   render() {
     const { from } = this.props.location.state || { from: { pathname: '/' } };
-    const { redirectToReferrer, textmask } = this.state;
+    const { redirectToReferrer, phone } = this.state;
 
     if (redirectToReferrer) return <Redirect to={from} />;
 
@@ -111,9 +130,10 @@ export default class Login extends PureComponent {
               >
                 <Input
                   autoFocus
-                  value={textmask}
+                  value={phone}
                   inputComponent={TextMaskCustom}
                   onChange={this.handleChange}
+                  type="tel"
                 />
                 <Button
                   onClick={this.handleLogin}

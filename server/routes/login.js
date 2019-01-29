@@ -12,7 +12,6 @@ router.post('/', (req, res) => {
     // If the customer already exists, send back the customer
     if (result) res.json({ newUser: false, customer: result });
     else {
-      console.log('creating new customer...');
       // ... or create a new one
       promiseResultHandler(res)(CustomerModel.create(req.body), (res, doc) => {
         res.status(200).json({ newUser: true, customer: doc });

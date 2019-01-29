@@ -5,7 +5,7 @@ import Welcome from './scenes/Welcome';
 import DateScheduler from './scenes/DateScheduler';
 import TimeScheduler from './scenes/TimeScheduler';
 import ConfirmScheduler from './scenes/ConfirmScheduler';
-import User from './resources/User';
+import Api from './resources/Api';
 import './App.css';
 
 const PrivateRoute = ({ component: Component, state, ...rest }) => {
@@ -13,7 +13,7 @@ const PrivateRoute = ({ component: Component, state, ...rest }) => {
     <Route
       {...rest}
       render={props => {
-        return User.isAuthenticated ? (
+        return Api.isAuthenticated ? (
           <Component {...props} {...state} />
         ) : (
           <Redirect

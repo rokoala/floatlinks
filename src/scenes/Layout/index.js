@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Typography, IconButton } from '@material-ui/core';
 import ExitIcon from '@material-ui/icons/ExitToApp';
 import { withRouter } from 'react-router-dom';
-import User from '../../resources/User';
+import Api from '../../resources/Api';
 import './Layout.css';
 
 export default class Layout extends PureComponent {
@@ -12,7 +12,7 @@ export default class Layout extends PureComponent {
     const IconButtonSignout = withRouter(({ history }) => (
       <IconButton
         onClick={() => {
-          User.signout(() => history.push('/'));
+          Api.signout(() => history.push('/'));
         }}
       >
         <ExitIcon />
