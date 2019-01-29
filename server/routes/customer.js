@@ -16,6 +16,7 @@ router.post('/', (req, res) => {
 });
 
 router.get('/', (req, res) => {
+  // res.send('test');
   promiseResultHandler(res)(CustomerModel.find({}));
 });
 

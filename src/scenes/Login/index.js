@@ -1,11 +1,10 @@
 import React, { PureComponent } from 'react';
 import MaskedInput from 'react-text-mask';
-import { Button, Input } from '@material-ui/core';
+import { Typography, Button, Input } from '@material-ui/core';
 import User from '../../resources/User';
-import './Login.css';
 import { Redirect } from 'react-router-dom';
-import { Typography } from '@material-ui/core';
 import Logo from '../../components/Logo/logo.svg';
+import './Login.css';
 
 function TextMaskCustom(props) {
   const { inputRef, ...other } = props;
@@ -44,7 +43,8 @@ export default class Login extends PureComponent {
     this.state = {
       textmask: '',
       serviceProviderName: 'consultório dra. yasmin',
-      redirectToReferrer: false
+      redirectToReferrer: false,
+      showSetName: false
     };
 
     this.login = this.login.bind(this);
@@ -53,8 +53,13 @@ export default class Login extends PureComponent {
   }
   login() {
     const phone = this.state.textmask.replace(/(\(|\)|-)/g, '');
-    User.authenticate(phone, () => {
-      this.setState({ redirectToReferrer: true });
+    User.authenticate(phone, data => {
+      if (data.newUser) {
+        //create new screen to set name
+        this.setState({ showSetName: true });
+      } else {
+        this.setState({ redirectToReferrer: true });
+      }
     });
   }
   handleChange(event) {
@@ -95,28 +100,52 @@ export default class Login extends PureComponent {
           >
             {this.state.serviceProviderName}
           </Typography>
-          <Typography style={{ margin: 25 }} variant="subtitle1">
-            Digite seu telefone para continuar
-          </Typography>
-          <form
-            onSubmit={this.handleLogin}
-            className="login-form display-flex flex-column"
-          >
-            <Input
-              autoFocus
-              value={textmask}
-              inputComponent={TextMaskCustom}
-              onChange={this.handleChange}
-            />
-            <Button
-              onClick={this.handleLogin}
-              variant="outlined"
-              color="primary"
-              size="medium"
-            >
-              Ok
-            </Button>
-          </form>
+          {!this.state.showSetName ? (
+            <React.Fragment>
+              <Typography style={{ margin: 25 }} variant="subtitle1">
+                Digite seu telefone para continuar
+              </Typography>
+              <form
+                onSubmit={this.handleLogin}
+                className="login-form display-flex flex-column"
+              >
+                <Input
+                  autoFocus
+                  value={textmask}
+                  inputComponent={TextMaskCustom}
+                  onChange={this.handleChange}
+                />
+                <Button
+                  onClick={this.handleLogin}
+                  variant="outlined"
+                  color="primary"
+                  size="medium"
+                >
+                  Ok
+                </Button>
+              </form>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <Typography style={{ margin: 25 }} variant="subtitle1">
+                Olá! Como podemos te chamar?
+              </Typography>
+              <form
+                onSubmit={this.handleSetName}
+                className="login-form display-flex flex-column"
+              >
+                <Input autoFocus onChange={this.handleChangeName} />
+                <Button
+                  onClick={this.handleSetName}
+                  variant="outlined"
+                  color="primary"
+                  size="medium"
+                >
+                  Ok
+                </Button>
+              </form>
+            </React.Fragment>
+          )}
         </div>
       </div>
     );

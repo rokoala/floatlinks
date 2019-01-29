@@ -1,9 +1,12 @@
+import Api from '../resources/Api';
+
 const user = {
   isAuthenticated: false,
   authenticate(phone, cb) {
-    // check phone...
-    this.isAuthenticated = true;
-    setTimeout(cb, 100); // fake async
+    Api.login({ phone }).then(response => {
+      this.isAuthenticated = true;
+      cb(response.data);
+    });
   },
   signout(cb) {
     this.isAuthenticated = false;
