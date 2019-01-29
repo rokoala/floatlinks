@@ -10,12 +10,12 @@ export default class Layout extends PureComponent {
     const { professional, user } = this.props;
 
     const IconButtonSignout = withRouter(({ history }) => (
-      <IconButton>
-        <ExitIcon
-          onClick={() => {
-            User.signout(() => history.push('/'));
-          }}
-        />
+      <IconButton
+        onClick={() => {
+          User.signout(() => history.push('/'));
+        }}
+      >
+        <ExitIcon />
       </IconButton>
     ));
     return (
