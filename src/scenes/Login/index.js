@@ -78,6 +78,7 @@ export default class Login extends PureComponent {
       ...this.state.customer,
       name: this.state.name
     }).then(response => {
+      this.props.onLoginSuccess(response);
       this.setState({ redirectToReferrer: true });
     });
   }
