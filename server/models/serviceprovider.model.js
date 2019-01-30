@@ -56,7 +56,8 @@ module.exports = mongoose.model(
         isOpen: {
             type: Boolean,
             required: true
-        }
+        },
+        required: true
     },
     customers: [{
         customerId: {
