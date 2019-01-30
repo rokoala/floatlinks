@@ -10,6 +10,7 @@ export default class DateScheduler extends PureComponent {
   render() {
     const CalendarRouter = withRouter(({ history }) => (
       <Calendar
+        minDetail="year"
         locale="pt-BR"
         tileClassName={({ date, view }) => {
           // check if date is already scheduled by user
