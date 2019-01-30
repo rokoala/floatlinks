@@ -5,6 +5,7 @@ import Welcome from './scenes/Welcome';
 import DateScheduler from './scenes/DateScheduler';
 import TimeScheduler from './scenes/TimeScheduler';
 import ConfirmScheduler from './scenes/ConfirmScheduler';
+import Profile from './scenes/Profile';
 import Api from './resources/Api';
 import './App.css';
 
@@ -73,6 +74,14 @@ class App extends Component {
             component={Welcome}
             path="/"
             exact={true}
+            state={{
+              professional: this.state.professional,
+              user: this.state.user
+            }}
+          />
+          <PrivateRoute
+            component={Profile}
+            path="/profile"
             state={{
               professional: this.state.professional,
               user: this.state.user
