@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Typography, IconButton } from '@material-ui/core';
+import { Avatar, Typography, IconButton } from '@material-ui/core';
 import ExitIcon from '@material-ui/icons/ExitToApp';
 import { withRouter } from 'react-router-dom';
 import Api from '../../resources/Api';
@@ -18,14 +18,26 @@ export default class Layout extends PureComponent {
         <ExitIcon />
       </IconButton>
     ));
+
+    const ProfileIconButton = withRouter(({ history }) => (
+      <IconButton
+        onClick={event => {
+          event.preventDefault();
+          history.push('/profile');
+        }}
+      >
+        <Avatar>{user.name.charAt(0)}</Avatar>
+      </IconButton>
+    ));
+
     return (
       <div className="layout">
         <header>
+          <ProfileIconButton />
           <Typography className="professional-name" variant="h6">
             {professional.name}
           </Typography>
           <div className="user-wrapper">
-            <Typography variant="subtitle1">{user.name}</Typography>
             <IconButtonSignout />
           </div>
         </header>
