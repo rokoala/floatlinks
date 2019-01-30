@@ -36,11 +36,12 @@ class App extends Component {
         name: 'Consultório Dra. Yasmin'
       },
       user: {
-        name: 'Joao'
+        name: ''
       }
     };
     this.handleSelectDate = this.handleSelectDate.bind(this);
     this.handleSelectTime = this.handleSelectTime.bind(this);
+    this.handleSelectUser = this.handleSelectUser.bind(this);
   }
   handleSelectDate(date) {
     this.setState({
@@ -52,11 +53,22 @@ class App extends Component {
       time
     });
   }
+  handleSelectUser(user) {
+    this.setState({
+      user
+    });
+  }
   render() {
     return (
       <BrowserRouter>
         <Switch>
-          <Route path="/login" exact={true} component={Login} />
+          <Route
+            path="/login"
+            exact={true}
+            render={props => (
+              <Login {...props} onLoginSuccess={this.handleSelectUser} />
+            )}
+          />
           <PrivateRoute
             component={Welcome}
             path="/"

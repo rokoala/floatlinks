@@ -62,6 +62,7 @@ export default class Login extends PureComponent {
       if (data.newUser || !data.customer.name) {
         this.setState({ showSetName: true, customer: data.customer });
       } else {
+        this.props.onLoginSuccess(data.customer);
         this.setState({ redirectToReferrer: true });
       }
     });
@@ -78,6 +79,7 @@ export default class Login extends PureComponent {
       ...this.state.customer,
       name: this.state.name
     }).then(response => {
+      this.props.onLoginSuccess(response);
       this.setState({ redirectToReferrer: true });
     });
   }

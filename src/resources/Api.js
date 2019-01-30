@@ -32,9 +32,11 @@ const Api = {
         .then(data => console.log(data))
         .catch(err => console.error(err)),
     update: (phone, customer) =>
-      axios.put(`${API_URL}/customer/` + phone, {
-        ...customer
-      })
+      axios
+        .put(`${API_URL}/customer/` + phone, {
+          ...customer
+        })
+        .then(response => response.data)
   }
 };
 
