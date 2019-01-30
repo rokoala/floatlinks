@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import Login from './scenes/Login';
+import Admin from './scenes/Admin';
 import Welcome from './scenes/Welcome';
 import DateScheduler from './scenes/DateScheduler';
 import TimeScheduler from './scenes/TimeScheduler';
@@ -57,6 +58,7 @@ class App extends Component {
       <BrowserRouter>
         <Switch>
           <Route path="/login" exact={true} component={Login} />
+          <Route path="/admin" exact={true} component={Admin} />
           <PrivateRoute
             component={Welcome}
             path="/"
