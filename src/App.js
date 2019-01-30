@@ -36,7 +36,7 @@ class App extends Component {
         name: 'Consultório Dra. Yasmin'
       },
       user: {
-        name: 'Joao'
+        name: ''
       }
     };
     this.handleSelectDate = this.handleSelectDate.bind(this);
