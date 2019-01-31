@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const customerRoute = require('./routes/customer');
 const loginRoute = require('./routes/login');
+const serviceproviderRoute = require('./routes/serviceprovider');
 const app = express();
 const ENV = process.env.NODE_ENV || 'DEV';
 const PORT = 3001;
@@ -39,6 +40,7 @@ if (ENV === 'DEV') {
 // routes
 app.use('/customer', customerRoute);
 app.use('/login', loginRoute);
+app.use('/serviceprovider', serviceproviderRoute);
 
 app.listen(PORT, () => console.info(`Server has started on port ${PORT}...`));
 console.info(`Running enviroment: ${ENV}`);

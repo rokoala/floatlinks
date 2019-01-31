@@ -26,12 +26,14 @@ module.exports = mongoose.model(
             startTime: {
                 type: Number,
                 min: 0,
-                max: 2359
+                max: 2359,
+                required: true
             },
             slotDuration: {
                 type: Number,
                 min: 5,
-                max: 6000
+                max: 6000,
+                required: true
             },
             isOccupied: {
                 type: Boolean,
@@ -41,36 +43,30 @@ module.exports = mongoose.model(
                 customerId: {
                     type: mongoose.Schema.Types.ObjectId,
                     required: true,
-                    unique: true,
                     ref: 'Customer'
                 },
                 name: String,
                 phone: {
                     type: Number,
-                    required=true,
-                    unique=true
+                    required: true
                 }
             },
             annotation: String
         }],
         isOpen: {
-            type: Boolean,
-            required: true
-        },
-        required: true
+            type: Boolean
+        }
     },
     customers: [{
         customerId: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
-            unique: true,
             ref: 'Customer'
         },
         name: String,
         phone: {
             type: Number,
-            required=true,
-            unique=true
+            required: true
         }
     }]
   })
