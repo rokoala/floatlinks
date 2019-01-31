@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Avatar, Typography, IconButton } from '@material-ui/core';
+import { Avatar, Button, Typography, IconButton } from '@material-ui/core';
 import ExitIcon from '@material-ui/icons/ExitToApp';
 import { withRouter } from 'react-router-dom';
 import Api from '../../resources/Api';
@@ -30,13 +30,22 @@ export default class Layout extends PureComponent {
       </IconButton>
     ));
 
+    const ServiceProviderButton = withRouter(({ history }) => (
+      <Button
+        onClick={event => {
+          history.push('/');
+        }}
+        style={{ textTransform: 'none' }}
+      >
+        <Typography variant="h6">{professional.name}</Typography>
+      </Button>
+    ));
+
     return (
       <div className="layout">
         <header>
           <ProfileIconButton />
-          <Typography className="professional-name" variant="h6">
-            {professional.name}
-          </Typography>
+          <ServiceProviderButton />
           <div className="user-wrapper">
             <IconButtonSignout />
           </div>
