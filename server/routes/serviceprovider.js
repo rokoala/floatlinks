@@ -1,14 +1,14 @@
-const CustomerModel = require('../models/serviceprovider.model');
+const ServiceProviderModel = require('../models/serviceprovider.model');
 const express = require('express');
 const router = express.Router();
 const { validate, promiseResultHandler } = require('../utils/RouteMiddleware');
 
-//Create a new customer
+//Create a new service provider
 router.post('/', (req, res) => {
   validate(req.body, res, 'Request body is missing.');
 
   promiseResultHandler(res)(
-    CustomerModel.create(req.body),
+    ServiceProviderModel.create(req.body),
     (res, doc, next) => {
       !doc || doc.length === 0 ? res.status(500).send(doc) : next();
     }
@@ -17,12 +17,12 @@ router.post('/', (req, res) => {
 
 router.get('/', (req, res) => {
   // res.send('test');
-  promiseResultHandler(res)(CustomerModel.find({}));
+  promiseResultHandler(res)(ServiceProviderModel.find({}));
 });
 
 router.get('/:phone', (req, res) => {
   promiseResultHandler(res)(
-    CustomerModel.findOne({
+    ServiceProviderModel.findOne({
       phone: req.params.phone
     })
   );
@@ -30,7 +30,7 @@ router.get('/:phone', (req, res) => {
 
 router.put('/:phone', (req, res) => {
   promiseResultHandler(res)(
-    CustomerModel.findOneAndUpdate(
+    ServiceProviderModel.findOneAndUpdate(
       {
         phone: req.params.phone
       },
