@@ -3,7 +3,7 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL;
 
 const Api = {
-  isAuthenticated: false,
+  isAuthenticated: true,
   signout(cb) {
     this.isAuthenticated = false;
     setTimeout(cb, 100);

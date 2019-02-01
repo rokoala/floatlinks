@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Avatar, Button, Typography, IconButton } from '@material-ui/core';
+import LoadingOverlay from 'react-loading-overlay';
+import PropagateLoader from 'react-spinners/PropagateLoader';
 import ExitIcon from '@material-ui/icons/ExitToApp';
 import { withRouter } from 'react-router-dom';
 import Api from '../../resources/Api';
@@ -43,17 +45,22 @@ export default class Layout extends PureComponent {
 
     return (
       <div className="layout">
-        <header>
-          <ProfileIconButton />
-          <ServiceProviderButton />
-          <div className="user-wrapper">
-            <IconButtonSignout />
-          </div>
-        </header>
+        <LoadingOverlay
+          active={false}
+          spinner={<PropagateLoader color={'#36D7B7'} />}
+        >
+          <header>
+            <ProfileIconButton />
+            <ServiceProviderButton />
+            <div className="user-wrapper">
+              <IconButtonSignout />
+            </div>
+          </header>
 
-        <div className="flex flex-column align-items-center content">
-          {this.props.children}
-        </div>
+          <div className="flex flex-column align-items-center content">
+            {this.props.children}
+          </div>
+        </LoadingOverlay>
       </div>
     );
   }
