@@ -6,8 +6,11 @@ import ArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import TimePicker from '../../components/TimePicker';
 import { withRouter } from 'react-router-dom';
 import { formatDate } from '../../utils/Formatter';
+import { setHour } from '../../actions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-export default class extends PureComponent {
+class TimeSchedule extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,7 +18,6 @@ export default class extends PureComponent {
         hours: []
       }
     };
-    this.handleClickTimePicker = this.handleClickTimePicker.bind(this);
   }
   componentDidMount() {
     // fetch data...
@@ -34,17 +36,11 @@ export default class extends PureComponent {
       }
     });
   }
-  handleClickTimePicker(time) {
-    this.setState({
-      time
-    });
-    this.props.onSelect(time);
-  }
   render() {
     const TimePickerWithRouter = withRouter(({ history }) => (
       <TimePicker
         onClick={time => {
-          this.handleClickTimePicker(time);
+          this.props.setHour(time);
           history.push('/schedule/confirm');
         }}
         hours={this.state.client.hours}
@@ -52,7 +48,7 @@ export default class extends PureComponent {
     ));
 
     return (
-      <Layout {...this.props}>
+      <Layout>
         <Typography variant="h6">Horários disponíveis</Typography>
         <Button
           style={{ marginTop: 5 }}
@@ -69,3 +65,19 @@ export default class extends PureComponent {
     );
   }
 }
+const mapStateToProps = store => ({
+  date: store.schedule.current.date
+});
+
+const dispatchStateToProps = dispatch =>
+  bindActionCreators(
+    {
+      setHour
+    },
+    dispatch
+  );
+
+export default connect(
+  mapStateToProps,
+  dispatchStateToProps
+)(TimeSchedule);

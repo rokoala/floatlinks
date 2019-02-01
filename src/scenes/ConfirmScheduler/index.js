@@ -3,16 +3,17 @@ import { Typography, Button, Card } from '@material-ui/core';
 import Layout from '../Layout';
 import { Link } from 'react-router-dom';
 import { formatDate } from '../../utils/Formatter';
+import { connect } from 'react-redux';
 
-export default class ConfirmScheduler extends PureComponent {
+class ConfirmScheduler extends PureComponent {
   render() {
     return (
-      <Layout {...this.props}>
+      <Layout>
         <Typography variant="h6">Confirmar agendamento</Typography>
         <Card style={{ margin: 5, padding: 35, textAlign: 'center' }}>
           <Typography variant="h5">{formatDate(this.props.date)}</Typography>
           <Typography variant="h5">
-            {this.props.time && this.props.time.label}
+            {this.props.hour && this.props.hour.label}
           </Typography>
         </Card>
         <div style={{ marginTop: 15 }}>
@@ -38,3 +39,10 @@ export default class ConfirmScheduler extends PureComponent {
     );
   }
 }
+
+const mapStateToProps = store => ({
+  date: store.schedule.current.date,
+  hour: store.schedule.current.hour
+});
+
+export default connect(mapStateToProps)(ConfirmScheduler);

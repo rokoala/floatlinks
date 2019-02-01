@@ -4,6 +4,9 @@ import { Typography, Button, Input } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 import Logo from '../../components/Logo/logo.svg';
 import Api from '../../resources/Api';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { setCustomer, authenticate } from '../../actions';
 import './Login.css';
 
 function TextMaskCustom(props) {
@@ -39,9 +42,10 @@ function TextMaskCustom(props) {
 
 const parsePhone = phone => phone.replace(/(\(|\)|-)/g, '');
 
-export default class Login extends PureComponent {
+class Login extends PureComponent {
   constructor(props) {
     super(props);
+
     this.state = {
       customer: null,
       phone: '',
@@ -62,7 +66,8 @@ export default class Login extends PureComponent {
       if (data.newUser || !data.customer.name) {
         this.setState({ showSetName: true, customer: data.customer });
       } else {
-        this.props.onLoginSuccess(data.customer);
+        this.props.setCustomer(data.customer);
+        this.props.authenticate();
         this.setState({ redirectToReferrer: true });
       }
     });
@@ -72,14 +77,13 @@ export default class Login extends PureComponent {
       name: event.target.value
     });
   }
-  handleSetName(event) {
-    event.preventDefault();
-
+  handleSetName() {
     Api.Customer.update(parsePhone(this.state.phone), {
       ...this.state.customer,
       name: this.state.name
     }).then(response => {
-      this.props.onLoginSuccess(response);
+      this.props.authenticate();
+      this.props.setCustomer(response);
       this.setState({ redirectToReferrer: true });
     });
   }
@@ -173,3 +177,17 @@ export default class Login extends PureComponent {
     );
   }
 }
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      setCustomer,
+      authenticate
+    },
+    dispatch
+  );
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Login);

@@ -3,11 +3,6 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL;
 
 const Api = {
-  isAuthenticated: true,
-  signout(cb) {
-    this.isAuthenticated = false;
-    setTimeout(cb, 100);
-  },
   login(phone, cb) {
     return axios
       .post(`${API_URL}/login`, {
@@ -32,11 +27,9 @@ const Api = {
         .then(data => console.log(data))
         .catch(err => console.error(err)),
     update: (phone, customer) =>
-      axios
-        .put(`${API_URL}/customer/` + phone, {
-          ...customer
-        })
-        .then(response => response.data)
+      axios.put(`${API_URL}/customer/` + phone, {
+        ...customer
+      })
   }
 };
 

@@ -1,20 +1,24 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { logout } from '../../actions';
 import { Avatar, Button, Typography, IconButton } from '@material-ui/core';
 import LoadingOverlay from 'react-loading-overlay';
 import PropagateLoader from 'react-spinners/PropagateLoader';
 import ExitIcon from '@material-ui/icons/ExitToApp';
 import { withRouter } from 'react-router-dom';
-import Api from '../../resources/Api';
 import './Layout.css';
 
-export default class Layout extends PureComponent {
+class Layout extends PureComponent {
   render() {
-    const { professional, user } = this.props;
+    const { serviceProvider, customer } = this.props;
 
     const IconButtonSignout = withRouter(({ history }) => (
       <IconButton
         onClick={() => {
-          Api.signout(() => history.push('/'));
+          // Handle logout with promise... remove session storage/cookie
+          this.props.logout();
+          history.push('/');
         }}
       >
         <ExitIcon />
@@ -28,7 +32,7 @@ export default class Layout extends PureComponent {
           history.push('/profile');
         }}
       >
-        <Avatar>{user.name.charAt(0)}</Avatar>
+        <Avatar>{customer.name.charAt(0)}</Avatar>
       </IconButton>
     ));
 
@@ -39,7 +43,9 @@ export default class Layout extends PureComponent {
         }}
         style={{ textTransform: 'none' }}
       >
-        <Typography variant="h6">{professional.name}</Typography>
+        <Typography style={{ textTransform: 'capitalize' }} variant="h6">
+          {serviceProvider.name}
+        </Typography>
       </Button>
     ));
 
@@ -65,3 +71,20 @@ export default class Layout extends PureComponent {
     );
   }
 }
+
+const mapStateToProps = store => ({
+  customer: store.customer,
+  serviceProvider: store.serviceProvider
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      logout
+    },
+    dispatch
+  );
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Layout);
