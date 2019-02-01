@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
-import Api from '../../resources/Api';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Avatar, Button, Card, TextField, Typography } from '@material-ui/core';
 import PhoneIcon from '@material-ui/icons/Phone';
 import { withStyles } from '@material-ui/core/styles';
+import { updateCustomer } from '../../actions';
 import Layout from '../Layout';
 
 const styles = theme => ({
@@ -25,7 +27,7 @@ const formatPhone = phone =>
 
 class Profile extends PureComponent {
   state = {
-    name: this.props.user.name,
+    name: this.props.customer.name,
     showSaveButton: false
   };
   handleChangeName = event => {
@@ -34,21 +36,19 @@ class Profile extends PureComponent {
       showSaveButton: true
     });
   };
-  onSave = event => {
-    Api.Customer.update(this.props.user.phone, {
-      ...this.props.user,
+  onSave = () => {
+    this.props.updateCustomer(this.props.customer.phone, {
+      ...this.props.customer,
       name: this.state.name
     });
   };
   render() {
-    const { classes } = this.props;
+    const { classes, customer } = this.props;
 
     return (
       <Layout {...this.props}>
         <Card className={classes.card}>
-          <Avatar className={classes.avatar}>
-            {this.props.user.name.charAt(0)}
-          </Avatar>
+          <Avatar className={classes.avatar}>{customer.name.charAt(0)}</Avatar>
           <form
             onSubmit={e => e.preventDefault()}
             style={{
@@ -71,9 +71,7 @@ class Profile extends PureComponent {
           </form>
           <div style={{ display: 'flex' }}>
             <PhoneIcon style={{ margin: 5, color: 'green' }} />
-            <Typography variant="h6">
-              {formatPhone(this.props.user.phone)}
-            </Typography>
+            <Typography variant="h6">{formatPhone(customer.phone)}</Typography>
           </div>
         </Card>
       </Layout>
@@ -81,4 +79,19 @@ class Profile extends PureComponent {
   }
 }
 
-export default withStyles(styles)(Profile);
+const mapStateToProps = store => ({
+  customer: store.customer
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      updateCustomer
+    },
+    dispatch
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(Profile));

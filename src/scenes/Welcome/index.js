@@ -12,29 +12,16 @@ import {
 import DeleteRounded from '@material-ui/icons/DeleteRounded';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Layout from '../Layout';
 import './Welcome.css';
 
-export default class Welcome extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      schedule: []
-    };
-  }
+class Welcome extends PureComponent {
   componentDidMount() {
     // chamada API REST: getSchedule
-    this.schedule = [
-      { _id: '1', nome: 'agendamento1' },
-      { _id: 2, nome: 'agendamento2' }
-    ];
-    this.setState({
-      schedule: this.schedule
-    });
   }
-
   render() {
-    const scheduleList = this.state.schedule.map(item => (
+    const scheduleList = this.props.schedules.map(item => (
       <ListItem key={item._id}>
         <ListItemText primary={item.nome} />
         <ListItemSecondaryAction>
@@ -45,7 +32,7 @@ export default class Welcome extends PureComponent {
       </ListItem>
     ));
     return (
-      <Layout {...this.props}>
+      <Layout>
         <Button
           style={{ marginTop: 5 }}
           component={Link}
@@ -55,7 +42,7 @@ export default class Welcome extends PureComponent {
           size="large"
         >
           <AlarmIcon style={{ marginRight: 5 }} />
-          Agendar
+          agendar
         </Button>
         <Card style={{ margin: 15, padding: 25 }}>
           <Typography variant="subtitle1">
@@ -66,3 +53,9 @@ export default class Welcome extends PureComponent {
     );
   }
 }
+
+const mapStateToProps = store => ({
+  schedules: store.schedule.list
+});
+
+export default connect(mapStateToProps)(Welcome);
