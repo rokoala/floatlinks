@@ -1,11 +1,13 @@
 const CustomerModel = require('../models/customer.model');
+const ServiceProviderModel = require('../models/serviceprovider.model');
 const express = require('express');
 const router = express.Router();
 const { validate, promiseResultHandler } = require('../utils/RouteMiddleware');
 
-//Create a new customer
-router.post('/', (req, res) => {
+//Create a new appointment
+router.post('/:phone/:serviceProvider', (req, res) => {
   validate(req.body, res, 'Request body is missing.');
+
   promiseResultHandler(res)(
     CustomerModel.create(req.body),
     (res, doc, next) => {
@@ -21,9 +23,13 @@ router.get('/', (req, res) => {
 
 router.get('/:phone', (req, res) => {
   promiseResultHandler(res)(
-    CustomerModel.findOne({
-      phone: req.params.phone
-    })
+    CustomerModel.find({ phone: req.params.phone }).select('serviceProviders')
+  );
+});
+
+router.get('/:phone/:serviceProviderId', (req, res) => {
+  promiseResultHandler(res)(
+    CustomerModel.find({ phone: req.params.phone, 'serviceProviders._id': req.params.serviceProviderId }, {'serviceProviders.$':1})
   );
 });
 
