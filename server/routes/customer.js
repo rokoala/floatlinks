@@ -1,4 +1,4 @@
-const CustomerModel = require('../models/serviceprovider.model');
+const CustomerModel = require('../models/customer.model');
 const express = require('express');
 const router = express.Router();
 const { validate, promiseResultHandler } = require('../utils/RouteMiddleware');
