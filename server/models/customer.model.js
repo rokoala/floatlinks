@@ -17,6 +17,10 @@ module.exports = mongoose.model(
         required: true
       },
       appointments: [{
+        appointmentSlotId: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true
+        },
         appointmentDate: {
           type: Date,
           required: true

@@ -19,6 +19,10 @@ module.exports = mongoose.model(
     },
     agenda: {
         slots: [{
+            slotId: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true
+            },
             slotDate: {
                 type: Date,
                 required: true
