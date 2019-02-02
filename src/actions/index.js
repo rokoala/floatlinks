@@ -31,3 +31,8 @@ export const updateCustomer = (phone, customer) => dispatch => {
     })
     .catch(err => console.error(err));
 };
+
+export const removeSchedule = () => dispatch => {
+  // Call Api... on success...
+  console.log('Implement remove schedule...');
+};

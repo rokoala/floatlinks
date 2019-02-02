@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { setDate } from '../../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import ScheduleList from '../../components/ScheduleList';
 import './DateScheduler.css';
 
 class DateScheduler extends PureComponent {
@@ -42,6 +43,7 @@ class DateScheduler extends PureComponent {
             <Typography variant="caption">Indisponível</Typography>
           </li>
         </ul>
+        <ScheduleList />
         <Button
           style={{ marginTop: 5 }}
           component={Link}

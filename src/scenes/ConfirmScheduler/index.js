@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 
 class ConfirmScheduler extends PureComponent {
   render() {
+    console.log(this.props);
     return (
       <Layout>
         <Typography variant="h6">Confirmar agendamento</Typography>

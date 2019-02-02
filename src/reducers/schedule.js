@@ -2,7 +2,10 @@ import { scheduleActions } from '../actions/actionTypes';
 
 const initialState = {
   current: {},
-  list: [{ _id: '1', nome: 'agendamento1' }, { _id: 2, nome: 'agendamento2' }]
+  list: [
+    { _id: 1, date: new Date(), time: null },
+    { _id: 2, date: new Date(), time: null }
+  ]
 };
 
 export const schedule = (state = initialState, action) => {
