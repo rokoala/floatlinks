@@ -12,47 +12,42 @@ Fawn.init(mongoose);
 //Create a new appointment
 router.post('/',  (req, res) => {
   validate(req.body, res, 'Request body is missing.');
-  /* new Fawn.Task()
-    .update('customers', {_id: req.body.customerId}, {
-      $push: {
-        serviceProviders: {
-          providerId: req.body.serviceProviderId,
-          name: 'Teste',
-          providerPhone: 123456,
-          appointments: {
-            appointmentSlotId: req.body.slotId,
-            appointmentDate: '2019-01-01',
-            startTime: 1000,
-            appointmentDuration: 60,
-            annotation: 'teste'
+  customerId = ObjectId(req.body.customerId)
+  serviceProviderId = ObjectId(req.body.serviceProviderId)
+  slotId = ObjectId(req.body.slotId)
+  promiseResultHandler(res)(
+    new Fawn.Task()
+      .update('customers', { _id: customerId }, {
+        $push: {
+          serviceProviders: {
+            providerId: serviceProviderId,
+            name: 'Teste',
+            providerPhone: 123456,
+            appointments: {
+              appointmentSlotId: slotId,
+              appointmentDate: '2019-01-01',
+              startTime: 1000,
+              appointmentDuration: 60,
+              annotation: 'teste'
+            }
           }
         }
-      }
-    })
-    .run(); */
-    customerId = ObjectId(req.body.customerId)
-    promiseResultHandler(res)(
-      new Fawn.Task()
-        .update('customers', { _id: customerId }, {
-          $inc: { phone: 1 }
-        })
-        .run()
+      })
+      .update('serviceproviders', { _id: serviceProviderId , 'agenda.slots.slotId': slotId}, {
+        $set: {
+          'agenda.slots.0.isOccupied': true
+        }/* ,
+        $push: {
+          'agenda.slots.customer': {
+            customerId: customerId,
+            name: 'Cliente 1',
+            phone: 123465
+          }
+        } */
+      })
+      .run()
     );
     
-    /* new Fawn.Task()
-      .update('customers', {_id: req.body.customerId}, {
-        $set: {
-          name: "teste2"
-        }
-      })
-      .run(); */
-
-  /* promiseResultHandler(res)(
-    CustomerModel.find({ _id: req.params.customerId }),
-    (res, doc, next) => {
-      !doc || doc.length === 0 ? res.status(500).send(doc) : next();
-    }
-  ); */
 });
 
 router.get('/', (req, res) => {

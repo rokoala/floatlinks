@@ -46,13 +46,11 @@ module.exports = mongoose.model(
             customer: {
                 customerId: {
                     type: mongoose.Schema.Types.ObjectId,
-                    required: true,
                     ref: 'Customer'
                 },
                 name: String,
                 phone: {
                     type: Number,
-                    required: true
                 }
             },
             annotation: String
@@ -64,13 +62,11 @@ module.exports = mongoose.model(
     customers: [{
         customerId: {
             type: mongoose.Schema.Types.ObjectId,
-            required: true,
             ref: 'Customer'
         },
         name: String,
         phone: {
-            type: Number,
-            required: true
+            type: Number
         }
     }]
   })
