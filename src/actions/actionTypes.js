@@ -15,3 +15,7 @@ export const scheduleActions = {
   SET_DATE: 'SET_DATE',
   SET_HOUR: 'SET_HOUR'
 };
+
+export const confirmSchedulesActions = {
+  SET_SCHEDULES: 'SET_SCHEDULES'
+};

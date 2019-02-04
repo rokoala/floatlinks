@@ -1,4 +1,9 @@
-import { appActions, customerActions, scheduleActions } from './actionTypes';
+import {
+  appActions,
+  customerActions,
+  confirmSchedulesActions,
+  scheduleActions
+} from './actionTypes';
 import Api from '../resources/Api';
 
 export const setCustomer = customer => ({
@@ -36,3 +41,8 @@ export const removeSchedule = () => dispatch => {
   // Call Api... on success...
   console.log('Implement remove schedule...');
 };
+
+export const setConfirmSchedules = schedules => ({
+  type: confirmSchedulesActions.SET_SCHEDULES,
+  schedules
+});

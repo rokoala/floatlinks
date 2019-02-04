@@ -8,6 +8,7 @@ import DateScheduler from './scenes/DateScheduler';
 import TimeScheduler from './scenes/TimeScheduler';
 import ConfirmScheduler from './scenes/ConfirmScheduler';
 import Profile from './scenes/Profile';
+import Admin from './scenes/Admin';
 import PrivateRoute from './components/PrivateRoute';
 import './App.css';
 
@@ -18,6 +19,7 @@ class App extends Component {
         <BrowserRouter>
           <Switch>
             <Route path="/login" component={Login} />
+            <Route path="/admin" component={Admin} />
             <PrivateRoute path="/" component={Welcome} exact={true} />
             <PrivateRoute path="/profile" component={Profile} />
             <PrivateRoute path="/schedule/day" component={DateScheduler} />
