@@ -13,6 +13,7 @@ import ConfirmScheduler from './scenes/ConfirmScheduler';
 import Profile from './scenes/Profile';
 import Admin from './scenes/Admin';
 import NextAppoitments from './scenes/Admin/NextAppointments';
+import NewCustomer from './scenes/Admin/NewCustomer';
 import PrivateRoute from './components/PrivateRoute';
 import './App.css';
 
@@ -27,6 +28,7 @@ class App extends Component {
             <Route path="/login" component={Login} />
             <Route path="/admin" exact={true} component={Admin} />
             <Route path="/admin/nextAppointments" component={NextAppoitments} />
+            <Route path="/admin/newCustomer" component={NewCustomer} />
             <PrivateRoute path="/" component={Welcome} exact={true} />
             <PrivateRoute path="/profile" component={Profile} />
             <PrivateRoute path="/schedule/day" component={DateScheduler} />

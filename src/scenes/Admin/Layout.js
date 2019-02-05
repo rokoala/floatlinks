@@ -75,11 +75,21 @@ const Layout = props => {
             borderTop: '1px solid rgba(0,0,0,0.09)'
           }}
         >
-          <StyledButton style={{ display: 'flex', flexDirection: 'column' }}>
+          <StyledButton
+            onClick={event => {
+              history.push('/admin');
+            }}
+            style={{ display: 'flex', flexDirection: 'column' }}
+          >
             <CalendarIcon style={{ color: '#5353bf' }} />
             <Typography variant="caption">Agenda</Typography>
           </StyledButton>
-          <StyledButton style={{ display: 'flex', flexDirection: 'column' }}>
+          <StyledButton
+            onClick={event => {
+              history.push('/admin/newCustomer');
+            }}
+            style={{ display: 'flex', flexDirection: 'column' }}
+          >
             <PersonAddIcon style={{ color: '#52af52' }} />
             <Typography variant="caption">Novo Cliente</Typography>
           </StyledButton>
