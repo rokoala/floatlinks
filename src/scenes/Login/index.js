@@ -82,8 +82,8 @@ class Login extends PureComponent {
       ...this.state.customer,
       name: this.state.name
     }).then(response => {
+      this.props.setCustomer(response.data);
       this.props.authenticate();
-      this.props.setCustomer(response);
       this.setState({ redirectToReferrer: true });
     });
   }
