@@ -16,9 +16,9 @@
   align-items: center;
 }
 
-.layout .content {
+/* .layout .content {
   margin: 15px;
-}
+} */
 
 ._loading_overlay_wrapper {
   width: 100%;

@@ -1,14 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Typography, IconButton } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import CalendarIcon from '@material-ui/icons/CalendarToday';
 import LoadingOverlay from 'react-loading-overlay';
 import PropagateLoader from 'react-spinners/PropagateLoader';
 import ExitIcon from '@material-ui/icons/ExitToApp';
-
+import PersonAddIcon from '@material-ui/icons/PersonAddRounded';
+import ScheduleIcon from '@material-ui/icons/Schedule';
 import { withRouter } from 'react-router-dom';
 
+const StyledButton = withStyles({
+  root: {
+    textTransform: 'none'
+  },
+  label: {
+    display: 'flex',
+    flexDirection: 'column'
+  }
+})(Button);
+
 const Layout = props => {
-  console.log(props);
   const { serviceProvider } = props;
   const IconButtonSignout = withRouter(({ history }) => (
     <IconButton
@@ -51,6 +63,31 @@ const Layout = props => {
         <div className="flex flex-column align-items-center content">
           {props.children}
         </div>
+        <footer
+          style={{
+            position: 'fixed',
+            bottom: 0,
+            width: '100%',
+            backgroundColor: 'white',
+            display: 'flex',
+            justifyContent: 'space-around',
+            boxShadow: '0px 0px 3px lightgrey',
+            borderTop: '1px solid rgba(0,0,0,0.09)'
+          }}
+        >
+          <StyledButton style={{ display: 'flex', flexDirection: 'column' }}>
+            <PersonAddIcon style={{ color: '#52af52' }} />
+            <Typography variant="caption">Novo Cliente</Typography>
+          </StyledButton>
+          <StyledButton style={{ display: 'flex', flexDirection: 'column' }}>
+            <CalendarIcon style={{ color: '#5353bf' }} />
+            <Typography variant="caption">Agenda</Typography>
+          </StyledButton>
+          <StyledButton style={{ display: 'flex', flexDirection: 'column' }}>
+            <ScheduleIcon style={{ color: '#e06e6e' }} />
+            <Typography variant="caption">Retornos</Typography>
+          </StyledButton>
+        </footer>
       </LoadingOverlay>
     </div>
   );

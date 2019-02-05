@@ -7,7 +7,9 @@ import ScheduleConfirmList from '../../components/ScheduleConfirmList';
 const Admin = () => {
   return (
     <Layout>
-      <Calendar />
+      <div style={{ margin: 15 }}>
+        <Calendar />
+      </div>
       <ScheduleConfirmList />
     </Layout>
   );

@@ -3,21 +3,27 @@ import { confirmSchedulesActions } from '../actions/actionTypes';
 const initialState = [
   {
     id: 1,
-    label: '12 Fevereiro 14:00 -> 16:00',
+    dayLabel: 'amanhã',
+    initTimeLabel: '14:00',
+    endTimeLabel: '16:00',
     name: 'João',
-    state: 0 // confirmed
+    status: 0 // confirmed
   },
   {
     id: 2,
-    label: '12 Fevereiro 16:00 -> 18:00',
+    dayLabel: 'depois de amanhã',
+    initTimeLabel: '16:00',
+    endTimeLabel: '18:00',
     name: 'Maria',
-    state: 1 // pending
+    status: 1 // pending
   },
   {
     id: 3,
-    label: '13 Fevereiro 16:00 -> 18:00',
+    dayLabel: '12/02/2019',
+    initTimeLabel: '16:00',
+    endTimeLabel: '18:00',
     name: 'Jose',
-    state: 2 // need confirmation
+    status: 2 // need confirmation
   }
 ];
 
