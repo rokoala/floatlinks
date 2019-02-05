@@ -47,7 +47,7 @@ const Layout = props => {
     </Button>
   ));
 
-  return (
+  const LayoutWithRouter = withRouter(({ history }) => (
     <div className="layout">
       <LoadingOverlay
         active={false}
@@ -76,21 +76,28 @@ const Layout = props => {
           }}
         >
           <StyledButton style={{ display: 'flex', flexDirection: 'column' }}>
-            <PersonAddIcon style={{ color: '#52af52' }} />
-            <Typography variant="caption">Novo Cliente</Typography>
-          </StyledButton>
-          <StyledButton style={{ display: 'flex', flexDirection: 'column' }}>
             <CalendarIcon style={{ color: '#5353bf' }} />
             <Typography variant="caption">Agenda</Typography>
           </StyledButton>
           <StyledButton style={{ display: 'flex', flexDirection: 'column' }}>
+            <PersonAddIcon style={{ color: '#52af52' }} />
+            <Typography variant="caption">Novo Cliente</Typography>
+          </StyledButton>
+          <StyledButton
+            onClick={event => {
+              history.push('/admin/nextAppointments');
+            }}
+            style={{ display: 'flex', flexDirection: 'column' }}
+          >
             <ScheduleIcon style={{ color: '#e06e6e' }} />
             <Typography variant="caption">Retornos</Typography>
           </StyledButton>
         </footer>
       </LoadingOverlay>
     </div>
-  );
+  ));
+
+  return <LayoutWithRouter />;
 };
 
 const mapStateToProps = store => ({

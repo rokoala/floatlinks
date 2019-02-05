@@ -12,6 +12,7 @@ import TimeScheduler from './scenes/TimeScheduler';
 import ConfirmScheduler from './scenes/ConfirmScheduler';
 import Profile from './scenes/Profile';
 import Admin from './scenes/Admin';
+import NextAppoitments from './scenes/Admin/NextAppointments';
 import PrivateRoute from './components/PrivateRoute';
 import './App.css';
 
@@ -24,7 +25,8 @@ class App extends Component {
         <BrowserRouter>
           <Switch>
             <Route path="/login" component={Login} />
-            <Route path="/admin" component={Admin} />
+            <Route path="/admin" exact={true} component={Admin} />
+            <Route path="/admin/nextAppointments" component={NextAppoitments} />
             <PrivateRoute path="/" component={Welcome} exact={true} />
             <PrivateRoute path="/profile" component={Profile} />
             <PrivateRoute path="/schedule/day" component={DateScheduler} />
