@@ -15,12 +15,9 @@ const Api = {
   },
   Customer: {
     add: body =>
-      axios
-        .post(`${API_URL}/customer`, {
-          ...body
-        })
-        .then(response => console.log(response))
-        .catch(err => console.error(err)),
+      axios.post(`${API_URL}/customer`, {
+        ...body
+      }),
     get: () =>
       axios
         .get(`${API_URL}/customer`)
