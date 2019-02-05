@@ -7,7 +7,6 @@ import {
   Typography,
   IconButton
 } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
 import CalendarIcon from '@material-ui/icons/CalendarToday';
 import LoadingOverlay from 'react-loading-overlay';
 import PropagateLoader from 'react-spinners/PropagateLoader';
@@ -16,19 +15,9 @@ import PersonAddIcon from '@material-ui/icons/PersonAddRounded';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import { withRouter } from 'react-router-dom';
 
-const StyledButton = withStyles({
-  root: {
-    textTransform: 'none'
-  },
-  label: {
-    display: 'flex',
-    flexDirection: 'column'
-  }
-})(Button);
-
 class Layout extends PureComponent {
   state = {
-    value: 'agenda'
+    value: '/admin'
   };
   render() {
     const { serviceProvider } = this.props;
@@ -83,16 +72,19 @@ class Layout extends PureComponent {
               boxShadow: '0px 0px 3px lightgrey',
               borderTop: '1px solid rgba(0,0,0,0.09)'
             }}
-            value={this.state.value}
+            value={history.location.pathname}
           >
             <BottomNavigationAction
               label="Agenda"
-              value="agenda"
+              value="/admin"
               icon={<CalendarIcon />}
+              onClick={() => {
+                history.push('/admin');
+              }}
             />
             <BottomNavigationAction
               label="Novo cliente"
-              value="addCustomer"
+              value="/admin/newCustomer"
               onClick={() => {
                 history.push('/admin/newCustomer');
               }}
@@ -100,7 +92,7 @@ class Layout extends PureComponent {
             />
             <BottomNavigationAction
               label="Retornos"
-              value="schedule"
+              value="/admin/nextAppointments"
               onClick={() => {
                 history.push('/admin/nextAppointments');
               }}
