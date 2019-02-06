@@ -1,3 +1,8 @@
+.layout {
+  width: 100%;
+  height: 100%;
+}
+
 .layout header {
   display: flex;
   justify-content: center;
@@ -11,10 +16,11 @@
   align-items: center;
 }
 
-.layout .professional-name {
+/* .layout .content {
   margin: 15px;
-}
+} */
 
-.layout .content {
-  margin: 15px;
+._loading_overlay_wrapper {
+  width: 100%;
+  height: 100%;
 }

@@ -1,18 +1,24 @@
 import React, { PureComponent } from 'react';
-import { Avatar, Typography, IconButton } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { logout } from '../../actions';
+import { Avatar, Button, Typography, IconButton } from '@material-ui/core';
+import LoadingOverlay from 'react-loading-overlay';
+import PropagateLoader from 'react-spinners/PropagateLoader';
 import ExitIcon from '@material-ui/icons/ExitToApp';
 import { withRouter } from 'react-router-dom';
-import Api from '../../resources/Api';
 import './Layout.css';
 
-export default class Layout extends PureComponent {
+class Layout extends PureComponent {
   render() {
-    const { professional, user } = this.props;
+    const { serviceProvider, customer } = this.props;
 
     const IconButtonSignout = withRouter(({ history }) => (
       <IconButton
         onClick={() => {
-          Api.signout(() => history.push('/'));
+          // Handle logout with promise... remove session storage/cookie
+          this.props.logout();
+          history.push('/');
         }}
       >
         <ExitIcon />
@@ -26,26 +32,59 @@ export default class Layout extends PureComponent {
           history.push('/profile');
         }}
       >
-        <Avatar>{user.name.charAt(0)}</Avatar>
+        <Avatar>{customer.name.charAt(0)}</Avatar>
       </IconButton>
+    ));
+
+    const ServiceProviderButton = withRouter(({ history }) => (
+      <Button
+        onClick={event => {
+          history.push('/');
+        }}
+        style={{ textTransform: 'none' }}
+      >
+        <Typography style={{ textTransform: 'capitalize' }} variant="h6">
+          {serviceProvider.name}
+        </Typography>
+      </Button>
     ));
 
     return (
       <div className="layout">
-        <header>
-          <ProfileIconButton />
-          <Typography className="professional-name" variant="h6">
-            {professional.name}
-          </Typography>
-          <div className="user-wrapper">
-            <IconButtonSignout />
-          </div>
-        </header>
+        <LoadingOverlay
+          active={false}
+          spinner={<PropagateLoader color={'#36D7B7'} />}
+        >
+          <header>
+            <ProfileIconButton />
+            <ServiceProviderButton />
+            <div className="user-wrapper">
+              <IconButtonSignout />
+            </div>
+          </header>
 
-        <div className="flex flex-column align-items-center content">
-          {this.props.children}
-        </div>
+          <div className="flex flex-column align-items-center content">
+            {this.props.children}
+          </div>
+        </LoadingOverlay>
       </div>
     );
   }
 }
+
+const mapStateToProps = store => ({
+  customer: store.customer,
+  serviceProvider: store.serviceProvider
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      logout
+    },
+    dispatch
+  );
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Layout);

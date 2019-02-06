@@ -16,15 +16,15 @@ class TimeButton extends PureComponent {
 
     this.handleOnClick = this.handleOnClick.bind(this);
   }
-  handleOnClick(time) {
-    this.props.onClick(time);
+  handleOnClick(event) {
+    if (!this.props.selected) this.props.onClick(this.props.time);
   }
   render() {
     const { time, selected, classes } = this.props;
 
     return (
       <Button
-        onClick={this.handleOnClick.bind(this, time)}
+        onClick={this.handleOnClick}
         key={time.id}
         disabled={!time.available}
         classes={selected && { root: classes.selected }}

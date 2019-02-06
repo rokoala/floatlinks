@@ -1,123 +1,45 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { Store } from './store';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { fab, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import { fas, faSms } from '@fortawesome/free-solid-svg-icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
 import Login from './scenes/Login';
 import Welcome from './scenes/Welcome';
 import DateScheduler from './scenes/DateScheduler';
 import TimeScheduler from './scenes/TimeScheduler';
 import ConfirmScheduler from './scenes/ConfirmScheduler';
 import Profile from './scenes/Profile';
-import Api from './resources/Api';
+import Admin from './scenes/Admin';
+import NextAppoitments from './scenes/Admin/NextAppointments';
+import NewCustomer from './scenes/Admin/NewCustomer';
+import PrivateRoute from './components/PrivateRoute';
 import './App.css';
 
-const PrivateRoute = ({ component: Component, state, ...rest }) => {
-  return (
-    <Route
-      {...rest}
-      render={props => {
-        return Api.isAuthenticated ? (
-          <Component {...props} {...state} />
-        ) : (
-          <Redirect
-            to={{
-              pathname: '/login',
-              state: { from: props.location }
-            }}
-          />
-        );
-      }}
-    />
-  );
-};
+library.add(fab, faWhatsapp, fas, faSms);
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      professional: {
-        name: 'Consultório Dra. Yasmin'
-      },
-      user: {
-        name: ''
-      }
-    };
-    this.handleSelectDate = this.handleSelectDate.bind(this);
-    this.handleSelectTime = this.handleSelectTime.bind(this);
-    this.handleSelectUser = this.handleSelectUser.bind(this);
-  }
-  handleSelectDate(date) {
-    this.setState({
-      date
-    });
-  }
-  handleSelectTime(time) {
-    this.setState({
-      time
-    });
-  }
-  handleSelectUser(user) {
-    this.setState({
-      user
-    });
-  }
   render() {
     return (
-      <BrowserRouter>
-        <Switch>
-          <Route
-            path="/login"
-            exact={true}
-            render={props => (
-              <Login {...props} onLoginSuccess={this.handleSelectUser} />
-            )}
-          />
-          <PrivateRoute
-            component={Welcome}
-            path="/"
-            exact={true}
-            state={{
-              professional: this.state.professional,
-              user: this.state.user
-            }}
-          />
-          <PrivateRoute
-            component={Profile}
-            path="/profile"
-            state={{
-              professional: this.state.professional,
-              user: this.state.user
-            }}
-          />
-          <PrivateRoute
-            path="/schedule/day"
-            component={DateScheduler}
-            state={{
-              onSelect: this.handleSelectDate,
-              professional: this.state.professional,
-              user: this.state.user
-            }}
-          />
-          <PrivateRoute
-            path="/schedule/time"
-            component={TimeScheduler}
-            state={{
-              onSelect: this.handleSelectTime,
-              professional: this.state.professional,
-              user: this.state.user,
-              date: this.state.date
-            }}
-          />
-          <PrivateRoute
-            path="/schedule/confirm"
-            component={ConfirmScheduler}
-            state={{
-              professional: this.state.professional,
-              user: this.state.user,
-              date: this.state.date,
-              time: this.state.time
-            }}
-          />
-        </Switch>
-      </BrowserRouter>
+      <Provider store={Store}>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/login" component={Login} />
+            <Route path="/admin" exact={true} component={Admin} />
+            <Route path="/admin/nextAppointments" component={NextAppoitments} />
+            <Route path="/admin/newCustomer" component={NewCustomer} />
+            <PrivateRoute path="/" component={Welcome} exact={true} />
+            <PrivateRoute path="/profile" component={Profile} />
+            <PrivateRoute path="/schedule/day" component={DateScheduler} />
+            <PrivateRoute path="/schedule/time" component={TimeScheduler} />
+            <PrivateRoute
+              path="/schedule/confirm"
+              component={ConfirmScheduler}
+            />
+          </Switch>
+        </BrowserRouter>
+      </Provider>
     );
   }
 }
