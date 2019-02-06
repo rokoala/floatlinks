@@ -1,4 +1,6 @@
 import React, { PureComponent } from 'react';
+import MaskedInput from 'react-text-mask';
+import Input from '@material-ui/core/Input';
 import { connect } from 'react-redux';
 import { Avatar, Button, TextField, withStyles } from '@material-ui/core';
 import { msgBox, msgBoxStatus } from './MsgBox';
@@ -18,6 +20,39 @@ const style = theme => ({
   }
 });
 
+function TextMaskCustom(props) {
+  const { inputRef, ...other } = props;
+
+  return (
+    <MaskedInput
+      {...other}
+      ref={ref => {
+        inputRef(ref ? ref.inputElement : null);
+      }}
+      mask={[
+        '(',
+        /[1-9]/,
+        /\d/,
+        ')',
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        '-',
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/
+      ]}
+      placeholderChar={'\u2000'}
+      showMask
+    />
+  );
+}
+
+const parsePhone = phone => phone.replace(/(\(|\)|-)/g, '');
+
 class CustomerForm extends PureComponent {
   state = {
     name: '',
@@ -30,7 +65,8 @@ class CustomerForm extends PureComponent {
     this.setState({ [name]: event.target.value });
   };
   handleClick = event => {
-    Api.Customer.add({ name: this.state.name, phone: this.state.phone })
+    const phone = parsePhone(this.state.phone);
+    Api.Customer.add({ name: this.state.name, phone: phone })
       .then(response => {
         this.setState({
           name: '',
@@ -59,15 +95,17 @@ class CustomerForm extends PureComponent {
           value={this.state.name}
           onChange={this.handleChange('name')}
           margin="normal"
+          required={true}
         />
-        <TextField
+        <Input
           label="Telefone"
           value={this.state.phone}
-          type="number"
           onChange={this.handleChange('phone')}
-          margin="normal"
+          margin="dense"
+          inputComponent={TextMaskCustom}
         />
-        {this.state.phone.length > 0 && (
+        <br />
+        {this.state.phone.length > 0 && this.state.name.length > 0 && (
           <Button
             onClick={this.handleClick}
             variant="contained"
