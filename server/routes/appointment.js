@@ -12,43 +12,56 @@ Fawn.init(mongoose);
 //Create a new appointment
 router.post('/',  (req, res) => {
   validate(req.body, res, 'Request body is missing.');
-  customerId = ObjectId(req.body.customerId)
-  serviceProviderId = ObjectId(req.body.serviceProviderId)
+  customer = CustomerModel.aggregate([
+    { $match: {_id: ObjectId(req.body.customerId)}},
+    { $unwind: '$serviceProviders'},
+    { $match: {'serviceProviders.providerId': ObjectId(req.body.serviceProviderId)}}]).exec()
+  serviceProvider = ServiceProviderModel.findById(req.body.serviceProviderId).exec()
   slotId = ObjectId(req.body.slotId)
-  promiseResultHandler(res)(
-    new Fawn.Task()
-      .update('customers', { _id: customerId }, {
-        $push: {
-          serviceProviders: {
-            providerId: serviceProviderId,
-            name: 'Teste',
-            providerPhone: 123456,
-            appointments: {
-              appointmentSlotId: slotId,
-              appointmentDate: '2019-01-01',
-              startTime: 1000,
-              appointmentDuration: 60,
-              annotation: 'teste'
+  Promise.all([customer, serviceProvider])
+    .then(  (results,slotId) => {
+      customer = results[0][0]
+      serviceProvider = results[1]
+      if(!customer){
+        serviceProviderCreation = CustomerModel.findByIdAndUpdate(req.body.customerId, {
+          $push: {
+            serviceProviders: {
+              providerId: serviceProvider._id,
+              name: serviceProvider.name,
+              providerPhone: serviceProvider.phone,
             }
           }
-        }
-      })
-      .update('serviceproviders', { _id: serviceProviderId , 'agenda.slots.slotId': slotId}, {
-        $set: {
-          'agenda.slots.0.isOccupied': true
-        }/* ,
-        $push: {
-          'agenda.slots.customer': {
-            customerId: customerId,
-            name: 'Cliente 1',
-            phone: 123465
+        }).exec()
+      }
+      
+      appointmentCreation = CustomerModel.findOneAndUpdate({
+         _id: req.body.customerId 
+      },
+      {
+        $addToSet: {
+          'serviceProviders.$[outer].appointments': {
+            appointmentSlotId: slotId,
+            appointmentDate: '2001-08-05',
+            startTime: 1700,
+            appointmentDuration: 100,
+            annotation: 'teste'
           }
-        } */
-      })
-      .run()
-    );
+        }
+      },
+      {
+        "arrayFilters": [{ "outer.providerId": serviceProvider._id }] 
+      }).exec() 
+      promiseResultHandler(res)(
+        appointmentCreation
+      )
+     
     
+      //console.log(results[0])
+    }
+  )
 });
+
+
 
 router.get('/', (req, res) => {
   // res.send('test');
