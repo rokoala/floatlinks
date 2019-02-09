@@ -105,7 +105,7 @@ class CustomerForm extends PureComponent {
           inputComponent={TextMaskCustom}
         />
         <br />
-        {this.state.phone.length > 0 && this.state.name.length > 0 && (
+        {this.state.phone.length > 0 && (
           <Button
             onClick={this.handleClick}
             variant="contained"
