@@ -66,23 +66,31 @@ class CustomerForm extends PureComponent {
   };
   handleClick = event => {
     const phone = parsePhone(this.state.phone);
-    Api.Customer.add({ name: this.state.name, phone: phone })
-      .then(response => {
-        this.setState({
-          name: '',
-          phone: '',
-          showMsgBox: true,
-          msgBoxStatus: msgBoxStatus.SUCCESS,
-          msgBoxText: 'Adicionado cliente'
+    if (parseInt(phone) > 9999999999) {
+      Api.Customer.add({ name: this.state.name, phone: phone })
+        .then(response => {
+          this.setState({
+            name: '',
+            phone: '',
+            showMsgBox: true,
+            msgBoxStatus: msgBoxStatus.SUCCESS,
+            msgBoxText: 'Adicionado cliente'
+          });
+        })
+        .catch(err => {
+          this.setState({
+            showMsgBox: true,
+            msgBoxStatus: msgBoxStatus.ERROR,
+            msgBoxText: 'Erro ao cadastrar'
+          });
         });
-      })
-      .catch(err => {
-        this.setState({
-          showMsgBox: true,
-          msgBoxStatus: msgBoxStatus.ERROR,
-          msgBoxText: 'Erro ao cadastrar'
-        });
+    } else {
+      this.setState({
+        showMsgBox: true,
+        msgBoxStatus: msgBoxStatus.ERROR,
+        msgBoxText: 'Telefone incompleto'
       });
+    }
   };
   render() {
     const { classes } = this.props;
