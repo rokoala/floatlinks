@@ -49,6 +49,7 @@ class Login extends PureComponent {
 
     this.state = {
       customer: null,
+      name: '',
       phone: '',
       serviceProviderName: 'consultório dra. yasmin',
       redirectToReferrer: false,
@@ -68,11 +69,15 @@ class Login extends PureComponent {
     const phone = parsePhone(this.state.phone);
     Api.login(phone, data => {
       if (data.newUser || !data.customer.name) {
-        this.setState({ showSetName: true, customer: data.customer });
+        this.setState({
+          showSetName: true,
+          customer: data.customer,
+          showMsgBox: false
+        });
       } else {
         this.props.setCustomer(data.customer);
         this.props.authenticate();
-        this.setState({ redirectToReferrer: true });
+        this.setState({ redirectToReferrer: true, showMsgBox: false });
       }
     });
   }
@@ -171,14 +176,16 @@ class Login extends PureComponent {
                 className="login-form display-flex flex-column"
               >
                 <Input autoFocus onChange={this.handleChangeName} />
-                <Button
-                  onClick={this.handleSetName}
-                  variant="outlined"
-                  color="primary"
-                  size="medium"
-                >
-                  Ok
-                </Button>
+                {this.state.name.length > 0 && (
+                  <Button
+                    onClick={this.handleSetName}
+                    variant="outlined"
+                    color="primary"
+                    size="medium"
+                  >
+                    Ok
+                  </Button>
+                )}
               </form>
             </React.Fragment>
           )}
