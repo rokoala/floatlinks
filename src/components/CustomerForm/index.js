@@ -3,7 +3,7 @@ import MaskedInput from 'react-text-mask';
 import Input from '@material-ui/core/Input';
 import { connect } from 'react-redux';
 import { Avatar, Button, TextField, withStyles } from '@material-ui/core';
-import { msgBox, msgBoxStatus } from './MsgBox';
+import { msgBox, msgBoxStatus } from '../../utils/MsgBox';
 import Api from '../../resources/Api';
 import { bindActionCreators } from 'redux';
 
@@ -87,7 +87,7 @@ class CustomerForm extends PureComponent {
       : this.setState({
           showMsgBox: true,
           msgBoxStatus: msgBoxStatus.ERROR,
-          msgBoxText: 'Favor informar um telefone válido'
+          msgBoxText: 'Telefone inválido'
         });
   };
   render() {

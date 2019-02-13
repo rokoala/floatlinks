@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import MaskedInput from 'react-text-mask';
 import { Typography, Button, Input } from '@material-ui/core';
+import { msgBox, msgBoxStatus } from '../../utils/MsgBox';
 import { Redirect } from 'react-router-dom';
 import Logo from '../../components/Logo/logo.svg';
 import Api from '../../resources/Api';
@@ -51,7 +52,10 @@ class Login extends PureComponent {
       phone: '',
       serviceProviderName: 'consultório dra. yasmin',
       redirectToReferrer: false,
-      showSetName: false
+      showSetName: false,
+      showMsgBox: false,
+      msgBoxStatus: null,
+      msgBoxText: ''
     };
 
     this.login = this.login.bind(this);
@@ -94,7 +98,13 @@ class Login extends PureComponent {
   }
   handleLogin(event) {
     event.preventDefault();
-    this.login();
+    /[0-9]{11}/.test(parsePhone(this.state.phone))
+      ? this.login()
+      : this.setState({
+          showMsgBox: true,
+          msgBoxStatus: msgBoxStatus.ERROR,
+          msgBoxText: 'Telefone inválido'
+        });
   }
   render() {
     const { from } = this.props.location.state || { from: { pathname: '/' } };
@@ -172,6 +182,8 @@ class Login extends PureComponent {
               </form>
             </React.Fragment>
           )}
+          {this.state.showMsgBox &&
+            msgBox(this.state.msgBoxStatus, this.state.msgBoxText)}
         </div>
       </div>
     );
