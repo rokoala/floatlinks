@@ -102,7 +102,7 @@ class CustomerForm extends PureComponent {
           onChange={this.handleChange('name')}
           margin="normal"
         />
-        <Input
+        <Input type="tel"
           label="Telefone"
           value={this.state.phone}
           onChange={this.handleChange('phone')}
