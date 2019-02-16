@@ -9,11 +9,15 @@ const AppointmentList = ({ appointments = [] }) => (
       Horários Agendados
     </Typography>
     <Card style={{ margin: 5, padding: 10 }}>
-      <List dense={false}>
-        {appointments.map(schedule => (
-          <AppointmentListItem key={schedule._id} item={schedule} />
-        ))}
-      </List>
+      {appointments.length > 0 ? (
+        <List dense={false}>
+          {appointments.map(schedule => (
+            <AppointmentListItem key={schedule._id} item={schedule} />
+          ))}
+        </List>
+      ) : (
+        <Typography>Sem horários agendados</Typography>
+      )}
     </Card>
   </React.Fragment>
 );
