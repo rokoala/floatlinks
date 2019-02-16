@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import DeleteRounded from '@material-ui/icons/DeleteRounded';
 
-const ScheduleListItem = ({ item, removeSchedule }) => (
+const AppointmentListItem = ({ item, removeSchedule }) => (
   <ListItem>
     <ListItemText primary={'12 Fevereiro 2019 - 15:00 -> 16:00'} />
     <ListItemSecondaryAction>
@@ -37,4 +37,4 @@ const mapDispatchToProps = dispatch =>
 export default connect(
   null,
   mapDispatchToProps
-)(ScheduleListItem);
+)(AppointmentListItem);

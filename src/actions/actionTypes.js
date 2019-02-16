@@ -11,7 +11,8 @@ export const serviceProviderActions = {
   SET_SERVICE_PROVIDER: 'SET_SERVICE_PROVIDER'
 };
 
-export const scheduleActions = {
+export const appointmentActions = {
+  SET_APPOINTMENTS: 'SET_APPOINTMENTS',
   SET_DATE: 'SET_DATE',
   SET_HOUR: 'SET_HOUR'
 };

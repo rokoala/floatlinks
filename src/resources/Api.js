@@ -13,6 +13,12 @@ const Api = {
         cb(response.data);
       });
   },
+  Appointments: {
+    getAll: customerId =>
+      axios.get(`${API_URL}/appointment/customer/`, {
+        customerId
+      })
+  },
   Customer: {
     add: body =>
       axios.post(`${API_URL}/customer`, {

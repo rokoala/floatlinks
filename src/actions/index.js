@@ -2,7 +2,7 @@ import {
   appActions,
   customerActions,
   confirmSchedulesActions,
-  scheduleActions
+  appointmentActions
 } from './actionTypes';
 import Api from '../resources/Api';
 
@@ -20,12 +20,12 @@ export const logout = () => ({
 });
 
 export const setDate = date => ({
-  type: scheduleActions.SET_DATE,
+  type: appointmentActions.SET_DATE,
   date
 });
 
 export const setHour = hour => ({
-  type: scheduleActions.SET_HOUR,
+  type: appointmentActions.SET_HOUR,
   hour
 });
 
@@ -46,3 +46,20 @@ export const setConfirmSchedules = schedules => ({
   type: confirmSchedulesActions.SET_SCHEDULES,
   schedules
 });
+
+export const setAppointments = appointments => ({
+  type: appointmentActions.SET_APPOINTMENTS,
+  appointments
+});
+
+// APPOINTMENTS
+// Get a list of all appointments
+export const getAppointments = customerId => dispatch => {
+  Api.Appointments.getAll(customerId)
+    .then(response => {
+      dispatch(setAppointments(response.data));
+    })
+    .catch(err =>
+      console.error(`Error fetching data from appointments: ${err}`)
+    );
+};

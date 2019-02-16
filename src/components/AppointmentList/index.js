@@ -1,17 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Card, List, Typography } from '@material-ui/core';
-import ScheduleListItem from './ScheduleListItem';
+import AppointmentListItem from './AppointmentListItem';
 
-const ScheduleList = ({ schedules = [] }) => (
+const AppointmentList = ({ appointments = [] }) => (
   <React.Fragment>
     <Typography style={{ margin: 15 }} variant="h6">
       Horários Agendados
     </Typography>
     <Card style={{ margin: 5, padding: 10 }}>
       <List dense={false}>
-        {schedules.map(schedule => (
-          <ScheduleListItem key={schedule._id} item={schedule} />
+        {appointments.map(schedule => (
+          <AppointmentListItem key={schedule._id} item={schedule} />
         ))}
       </List>
     </Card>
@@ -19,7 +19,7 @@ const ScheduleList = ({ schedules = [] }) => (
 );
 
 const mapStateToProps = state => ({
-  schedules: state.schedule.list
+  appointments: state.appointment.list
 });
 
-export default connect(mapStateToProps)(ScheduleList);
+export default connect(mapStateToProps)(AppointmentList);
