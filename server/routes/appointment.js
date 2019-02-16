@@ -124,6 +124,45 @@ router.get('/customer/:customerId/:serviceProviderId', (req, res) => {
   );
 });
 
+router.get('/customer/:customerId/:serviceProviderId/:startDate/:endDate', (req, res) => {
+  let serviceProvider = CustomerModel.aggregate([
+    { $match: {_id: ObjectId(req.params.customerId)}},
+    { 
+      $addFields: {
+        "serviceProviders":{
+          $filter:{
+            input: "$serviceProviders",
+            as: "serviceProvider",
+            cond: {
+              $eq: [
+                "$$serviceProvider.providerId", ObjectId(req.params.serviceProviderId)
+              ]
+            }
+          }
+        }
+      }
+    },
+    { 
+      $addFields: {
+        "serviceProviders.appointments":{
+          $filter:{
+            input: "$serviceProviders.appointments",
+            as: "appointment",
+            cond: {
+              $eq: [
+                "$$appointment.appointmentSlotId", ObjectId("5c67ffb171bfa02e88129c85")
+              ]
+            }
+          }
+        }
+      }
+    }
+    ]).exec()
+  promiseResultHandler(res)(
+    serviceProvider
+  );
+});
+
 router.delete('/customer/:customerId/:serviceProviderId/:slotId', (req, res) => {
 
   let appointmentDeletion = CustomerModel.findOneAndUpdate(
