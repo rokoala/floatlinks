@@ -39,6 +39,10 @@ module.exports = mongoose.model(
                 type: Boolean,
                 required: true
             },
+            isPublic: {
+                type: Boolean,
+                required: true
+            },
             customer: {
                 customerId: {
                     type: mongoose.Schema.Types.ObjectId,

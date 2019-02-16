@@ -12,13 +12,15 @@ Fawn.init(mongoose);
 //Create a new appointment
 router.post('/',  (req, res) => {
   validate(req.body, res, 'Request body is missing.');
-  slotId = ObjectId(req.body.slotId)
-  customer = CustomerModel.aggregate([
+  const slotId = ObjectId(req.body.slotId)
+  let customer = CustomerModel.aggregate([
     { $match: {_id: ObjectId(req.body.customerId)}},
     { $unwind: '$serviceProviders'},
     { $match: {'serviceProviders.providerId': ObjectId(req.body.serviceProviderId)}}]).exec()
 
-  serviceProvider = ServiceProviderModel.aggregate([
+  let customerFullInfo = CustomerModel.findById(req.body.customerId,"_id name phone").exec();
+
+  let serviceProvider = ServiceProviderModel.aggregate([
     { $match: {_id: ObjectId(req.body.serviceProviderId)}},
     { $unwind: "$agenda.slots"},
     { $match: {'agenda.slots._id': slotId}},
@@ -28,11 +30,11 @@ router.post('/',  (req, res) => {
   let appointmentCreation = null
   let slotReservation = null
 
-  Promise.all([customer, serviceProvider])
+  Promise.all([customer, serviceProvider, customerFullInfo])
     .then(  (results,slotId) => {
       customer = results[0][0]
       serviceProvider = results[1][0]
-      console.log(serviceProvider.agenda.slots)
+      customerFullInfo = results[2]
       if(!customer && serviceProvider && !serviceProvider.agenda.slots.isOccupied){
         appointmentCreation = CustomerModel.findByIdAndUpdate(req.body.customerId, {
           $push: {
@@ -72,19 +74,24 @@ router.post('/',  (req, res) => {
             "arrayFilters": [{ "outer.providerId": serviceProvider._id }] 
           }).exec()
       }
+      else {
+        res.status(200).send("Slot already in use.")
+      }
       if(appointmentCreation){
+        const newCustomer = {
+          customerId: customerFullInfo._id,
+          name: customerFullInfo.name,
+          phone: customerFullInfo.phone
+        }
         slotReservation = ServiceProviderModel.findOneAndUpdate({
           _id: req.body.serviceProviderId 
           }, {
           $set: {
-            'agenda.slots.$[outer].isOccupied': true
+            'agenda.slots.$[outer].isOccupied': true,
+            'agenda.slots.$[outer].customer': newCustomer
           },
-          $push: {
-            'agenda.slots.$[outer].customer': {
-              customerId: customer._id,
-              name: customer.name,
-              phone: customer.phone
-            }
+          $addToSet: {
+            customers: newCustomer
           }
         },
         {
@@ -92,11 +99,12 @@ router.post('/',  (req, res) => {
           
         }
         ).exec()
+        promiseResultHandler(res)(
+          slotReservation
+        )
       }
        
-      promiseResultHandler(res)(
-        slotReservation
-      )
+      
      
     
     }
@@ -117,22 +125,43 @@ router.get('/customer/:customerId/:serviceProviderId', (req, res) => {
 });
 
 router.delete('/customer/:customerId/:serviceProviderId/:slotId', (req, res) => {
-  promiseResultHandler(res)(
-    CustomerModel.findOneAndUpdate(
-      {
-        _id: req.params.customerId
-      },
-      {
-        $pop: 'serviceProviders.$[outer].appointments.$[inner]'
-      },
-      {
-        "arrayFilters": [
-          { "outer.providerId": req.params.serviceProviderId },
-          { "inner.appointmentSlotId": req.params.slotId }
-      ]
-        
+
+  let appointmentDeletion = CustomerModel.findOneAndUpdate(
+    {
+      _id: req.params.customerId, 'serviceProviders.providerId': req.params.serviceProviderId
+    },
+    {
+      $pull: {
+        "serviceProviders.$.appointments": { 
+          slotId: req.params.slotId
+        }
       }
-    )
+    },
+    {
+      "multi": true
+    }
+  ).exec();
+  let slotFreeing = ServiceProviderModel.findOneAndUpdate(
+    {
+      _id: req.params.serviceProviderId
+    },
+    {
+      $set: {
+        "agenda.slots.$[outer].isOccupied": false
+      },
+      $unset: {
+        "agenda.slots.$[outer].customer": null
+      }
+    },
+    {
+      "arrayFilters": [
+        { "outer._id": req.params.slotId }
+      ]
+    }
+  ).exec();
+  promiseResultHandler(res)(
+    Promise.all([appointmentDeletion,slotFreeing])
+    
   );
 });
 
