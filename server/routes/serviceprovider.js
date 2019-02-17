@@ -28,6 +28,14 @@ router.get('/:phone', (req, res) => {
   );
 });
 
+router.get('/:serviceProviderId/basicinfo', (req, res) => {
+  promiseResultHandler(res)(
+    ServiceProviderModel.findOne({
+      _id: req.params.serviceProviderId
+    }, '_id name phone')
+  );
+});
+
 router.put('/:phone', (req, res) => {
   promiseResultHandler(res)(
     ServiceProviderModel.findOneAndUpdate(
