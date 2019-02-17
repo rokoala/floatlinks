@@ -99,9 +99,11 @@ export const setAppointmentAvailableAgenda = availableAgenda => ({
   availableAgenda,
 });
 
-export const getServiceProviderAgenda = serviceProviderId => dispatch => {
-  Api.ServiceProvider.getAgenda(serviceProviderId)
-    .then(response => dispatch(setAppointmentAvailableAgenda(response.data)))
+export const getAgendaByServiceProviderId = serviceProviderId => dispatch => {
+  Api.Appointments.getAgenda(serviceProviderId, new Date()) //FIXED GET AGENDA FROM TODAY
+    .then(response =>
+      dispatch(setAppointmentAvailableAgenda(response.data[0].agenda)),
+    )
     .catch(err =>
       console.error(
         `Error fetching data trying to get agenda from serviceprovider:${err}`,

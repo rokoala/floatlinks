@@ -4,7 +4,7 @@ import Layout from '../Layout';
 import Calendar from 'react-calendar';
 import { Button, Typography } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
-import { setDate, getServiceProviderAgenda } from '../../actions';
+import { setDate, getAgendaByServiceProviderId } from '../../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
@@ -12,7 +12,7 @@ import './Agenda.css';
 
 class Agenda extends PureComponent {
   componentDidMount() {
-    this.props.getServiceProviderAgenda(this.props.serviceProviderId);
+    this.props.getAgendaByServiceProviderId(this.props.serviceProviderId);
   }
   render() {
     const CalendarRouter = withRouter(({ history }) => (
@@ -73,7 +73,7 @@ class Agenda extends PureComponent {
 }
 
 const mapStateToProps = store => ({
-  slots: store.appointment.availableAgenda.slots || [],
+  slots: store.appointment.availableAgenda.slots,
   serviceProviderId: store.serviceProvider._id,
 });
 
@@ -81,7 +81,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       setDate,
-      getServiceProviderAgenda,
+      getAgendaByServiceProviderId,
     },
     dispatch,
   );

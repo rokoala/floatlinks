@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -20,11 +21,15 @@ const Api = {
       axios.get(`${API_URL}/appointment/customer/date/`, {
         date,
       }),
+    getAgenda: (serviceProviderId, startDate) =>
+      axios.get(
+        `${API_URL}/appointment/serviceprovider/${serviceProviderId}/agenda/${moment(
+          startDate,
+        ).format('YYYY-MM-DD')}`,
+      ),
   },
   ServiceProvider: {
     get: phone => axios.get(`${API_URL}/serviceprovider/${phone}`),
-    getAgenda: serviceProviderId =>
-      axios.get(`${API_URL}/serviceprovider/${serviceProviderId}/agenda`),
   },
   Customer: {
     add: body =>

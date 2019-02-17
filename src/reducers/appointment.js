@@ -7,7 +7,9 @@ const initialState = {
     // { _id: 1, date: new Date(), time: null },
     // { _id: 2, date: new Date(), time: null }
   ],
-  availableAgenda: [],
+  availableAgenda: {
+    slots: [],
+  },
   availableHours: [],
 };
 
