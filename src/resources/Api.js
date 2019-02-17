@@ -19,6 +19,9 @@ const Api = {
         customerId
       })
   },
+  ServiceProvider: {
+    get: phone => axios.get(`${API_URL}/serviceprovider/${phone}`)
+  },
   Customer: {
     add: body =>
       axios.post(`${API_URL}/customer`, {

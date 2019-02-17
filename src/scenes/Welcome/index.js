@@ -6,12 +6,15 @@ import { Button } from '@material-ui/core';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import Layout from '../Layout';
 import AppointmentList from '../../components/AppointmentList';
-import { getAppointments } from '../../actions/';
+import { getAppointments, getServiceProvider } from '../../actions/';
 import './Welcome.css';
 
 class Welcome extends PureComponent {
   componentDidMount() {
     this.props.getAppointments();
+
+    // this should not be here...
+    this.props.getServiceProvider(1611112222);
   }
   render() {
     return (
@@ -36,7 +39,8 @@ class Welcome extends PureComponent {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      getAppointments
+      getAppointments,
+      getServiceProvider
     },
     dispatch
   );

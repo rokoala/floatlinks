@@ -2,7 +2,8 @@ import {
   appActions,
   customerActions,
   confirmSchedulesActions,
-  appointmentActions
+  appointmentActions,
+  serviceProviderActions
 } from './actionTypes';
 import Api from '../resources/Api';
 
@@ -61,5 +62,19 @@ export const getAppointments = customerId => dispatch => {
     })
     .catch(err =>
       console.error(`Error fetching data from appointments: ${err}`)
+    );
+};
+
+// SERVICE PROVIDER
+export const setServiceProvider = serviceProvider => ({
+  type: serviceProviderActions.SET_SERVICE_PROVIDER,
+  serviceProvider
+});
+
+export const getServiceProvider = phoneId => dispatch => {
+  Api.ServiceProvider.get(phoneId)
+    .then(response => dispatch(setServiceProvider(response.data)))
+    .catch(err =>
+      console.error(`Error fetching data from servicerProvider: ${err}`)
     );
 };
