@@ -137,6 +137,31 @@ router.delete('/serviceprovider/slot/:serviceProviderId/:slotId', (req, res) => 
   );
 });
 
+router.get('/serviceprovider/:serviceProviderId/agenda/:startDate', (req, res) => {
+  let serviceProvider = ServiceProviderModel.aggregate([
+    { $match: {_id: ObjectId(req.params.serviceProviderId)}},
+    { 
+      $project: {
+        'agenda.slots': {
+          $filter: {
+            input: "$agenda.slots", 
+            as: "slots", 
+            cond: { 
+              $and: [
+                {$gte: ["$$slots.slotDate", new Date(req.params.startDate)]},
+                {$eq: ["$$slots.isOccupied", false]}
+              ]  
+            }
+          }
+        }
+      }
+    }]).exec()
+  promiseResultHandler(res)(
+    serviceProvider
+  );
+});
+
+
 router.get('/customer/:customerId', (req, res) => {
   promiseResultHandler(res)(
     CustomerModel.find({ _id: req.params.customerId }).select('serviceProviders')
