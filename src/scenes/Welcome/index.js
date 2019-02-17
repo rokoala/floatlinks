@@ -11,7 +11,7 @@ import './Welcome.css';
 
 class Welcome extends PureComponent {
   componentDidMount() {
-    this.props.getAppointments();
+    this.props.getAppointments(this.props.customerId);
 
     // this should not be here...
     this.props.getServiceProvider(1611112222);
@@ -36,6 +36,10 @@ class Welcome extends PureComponent {
   }
 }
 
+const mapStateToProps = store => ({
+  customerId: store.customer._id,
+});
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
@@ -46,6 +50,6 @@ const mapDispatchToProps = dispatch =>
   );
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(Welcome);

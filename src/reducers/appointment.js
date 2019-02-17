@@ -7,6 +7,8 @@ const initialState = {
     // { _id: 1, date: new Date(), time: null },
     // { _id: 2, date: new Date(), time: null }
   ],
+  availableAgenda: [],
+  availableHours: [],
 };
 
 export const appointment = (state = initialState, action) => {
@@ -31,6 +33,16 @@ export const appointment = (state = initialState, action) => {
           ...state.current,
           hour: action.hour,
         },
+      };
+    case appointmentActions.SET_AVAILABLE_AGENDA:
+      return {
+        ...state,
+        availableAgenda: action.availableAgenda,
+      };
+    case appointmentActions.SET_AVAILABLE_HOURS:
+      return {
+        ...state,
+        availableHours: action.availableHours,
       };
 
     default:

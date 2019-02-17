@@ -36,7 +36,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "initalizedb": "node ./server/config/initialize.js",
+    "initializedb": "node ./server/config/initialize.js",
     "prettier": "prettier --write './src/**/*.js' './src/**/*.css' './server/**/*.js'"
   },
   "eslintConfig": {

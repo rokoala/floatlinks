@@ -15,12 +15,16 @@ const Api = {
   },
   Appointments: {
     getAll: customerId =>
-      axios.get(`${API_URL}/appointment/customer/`, {
-        customerId,
+      axios.get(`${API_URL}/appointment/customer/${customerId}`),
+    getHoursFromDate: date =>
+      axios.get(`${API_URL}/appointment/customer/date/`, {
+        date,
       }),
   },
   ServiceProvider: {
     get: phone => axios.get(`${API_URL}/serviceprovider/${phone}`),
+    getAgenda: serviceProviderId =>
+      axios.get(`${API_URL}/serviceprovider/${serviceProviderId}/agenda`),
   },
   Customer: {
     add: body =>

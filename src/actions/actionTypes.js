@@ -15,6 +15,8 @@ export const appointmentActions = {
   SET_APPOINTMENTS: 'SET_APPOINTMENTS',
   SET_DATE: 'SET_DATE',
   SET_HOUR: 'SET_HOUR',
+  SET_AVAILABLE_HOURS: 'SET_AVAILABLE_HOURS',
+  SET_AVAILABLE_AGENDA: 'SET_AVAILABLE_AGENDA',
 };
 
 export const confirmSchedulesActions = {

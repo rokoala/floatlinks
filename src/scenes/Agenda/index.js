@@ -4,18 +4,17 @@ import Layout from '../Layout';
 import Calendar from 'react-calendar';
 import { Button, Typography } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
-import { setDate } from '../../actions';
+import { setDate, getServiceProviderAgenda } from '../../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import './Agenda.css';
 
 class Agenda extends PureComponent {
+  componentDidMount() {
+    this.props.getServiceProviderAgenda(this.props.serviceProviderId);
+  }
   render() {
-    console.log(
-      moment(this.props.slots[0].slotDate).isSame(moment(new Date()), 'day'),
-    );
-
     const CalendarRouter = withRouter(({ history }) => (
       <Calendar
         minDetail="year"
@@ -74,13 +73,15 @@ class Agenda extends PureComponent {
 }
 
 const mapStateToProps = store => ({
-  slots: store.serviceProvider.agenda.slots,
+  slots: store.appointment.availableAgenda.slots || [],
+  serviceProviderId: store.serviceProvider._id,
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       setDate,
+      getServiceProviderAgenda,
     },
     dispatch,
   );

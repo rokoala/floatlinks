@@ -65,6 +65,21 @@ export const getAppointments = customerId => dispatch => {
     );
 };
 
+export const setAvailableHours = availableHours => ({
+  type: appointmentActions.SET_AVAILABLE_HOURS,
+  availableHours,
+});
+
+export const getHoursFromDate = date => dispatch => {
+  Api.Appointments.getHoursFromDate(date)
+    .then(response => {
+      dispatch(setAvailableHours(response.data));
+    })
+    .catch(err =>
+      console.error(`Error fetching data from appointments: ${err}`),
+    );
+};
+
 // SERVICE PROVIDER
 export const setServiceProvider = serviceProvider => ({
   type: serviceProviderActions.SET_SERVICE_PROVIDER,
@@ -76,5 +91,20 @@ export const getServiceProvider = phoneId => dispatch => {
     .then(response => dispatch(setServiceProvider(response.data)))
     .catch(err =>
       console.error(`Error fetching data from servicerProvider: ${err}`),
+    );
+};
+
+export const setAppointmentAvailableAgenda = availableAgenda => ({
+  type: appointmentActions.SET_AVAILABLE_AGENDA,
+  availableAgenda,
+});
+
+export const getServiceProviderAgenda = serviceProviderId => dispatch => {
+  Api.ServiceProvider.getAgenda(serviceProviderId)
+    .then(response => dispatch(setAppointmentAvailableAgenda(response.data)))
+    .catch(err =>
+      console.error(
+        `Error fetching data trying to get agenda from serviceprovider:${err}`,
+      ),
     );
 };
