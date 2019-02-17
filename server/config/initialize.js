@@ -22,6 +22,15 @@ const CustomerModel = require('../models/customer.model');
           customer: null,
           annotation: 'Horário teste',
         },
+        {
+          slotDate: new Date(),
+          startTime: 1100,
+          slotDuration: 30,
+          isOccupied: false, // precisa desta flag? a verificacao de um customer já não resolve?
+          isPublic: true,
+          customer: null,
+          annotation: 'Horário teste no mesmo dia, horário diferente',
+        },
       ],
       isOpen: true,
     },
