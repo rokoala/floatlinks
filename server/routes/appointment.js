@@ -111,6 +111,31 @@ router.post('/',  (req, res) => {
   )
 });
 
+router.post('/serviceprovider/slot/', (req, res) => {
+  promiseResultHandler(res)(
+    ServiceProviderModel.findOneAndUpdate({ _id: req.body.serviceProviderId },
+      {
+        $addToSet: {
+          'agenda.slots': req.body.newSlot
+        }
+      }
+    ).exec()
+  );
+});
+
+router.delete('/serviceprovider/slot/:serviceProviderId/:slotId', (req, res) => {
+  promiseResultHandler(res)(
+    ServiceProviderModel.findOneAndUpdate({ _id: req.params.serviceProviderId },
+      {
+        $pull: {
+          'agenda.slots': {
+            _id: req.params.slotId
+          }
+        }
+      }
+    ).exec()
+  );
+});
 
 router.get('/customer/:customerId', (req, res) => {
   promiseResultHandler(res)(
@@ -121,6 +146,48 @@ router.get('/customer/:customerId', (req, res) => {
 router.get('/customer/:customerId/:serviceProviderId', (req, res) => {
   promiseResultHandler(res)(
     CustomerModel.find({ _id: req.params.customerId, 'serviceProviders.providerId': req.params.serviceProviderId }, {'serviceProviders.$':1})
+  );
+});
+
+router.get('/customer/:customerId/:serviceProviderId/:startDate/:endDate', (req, res) => {
+  let serviceProvider = CustomerModel.aggregate([
+    { $match: {_id: ObjectId(req.params.customerId)}},
+    { 
+      $project: {
+        serviceProviders: {
+          $map: {
+            input: {
+              $filter: {
+                input: "$serviceProviders", 
+                as: "sp", 
+                cond: { 
+                  $eq: ["$$sp.providerId", ObjectId(req.params.serviceProviderId)]
+                }
+              }
+            },
+            as: "sp",
+            in: {
+              providerId: "$$sp.providerId",
+              appointments: {
+                $filter: {
+                  input: "$$sp.appointments", 
+                  as: "app", 
+                  cond: { 
+                    $and: [
+                      {$lte: [ "$$app.appointmentDate", new Date(req.params.endDate)]},
+                      {$gte: [ "$$app.appointmentDate", new Date(req.params.startDate)]}
+                    ]
+                    
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }]).exec()
+  promiseResultHandler(res)(
+    serviceProvider
   );
 });
 
