@@ -111,6 +111,31 @@ router.post('/',  (req, res) => {
   )
 });
 
+router.post('/serviceprovider/slot/', (req, res) => {
+  promiseResultHandler(res)(
+    ServiceProviderModel.findOneAndUpdate({ _id: req.body.serviceProviderId },
+      {
+        $addToSet: {
+          'agenda.slots': req.body.newSlot
+        }
+      }
+    ).exec()
+  );
+});
+
+router.delete('/serviceprovider/slot/:serviceProviderId/:slotId', (req, res) => {
+  promiseResultHandler(res)(
+    ServiceProviderModel.findOneAndUpdate({ _id: req.params.serviceProviderId },
+      {
+        $pull: {
+          'agenda.slots': {
+            _id: req.params.slotId
+          }
+        }
+      }
+    ).exec()
+  );
+});
 
 router.get('/customer/:customerId', (req, res) => {
   promiseResultHandler(res)(
@@ -126,6 +151,7 @@ router.get('/customer/:customerId/:serviceProviderId', (req, res) => {
 
 router.get('/customer/:customerId/:serviceProviderId/:startDate/:endDate', (req, res) => {
   let serviceProvider = CustomerModel.aggregate([
+    { $match: {_id: ObjectId(req.params.customerId)}},
     { 
       $project: {
         serviceProviders: {
@@ -143,27 +169,23 @@ router.get('/customer/:customerId/:serviceProviderId/:startDate/:endDate', (req,
             in: {
               providerId: "$$sp.providerId",
               appointments: {
-                $map: {
-                  
-                }
-                input: {
-                  $filter: {
-                    input: "$$sp.appointments", 
-                    as: "app", 
-                    cond: { $eq: [ "$$app.appointmentSlotId", ObjectId("5c67ffb171bfa02e88129c85")]}
+                $filter: {
+                  input: "$$sp.appointments", 
+                  as: "app", 
+                  cond: { 
+                    $and: [
+                      {$lte: [ "$$app.appointmentDate", new Date(req.params.endDate)]},
+                      {$gte: [ "$$app.appointmentDate", new Date(req.params.startDate)]}
+                    ]
+                    
                   }
-                },
-                as: "app",
-                in: {
-
-                  }
-                }
                 }
               }
             }
           }
         }
-    ]).exec()
+      }
+    }]).exec()
   promiseResultHandler(res)(
     serviceProvider
   );
