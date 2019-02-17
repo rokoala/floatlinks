@@ -260,25 +260,6 @@ router.delete(
         $set: {
           'agenda.slots.$[outer].isOccupied': false,
         },
-
-        $pull: {
-          'serviceProviders.$.appointments': {
-            slotId: req.params.slotId,
-          },
-        },
-      },
-      {
-        multi: true,
-      },
-    ).exec();
-    let slotFreeing = ServiceProviderModel.findOneAndUpdate(
-      {
-        _id: req.params.serviceProviderId,
-      },
-      {
-        $set: {
-          'agenda.slots.$[outer].isOccupied': false,
-        },
         $unset: {
           'agenda.slots.$[outer].customer': null,
         },
