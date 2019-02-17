@@ -158,29 +158,64 @@ router.delete(
 );
 
 router.get(
-  '/serviceprovider/:serviceProviderId/agenda/:startDate',
+  '/serviceprovider/:serviceProviderId/agenda/:startDate/:endDate?',
   (req, res) => {
-    let serviceProvider = ServiceProviderModel.aggregate([
-      { $match: { _id: ObjectId(req.params.serviceProviderId) } },
-      {
-        $project: {
-          'agenda.slots': {
-            $filter: {
-              input: '$agenda.slots',
-              as: 'slots',
-              cond: {
-                $and: [
-                  {
-                    $gte: ['$$slots.slotDate', new Date(req.params.startDate)],
-                  },
-                  { $eq: ['$$slots.isOccupied', false] },
-                ],
+    let serviceProvider = null;
+    if (!req.params.endDate) {
+      serviceProvider = ServiceProviderModel.aggregate([
+        { $match: { _id: ObjectId(req.params.serviceProviderId) } },
+        {
+          $project: {
+            'agenda.slots': {
+              $filter: {
+                input: '$agenda.slots',
+                as: 'slots',
+                cond: {
+                  $and: [
+                    {
+                      $gte: [
+                        '$$slots.slotDate',
+                        new Date(req.params.startDate),
+                      ],
+                    },
+                    { $eq: ['$$slots.isOccupied', false] },
+                  ],
+                },
               },
             },
           },
         },
-      },
-    ]).exec();
+      ]).exec();
+    } else {
+      serviceProvider = ServiceProviderModel.aggregate([
+        { $match: { _id: ObjectId(req.params.serviceProviderId) } },
+        {
+          $project: {
+            'agenda.slots': {
+              $filter: {
+                input: '$agenda.slots',
+                as: 'slots',
+                cond: {
+                  $and: [
+                    {
+                      $gte: [
+                        '$$slots.slotDate',
+                        new Date(req.params.startDate),
+                      ],
+                    },
+                    {
+                      $lte: ['$$slots.slotDate', new Date(req.params.endDate)],
+                    },
+                    { $eq: ['$$slots.isOccupied', false] },
+                  ],
+                },
+              },
+            },
+          },
+        },
+      ]).exec();
+    }
+
     promiseResultHandler(res)(serviceProvider);
   },
 );
