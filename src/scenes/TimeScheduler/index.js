@@ -15,25 +15,18 @@ class TimeSchedule extends PureComponent {
     super(props);
     this.state = {
       client: {
-        hours: []
-      }
+        hours: [],
+      },
     };
   }
   componentDidMount() {
-    // fetch data...
+    //TODO fetch data every time that get into this component...
+    // but using store by now
+
     this.setState({
       client: {
-        hours: [
-          { id: 0, label: '09:00 -> 10:00', available: true, selected: true },
-          { id: 1, label: '10:00 -> 11:00', available: true },
-          { id: 2, label: '11:00 -> 12:00', available: false },
-          { id: 3, label: '12:00 -> 13:00', available: false },
-          { id: 4, label: '13:00 -> 14:00', available: true },
-          { id: 5, label: '14:00 -> 15:00', available: true },
-          { id: 6, label: '15:00 -> 16:00', available: false },
-          { id: 7, label: '17:00 -> 18:00', available: true }
-        ]
-      }
+        hours: [],
+      },
     });
   }
   render() {
@@ -57,7 +50,7 @@ class TimeSchedule extends PureComponent {
           variant="outlined"
           color="primary"
         >
-          {formatDate(this.props.date)}
+          {formatDate(this.props.choosedDate)}
           <ArrowDownIcon fontSize="small" style={{ marginLeft: 12 }} />
         </Button>
         <TimePickerWithRouter />
@@ -66,18 +59,18 @@ class TimeSchedule extends PureComponent {
   }
 }
 const mapStateToProps = store => ({
-  date: store.schedule.current.date
+  choosedDate: store.appointment.current.date,
 });
 
 const dispatchStateToProps = dispatch =>
   bindActionCreators(
     {
-      setHour
+      setHour,
     },
-    dispatch
+    dispatch,
   );
 
 export default connect(
   mapStateToProps,
-  dispatchStateToProps
+  dispatchStateToProps,
 )(TimeSchedule);

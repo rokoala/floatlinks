@@ -15,22 +15,22 @@ const CustomerModel = require('../models/customer.model');
       slots: [
         {
           slotDate: new Date(),
-          startTime: 10,
+          startTime: 1000,
           slotDuration: 30,
           isOccupied: false,
           isPublic: true,
           customer: null,
-          annotation: 'Horário teste'
-        }
+          annotation: 'Horário teste',
+        },
       ],
-      isOpen: true
-    }
+      isOpen: true,
+    },
   };
 
   const CustomerExample = {
     name: 'John',
     phone: 11111111111,
-    serviceProviders: []
+    serviceProviders: [],
   };
 
   console.log(`Creating Service Provider ${ServiceProviderExample.name}`);

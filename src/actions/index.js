@@ -3,31 +3,31 @@ import {
   customerActions,
   confirmSchedulesActions,
   appointmentActions,
-  serviceProviderActions
+  serviceProviderActions,
 } from './actionTypes';
 import Api from '../resources/Api';
 
 export const setCustomer = customer => ({
   type: customerActions.SET_CUSTOMER,
-  customer
+  customer,
 });
 
 export const authenticate = () => ({
-  type: appActions.AUTHENTICATE
+  type: appActions.AUTHENTICATE,
 });
 
 export const logout = () => ({
-  type: appActions.LOGOUT
+  type: appActions.LOGOUT,
 });
 
 export const setDate = date => ({
   type: appointmentActions.SET_DATE,
-  date
+  date,
 });
 
 export const setHour = hour => ({
   type: appointmentActions.SET_HOUR,
-  hour
+  hour,
 });
 
 export const updateCustomer = (phone, customer) => dispatch => {
@@ -45,12 +45,12 @@ export const removeSchedule = () => dispatch => {
 
 export const setConfirmSchedules = schedules => ({
   type: confirmSchedulesActions.SET_SCHEDULES,
-  schedules
+  schedules,
 });
 
 export const setAppointments = appointments => ({
   type: appointmentActions.SET_APPOINTMENTS,
-  appointments
+  appointments,
 });
 
 // APPOINTMENTS
@@ -61,20 +61,20 @@ export const getAppointments = customerId => dispatch => {
       dispatch(setAppointments(response.data));
     })
     .catch(err =>
-      console.error(`Error fetching data from appointments: ${err}`)
+      console.error(`Error fetching data from appointments: ${err}`),
     );
 };
 
 // SERVICE PROVIDER
 export const setServiceProvider = serviceProvider => ({
   type: serviceProviderActions.SET_SERVICE_PROVIDER,
-  serviceProvider
+  serviceProvider,
 });
 
 export const getServiceProvider = phoneId => dispatch => {
   Api.ServiceProvider.get(phoneId)
     .then(response => dispatch(setServiceProvider(response.data)))
     .catch(err =>
-      console.error(`Error fetching data from servicerProvider: ${err}`)
+      console.error(`Error fetching data from servicerProvider: ${err}`),
     );
 };

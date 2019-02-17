@@ -10,5 +10,5 @@ export const Reducers = combineReducers({
   customer,
   appointment,
   confirmSchedules,
-  serviceProvider
+  serviceProvider,
 });

@@ -7,67 +7,71 @@ module.exports = mongoose.model(
     phone: {
       type: Number,
       required: true,
-      unique: true
+      unique: true,
     },
     password: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     defaultAppointmentDuration: {
-        type: Number,
-        required: true,
+      type: Number,
+      required: true,
     },
     agenda: {
-        slots: [{
-            slotDate: {
-                type: Date,
-                required: true
+      slots: [
+        {
+          slotDate: {
+            type: Date,
+            required: true,
+          },
+          startTime: {
+            type: Number,
+            min: 0,
+            max: 2359,
+            required: true,
+          },
+          slotDuration: {
+            type: Number,
+            min: 5,
+            max: 6000,
+            required: true,
+          },
+          isOccupied: {
+            type: Boolean,
+            required: true,
+          },
+          isPublic: {
+            type: Boolean,
+            required: true,
+          },
+          customer: {
+            customerId: {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: 'Customer',
             },
-            startTime: {
-                type: Number,
-                min: 0,
-                max: 2359,
-                required: true
+            name: String,
+            phone: {
+              type: Number,
             },
-            slotDuration: {
-                type: Number,
-                min: 5,
-                max: 6000,
-                required: true
-            },
-            isOccupied: {
-                type: Boolean,
-                required: true
-            },
-            isPublic: {
-                type: Boolean,
-                required: true
-            },
-            customer: {
-                customerId: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'Customer'
-                },
-                name: String,
-                phone: {
-                    type: Number,
-                }
-            },
-            annotation: String
-        }],
-        isOpen: {
-            type: Boolean
-        }
+          },
+          annotation: String,
+        },
+      ],
+      isOpen: {
+        type: Boolean,
+      },
     },
-    customers: [{
+    customers: [
+      {
         customerId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Customer'
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Customer',
         },
         name: String,
         phone: {
-            type: Number
-        }
-    }]
-  })
+          type: Number,
+        },
+      },
+    ],
+  }),
 );

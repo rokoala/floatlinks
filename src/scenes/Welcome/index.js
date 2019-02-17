@@ -40,12 +40,12 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getAppointments,
-      getServiceProvider
+      getServiceProvider,
     },
-    dispatch
+    dispatch,
   );
 
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Welcome);

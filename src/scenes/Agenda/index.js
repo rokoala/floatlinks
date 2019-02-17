@@ -13,7 +13,7 @@ import './Agenda.css';
 class Agenda extends PureComponent {
   render() {
     console.log(
-      moment(this.props.slots[0].slotDate).isSame(moment(new Date()), 'day')
+      moment(this.props.slots[0].slotDate).isSame(moment(new Date()), 'day'),
     );
 
     const CalendarRouter = withRouter(({ history }) => (
@@ -33,7 +33,7 @@ class Agenda extends PureComponent {
                 (view === 'month' &&
                   moment(slot.slotDate).isSame(moment(date), 'day'))) ||
               (view === 'year' &&
-                moment(slot.slotDate).isSame(moment(date), 'month'))
+                moment(slot.slotDate).isSame(moment(date), 'month')),
           ).length === 0
         }
         onChange={date => {
@@ -74,18 +74,18 @@ class Agenda extends PureComponent {
 }
 
 const mapStateToProps = store => ({
-  slots: store.serviceProvider.agenda.slots
+  slots: store.serviceProvider.agenda.slots,
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      setDate
+      setDate,
     },
-    dispatch
+    dispatch,
   );
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Agenda);

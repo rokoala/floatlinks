@@ -5,5 +5,5 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 export const Store = createStore(
   Reducers,
-  composeWithDevTools(applyMiddleware(thunk))
+  composeWithDevTools(applyMiddleware(thunk)),
 );

@@ -42,7 +42,7 @@ class ConfirmScheduler extends PureComponent {
 
 const mapStateToProps = store => ({
   date: store.schedule.current.date,
-  hour: store.schedule.current.hour
+  hour: store.schedule.current.hour,
 });
 
 export default connect(mapStateToProps)(ConfirmScheduler);

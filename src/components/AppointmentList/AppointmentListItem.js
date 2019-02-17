@@ -6,7 +6,7 @@ import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
-  IconButton
+  IconButton,
 } from '@material-ui/core';
 import DeleteRounded from '@material-ui/icons/DeleteRounded';
 
@@ -29,12 +29,12 @@ const AppointmentListItem = ({ item, removeSchedule }) => (
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      removeSchedule
+      removeSchedule,
     },
-    dispatch
+    dispatch,
   );
 
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(AppointmentListItem);

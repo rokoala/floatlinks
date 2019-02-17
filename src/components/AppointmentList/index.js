@@ -23,7 +23,7 @@ const AppointmentList = ({ appointments = [] }) => (
 );
 
 const mapStateToProps = state => ({
-  appointments: state.appointment.list
+  appointments: state.appointment.list,
 });
 
 export default connect(mapStateToProps)(AppointmentList);

@@ -11,7 +11,7 @@ router.post('/', (req, res) => {
     ServiceProviderModel.create(req.body),
     (res, doc, next) => {
       !doc || doc.length === 0 ? res.status(500).send(doc) : next();
-    }
+    },
   );
 });
 
@@ -23,8 +23,8 @@ router.get('/', (req, res) => {
 router.get('/:phone', (req, res) => {
   promiseResultHandler(res)(
     ServiceProviderModel.findOne({
-      phone: req.params.phone
-    })
+      phone: req.params.phone,
+    }),
   );
 });
 
@@ -32,13 +32,13 @@ router.put('/:phone', (req, res) => {
   promiseResultHandler(res)(
     ServiceProviderModel.findOneAndUpdate(
       {
-        phone: req.params.phone
+        phone: req.params.phone,
       },
       req.body,
       {
-        new: true
-      }
-    )
+        new: true,
+      },
+    ),
   );
 });
 

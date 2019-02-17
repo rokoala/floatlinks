@@ -6,7 +6,7 @@ const Api = {
   login(phone, cb) {
     return axios
       .post(`${API_URL}/login`, {
-        phone
+        phone,
       })
       .then(response => {
         this.isAuthenticated = true;
@@ -16,16 +16,16 @@ const Api = {
   Appointments: {
     getAll: customerId =>
       axios.get(`${API_URL}/appointment/customer/`, {
-        customerId
-      })
+        customerId,
+      }),
   },
   ServiceProvider: {
-    get: phone => axios.get(`${API_URL}/serviceprovider/${phone}`)
+    get: phone => axios.get(`${API_URL}/serviceprovider/${phone}`),
   },
   Customer: {
     add: body =>
       axios.post(`${API_URL}/customer`, {
-        ...body
+        ...body,
       }),
     get: () =>
       axios
@@ -34,9 +34,9 @@ const Api = {
         .catch(err => console.error(err)),
     update: (phone, customer) =>
       axios.put(`${API_URL}/customer/` + phone, {
-        ...customer
-      })
-  }
+        ...customer,
+      }),
+  },
 };
 
 export default Api;
