@@ -65,18 +65,20 @@ export const getAppointments = customerId => dispatch => {
     );
 };
 
-export const setAvailableHours = availableHours => ({
+export const setAppointmentAvailableHours = availableHours => ({
   type: appointmentActions.SET_AVAILABLE_HOURS,
   availableHours,
 });
 
-export const getHoursFromDate = date => dispatch => {
-  Api.Appointments.getHoursFromDate(date)
-    .then(response => {
-      dispatch(setAvailableHours(response.data));
-    })
+export const getHoursByDate = (serviceProviderId, date) => dispatch => {
+  Api.Appointments.getHoursByDate(serviceProviderId, date)
+    .then(response =>
+      dispatch(setAppointmentAvailableHours(response.data[0].agenda.slots)),
+    )
     .catch(err =>
-      console.error(`Error fetching data from appointments: ${err}`),
+      console.error(
+        `Error fetching data trying to get hours from serviceprovider:${err}`,
+      ),
     );
 };
 

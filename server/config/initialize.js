@@ -1,5 +1,6 @@
 const ServiceProviderModel = require('../models/serviceprovider.model');
 const CustomerModel = require('../models/customer.model');
+const moment = require('moment');
 
 (async () => {
   console.log('Cleaning all database...');
@@ -26,10 +27,21 @@ const CustomerModel = require('../models/customer.model');
           slotDate: new Date(),
           startTime: 1100,
           slotDuration: 30,
-          isOccupied: false, // precisa desta flag? a verificacao de um customer já não resolve?
+          isOccupied: false,
           isPublic: true,
           customer: null,
           annotation: 'Horário teste no mesmo dia, horário diferente',
+        },
+        {
+          slotDate: moment()
+            .add(1, 'days')
+            .toDate(),
+          startTime: 1100,
+          slotDuration: 30,
+          isOccupied: false,
+          isPublic: true,
+          customer: null,
+          annotation: 'Horário teste dia depois, horário diferente',
         },
       ],
       isOpen: true,

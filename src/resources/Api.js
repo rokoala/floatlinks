@@ -27,6 +27,15 @@ const Api = {
           startDate,
         ).format('YYYY-MM-DD')}`,
       ),
+    getHoursByDate: (serviceProviderId, startDate) =>
+      axios.get(
+        `${API_URL}/appointment/serviceprovider/${serviceProviderId}/agenda/${moment(
+          startDate,
+        ).format('YYYY-MM-DD') /
+          moment(startDate)
+            .add(1, 'days')
+            .format('YYYY-MM-DD')}`,
+      ),
   },
   ServiceProvider: {
     get: phone => axios.get(`${API_URL}/serviceprovider/${phone}`),

@@ -6,28 +6,20 @@ import ArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import TimePicker from '../../components/TimePicker';
 import { withRouter } from 'react-router-dom';
 import { formatDate } from '../../utils/Formatter';
-import { setHour } from '../../actions';
+import { getHoursByDate } from '../../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 class TimeSchedule extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      client: {
-        hours: [],
-      },
-    };
   }
   componentDidMount() {
     //TODO fetch data every time that get into this component...
-    // but using store by now
-
-    this.setState({
-      client: {
-        hours: [],
-      },
-    });
+    this.props.getHoursByDate(
+      this.props.serviceProviderId,
+      this.props.choosedDate,
+    );
   }
   render() {
     const TimePickerWithRouter = withRouter(({ history }) => (
@@ -36,7 +28,7 @@ class TimeSchedule extends PureComponent {
           this.props.setHour(time);
           history.push('/schedule/confirm');
         }}
-        hours={this.state.client.hours}
+        hours={this.props.hours}
       />
     ));
 
@@ -60,12 +52,14 @@ class TimeSchedule extends PureComponent {
 }
 const mapStateToProps = store => ({
   choosedDate: store.appointment.current.date,
+  hours: store.appointment.availableHours,
+  serviceProviderId: store.serviceProvider._id,
 });
 
 const dispatchStateToProps = dispatch =>
   bindActionCreators(
     {
-      setHour,
+      getHoursByDate,
     },
     dispatch,
   );
