@@ -1,12 +1,31 @@
 import React, { PureComponent } from 'react';
 import { Typography, Button, Card } from '@material-ui/core';
 import Layout from '../Layout';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { formatDate } from '../../utils/Formatter';
+import { confirmAppointment } from '../../actions';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 class ConfirmScheduler extends PureComponent {
   render() {
+    const ButtonConfirm = withRouter(({ history }) => (
+      <Button
+        style={{ margin: 5 }}
+        variant="outlined"
+        color="primary"
+        onClick={evt => {
+          this.props.confirmAppointment(
+            this.props.hour.slotId,
+            this.props.customerId,
+            this.props.serviceProviderId,
+          );
+        }}
+      >
+        confirmo
+      </Button>
+    ));
+
     return (
       <Layout>
         <Typography variant="h6">Confirmar agendamento</Typography>
@@ -17,15 +36,7 @@ class ConfirmScheduler extends PureComponent {
           </Typography>
         </Card>
         <div style={{ marginTop: 15 }}>
-          <Button
-            style={{ margin: 5 }}
-            component={Link}
-            to="/"
-            variant="contained"
-            color="primary"
-          >
-            confirmo
-          </Button>
+          <ButtonConfirm />
           <Button
             style={{ margin: 5 }}
             component={Link}
@@ -41,8 +52,21 @@ class ConfirmScheduler extends PureComponent {
 }
 
 const mapStateToProps = store => ({
-  date: store.schedule.current.date,
-  hour: store.schedule.current.hour,
+  date: store.appointment.current.date,
+  hour: store.appointment.current.hour,
+  customerId: store.customer._id,
+  serviceProviderId: store.serviceProvider._id,
 });
 
-export default connect(mapStateToProps)(ConfirmScheduler);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      confirmAppointment,
+    },
+    dispatch,
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ConfirmScheduler);

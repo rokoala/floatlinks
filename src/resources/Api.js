@@ -15,8 +15,16 @@ const Api = {
       });
   },
   Appointments: {
-    getAll: customerId =>
-      axios.get(`${API_URL}/appointment/customer/${customerId}`),
+    add: (slotId, customerId, serviceProviderId) =>
+      axios.post(`${API_URL}/appointment/`, {
+        slotId,
+        customerId,
+        serviceProviderId,
+      }),
+    getAll: (customerId, serviceProviderId) =>
+      axios.get(
+        `${API_URL}/appointment/customer/${customerId}/${serviceProviderId}`,
+      ),
     getAgenda: (serviceProviderId, startDate) =>
       axios.get(
         `${API_URL}/appointment/serviceprovider/${serviceProviderId}/agenda/${moment(

@@ -11,10 +11,10 @@ import './Welcome.css';
 
 class Welcome extends PureComponent {
   componentDidMount() {
-    this.props.getAppointments(this.props.customerId);
-
-    // this should not be here...
-    this.props.getServiceProvider(1611112222);
+    this.props.getAppointments(
+      this.props.customerId,
+      this.props.serviceProviderId,
+    );
   }
   render() {
     return (
@@ -38,13 +38,13 @@ class Welcome extends PureComponent {
 
 const mapStateToProps = store => ({
   customerId: store.customer._id,
+  serviceProviderId: store.serviceProvider._id,
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getAppointments,
-      getServiceProvider,
     },
     dispatch,
   );

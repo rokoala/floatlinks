@@ -7,7 +7,7 @@ import Logo from '../../components/Logo/logo.svg';
 import Api from '../../resources/Api';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { setCustomer, authenticate } from '../../actions';
+import { setCustomer, authenticate, getServiceProvider } from '../../actions';
 import './Login.css';
 
 function TextMaskCustom(props) {
@@ -64,6 +64,10 @@ class Login extends PureComponent {
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeName = this.handleChangeName.bind(this);
     this.handleSetName = this.handleSetName.bind(this);
+  }
+  componentDidMount() {
+    // this should not be here...
+    this.props.getServiceProvider(1611112222);
   }
   login() {
     const phone = parsePhone(this.state.phone);
@@ -202,6 +206,7 @@ const mapDispatchToProps = dispatch =>
     {
       setCustomer,
       authenticate,
+      getServiceProvider,
     },
     dispatch,
   );

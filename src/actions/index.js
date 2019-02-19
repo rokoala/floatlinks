@@ -25,7 +25,7 @@ export const setDate = date => ({
   date,
 });
 
-export const setHour = hour => ({
+export const setAppointmentHour = hour => ({
   type: appointmentActions.SET_HOUR,
   hour,
 });
@@ -55,9 +55,10 @@ export const setAppointments = appointments => ({
 
 // APPOINTMENTS
 // Get a list of all appointments
-export const getAppointments = customerId => dispatch => {
-  Api.Appointments.getAll(customerId)
+export const getAppointments = (customerId, serviceProviderId) => dispatch => {
+  Api.Appointments.getAll(customerId, serviceProviderId)
     .then(response => {
+      console.log(response);
       dispatch(setAppointments(response.data));
     })
     .catch(err =>
@@ -80,6 +81,12 @@ export const getHoursByDate = (serviceProviderId, date) => dispatch => {
         `Error fetching data trying to get hours from serviceprovider:${err}`,
       ),
     );
+};
+
+export const confirmAppointment = (...args) => dispatch => {
+  Api.Appointments.add(...args)
+    .then() // Create success dispatch to notification
+    .catch(err => console.error(`Error inserting new schedule:${err}`));
 };
 
 // SERVICE PROVIDER

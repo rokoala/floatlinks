@@ -6,7 +6,7 @@ import ArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import TimePicker from '../../components/TimePicker';
 import { withRouter } from 'react-router-dom';
 import { formatDate } from '../../utils/Formatter';
-import { getHoursByDate } from '../../actions';
+import { getHoursByDate, setAppointmentHour } from '../../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -25,7 +25,7 @@ class TimeSchedule extends PureComponent {
     const TimePickerWithRouter = withRouter(({ history }) => (
       <TimePicker
         onClick={time => {
-          this.props.setHour(time);
+          this.props.setAppointmentHour(time);
           history.push('/schedule/confirm');
         }}
         hours={this.props.hours}
@@ -60,6 +60,7 @@ const dispatchStateToProps = dispatch =>
   bindActionCreators(
     {
       getHoursByDate,
+      setAppointmentHour,
     },
     dispatch,
   );
