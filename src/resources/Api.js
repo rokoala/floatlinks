@@ -17,25 +17,21 @@ const Api = {
   Appointments: {
     getAll: customerId =>
       axios.get(`${API_URL}/appointment/customer/${customerId}`),
-    getHoursFromDate: date =>
-      axios.get(`${API_URL}/appointment/customer/date/`, {
-        date,
-      }),
     getAgenda: (serviceProviderId, startDate) =>
       axios.get(
         `${API_URL}/appointment/serviceprovider/${serviceProviderId}/agenda/${moment(
           startDate,
         ).format('YYYY-MM-DD')}`,
       ),
-    getHoursByDate: (serviceProviderId, startDate) =>
-      axios.get(
-        `${API_URL}/appointment/serviceprovider/${serviceProviderId}/agenda/${moment(
-          startDate,
-        ).format('YYYY-MM-DD') /
-          moment(startDate)
-            .add(1, 'days')
-            .format('YYYY-MM-DD')}`,
-      ),
+    getHoursByDate: (serviceProviderId, startDate) => {
+      const dayStart = moment(startDate).format('YYYY-MM-DD');
+      const dayEnd = moment(startDate)
+        .add(1, 'days')
+        .format('YYYY-MM-DD');
+      return axios.get(
+        `${API_URL}/appointment/serviceprovider/${serviceProviderId}/agenda/${dayStart}/${dayEnd}`,
+      );
+    },
   },
   ServiceProvider: {
     get: phone => axios.get(`${API_URL}/serviceprovider/${phone}`),

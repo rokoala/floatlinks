@@ -26,7 +26,7 @@ export default class TimePicker extends Component {
         <TimeButton
           onClick={this.onClickHandler}
           key={hour._id}
-          time={{ label: `${labelStart} => ${labelEnd}`, available: true }}
+          time={{ label: `${labelStart} → ${labelEnd}`, available: true }}
           selected={hour.selected}
         />
       );
