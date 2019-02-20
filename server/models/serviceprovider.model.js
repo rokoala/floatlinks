@@ -13,14 +13,14 @@ module.exports = mongoose.model(
       type: String,
       required: true,
     },
-    defaultAppointmentDuration: {
+    defaultSlotDuration: {
       type: Number,
       required: true,
     },
     agenda: {
       slots: [
         {
-          slotDate: {
+          date: {
             type: Date,
             required: true,
           },

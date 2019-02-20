@@ -13,17 +13,17 @@ module.exports = mongoose.model(
       {
         providerId: mongoose.Schema.Types.ObjectId,
         name: String,
-        providerPhone: {
+        phone: {
           type: Number,
           required: true,
         },
         appointments: [
           {
-            appointmentSlotId: {
+            slotId: {
               type: mongoose.Schema.Types.ObjectId,
               required: true,
             },
-            appointmentDate: {
+            date: {
               type: Date,
               required: true,
             },
@@ -33,7 +33,7 @@ module.exports = mongoose.model(
               max: 2359,
               required: true,
             },
-            appointmentDuration: {
+            slotDuration: {
               type: Number,
               min: 5,
               max: 6000,

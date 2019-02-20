@@ -9,7 +9,7 @@ ObjectId = require('mongodb').ObjectID;
 
 Fawn.init(mongoose);
 
-//Create a new appointment
+//Creates a new appointment
 router.post('/', (req, res) => {
   validate(req.body, res, 'Request body is missing.');
   const slotId = ObjectId(req.body.slotId);
@@ -55,19 +55,21 @@ router.post('/', (req, res) => {
               serviceProviders: {
                 providerId: serviceProvider._id,
                 name: serviceProvider.name,
-                providerPhone: serviceProvider.phone,
+                phone: serviceProvider.phone,
                 appointments: [
                   {
-                    appointmentSlotId: serviceProvider.agenda.slots._id,
-                    appointmentDate: serviceProvider.agenda.slots.slotDate,
+                    slotId: serviceProvider.agenda.slots._id,
+                    date: serviceProvider.agenda.slots.date,
                     startTime: serviceProvider.agenda.slots.startTime,
-                    appointmentDuration:
-                      serviceProvider.agenda.slots.slotDuration,
+                    slotDuration: serviceProvider.agenda.slots.slotDuration,
                     annotation: serviceProvider.agenda.slots.annotation,
                   },
                 ],
               },
             },
+          },
+          {
+            new: true,
           },
         ).exec();
       } else if (
@@ -82,16 +84,17 @@ router.post('/', (req, res) => {
           {
             $addToSet: {
               'serviceProviders.$[outer].appointments': {
-                appointmentSlotId: serviceProvider.agenda.slots._id,
-                appointmentDate: serviceProvider.agenda.slots.slotDate,
+                slotId: serviceProvider.agenda.slots._id,
+                date: serviceProvider.agenda.slots.date,
                 startTime: serviceProvider.agenda.slots.startTime,
-                appointmentDuration: serviceProvider.agenda.slots.slotDuration,
+                slotDuration: serviceProvider.agenda.slots.slotDuration,
                 annotation: serviceProvider.agenda.slots.annotation,
               },
             },
           },
           {
             arrayFilters: [{ 'outer.providerId': serviceProvider._id }],
+            new: true,
           },
         ).exec();
       } else {
@@ -118,6 +121,7 @@ router.post('/', (req, res) => {
           },
           {
             arrayFilters: [{ 'outer._id': serviceProvider.agenda.slots._id }],
+            new: true,
           },
         ).exec();
         promiseResultHandler(res)(slotReservation);
@@ -135,6 +139,9 @@ router.post('/serviceprovider/slot/', (req, res) => {
           'agenda.slots': req.body.newSlot,
         },
       },
+      {
+        new: true,
+      },
     ).exec(),
   );
 });
@@ -151,6 +158,9 @@ router.delete(
               _id: req.params.slotId,
             },
           },
+        },
+        {
+          new: true,
         },
       ).exec(),
     );
@@ -172,12 +182,7 @@ router.get(
                 as: 'slots',
                 cond: {
                   $and: [
-                    {
-                      $gte: [
-                        '$$slots.slotDate',
-                        new Date(req.params.startDate),
-                      ],
-                    },
+                    { $gte: ['$$slots.date', new Date(req.params.startDate)] },
                     { $eq: ['$$slots.isOccupied', false] },
                   ],
                 },
@@ -185,7 +190,9 @@ router.get(
             },
           },
         },
-      ]).exec();
+      ])
+        .exec()
+        .then(items => items[0]);
     } else {
       serviceProvider = ServiceProviderModel.aggregate([
         { $match: { _id: ObjectId(req.params.serviceProviderId) } },
@@ -197,15 +204,8 @@ router.get(
                 as: 'slots',
                 cond: {
                   $and: [
-                    {
-                      $gte: [
-                        '$$slots.slotDate',
-                        new Date(req.params.startDate),
-                      ],
-                    },
-                    {
-                      $lte: ['$$slots.slotDate', new Date(req.params.endDate)],
-                    },
+                    { $gte: ['$$slots.date', new Date(req.params.startDate)] },
+                    { $lte: ['$$slots.date', new Date(req.params.endDate)] },
                     { $eq: ['$$slots.isOccupied', false] },
                   ],
                 },
@@ -213,7 +213,9 @@ router.get(
             },
           },
         },
-      ]).exec();
+      ])
+        .exec()
+        .then(items => items[0]);
     }
 
     promiseResultHandler(res)(serviceProvider);
@@ -228,61 +230,47 @@ router.get('/customer/:customerId', (req, res) => {
   );
 });
 
-router.get('/customer/:customerId/:serviceProviderId', (req, res) => {
-  promiseResultHandler(res)(
-    CustomerModel.find(
-      {
-        _id: req.params.customerId,
-        'serviceProviders.providerId': req.params.serviceProviderId,
-      },
-      { 'serviceProviders.$': 1 },
-    ),
-  );
-});
-
+//lists all appointments in customer collection for a particular service provider
 router.get(
-  '/customer/:customerId/:serviceProviderId/:startDate/:endDate',
+  '/customer/:customerId/:serviceProviderId/:startDate/:endDate?',
   (req, res) => {
-    let serviceProvider = CustomerModel.aggregate([
-      { $match: { _id: ObjectId(req.params.customerId) } },
-      {
-        $project: {
-          serviceProviders: {
-            $map: {
-              input: {
-                $filter: {
-                  input: '$serviceProviders',
-                  as: 'sp',
-                  cond: {
-                    $eq: [
-                      '$$sp.providerId',
-                      ObjectId(req.params.serviceProviderId),
-                    ],
+    let queryReturn = null;
+    if (!req.params.endDate) {
+      queryReturn = CustomerModel.aggregate([
+        { $match: { _id: ObjectId(req.params.customerId) } },
+        {
+          $project: {
+            serviceProviders: {
+              $map: {
+                input: {
+                  $filter: {
+                    input: '$serviceProviders',
+                    as: 'sp',
+                    cond: {
+                      $eq: [
+                        '$$sp.providerId',
+                        ObjectId(req.params.serviceProviderId),
+                      ],
+                    },
                   },
                 },
-              },
-              as: 'sp',
-              in: {
-                providerId: '$$sp.providerId',
-                appointments: {
-                  $filter: {
-                    input: '$$sp.appointments',
-                    as: 'app',
-                    cond: {
-                      $and: [
-                        {
-                          $lte: [
-                            '$$app.appointmentDate',
-                            new Date(req.params.endDate),
-                          ],
-                        },
-                        {
-                          $gte: [
-                            '$$app.appointmentDate',
-                            new Date(req.params.startDate),
-                          ],
-                        },
-                      ],
+                as: 'sp',
+                in: {
+                  providerId: '$$sp.providerId',
+                  appointments: {
+                    $filter: {
+                      input: '$$sp.appointments',
+                      as: 'app',
+                      cond: {
+                        $and: [
+                          {
+                            $gte: [
+                              '$$app.date',
+                              new Date(req.params.startDate),
+                            ],
+                          },
+                        ],
+                      },
                     },
                   },
                 },
@@ -290,12 +278,65 @@ router.get(
             },
           },
         },
-      },
-    ]).exec();
-    promiseResultHandler(res)(serviceProvider);
+      ])
+        .exec()
+        .then(items => items[0].serviceProviders[0]);
+    } else {
+      queryReturn = CustomerModel.aggregate([
+        { $match: { _id: ObjectId(req.params.customerId) } },
+        {
+          $project: {
+            serviceProviders: {
+              $map: {
+                input: {
+                  $filter: {
+                    input: '$serviceProviders',
+                    as: 'sp',
+                    cond: {
+                      $eq: [
+                        '$$sp.providerId',
+                        ObjectId(req.params.serviceProviderId),
+                      ],
+                    },
+                  },
+                },
+                as: 'sp',
+                in: {
+                  providerId: '$$sp.providerId',
+                  appointments: {
+                    $filter: {
+                      input: '$$sp.appointments',
+                      as: 'app',
+                      cond: {
+                        $and: [
+                          {
+                            $gte: [
+                              '$$app.date',
+                              new Date(req.params.startDate),
+                            ],
+                          },
+                          {
+                            $lte: ['$$app.date', new Date(req.params.endDate)],
+                          },
+                        ],
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      ])
+        .exec()
+        .then(items => items[0].serviceProviders[0]);
+    }
+
+    promiseResultHandler(res)(queryReturn);
   },
 );
 
+//removes a appointment from customers' collection, freeing the slot on serviceproviders' collection
 router.delete(
   '/customer/:customerId/:serviceProviderId/:slotId',
   (req, res) => {
@@ -313,6 +354,7 @@ router.delete(
       },
       {
         multi: true,
+        new: true,
       },
     ).exec();
     let slotFreeing = ServiceProviderModel.findOneAndUpdate(
@@ -329,6 +371,7 @@ router.delete(
       },
       {
         arrayFilters: [{ 'outer._id': req.params.slotId }],
+        new: true,
       },
     ).exec();
     promiseResultHandler(res)(Promise.all([appointmentDeletion, slotFreeing]));
