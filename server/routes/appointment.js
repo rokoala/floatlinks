@@ -203,52 +203,87 @@ router.get('/customer/:customerId', (req, res) => {
   );
 });
 
-router.get('/customer/:customerId/:serviceProviderId', (req, res) => {
-  promiseResultHandler(res)(
-    CustomerModel.find({ _id: req.params.customerId, 'serviceProviders.providerId': req.params.serviceProviderId }, {'serviceProviders.$':1})
-  );
-});
 
 //lists all appointments in customer collection for a particular service provider
-router.get('/customer/:customerId/:serviceProviderId/:startDate/:endDate', (req, res) => {
-  let serviceProvider = CustomerModel.aggregate([
-    { $match: {_id: ObjectId(req.params.customerId)}},
-    { 
-      $project: {
-        serviceProviders: {
-          $map: {
-            input: {
-              $filter: {
-                input: "$serviceProviders", 
-                as: "sp", 
-                cond: { 
-                  $eq: ["$$sp.providerId", ObjectId(req.params.serviceProviderId)]
-                }
-              }
-            },
-            as: "sp",
-            in: {
-              providerId: "$$sp.providerId",
-              appointments: {
+router.get('/customer/:customerId/:serviceProviderId/:startDate/:endDate?', (req, res) => {
+  let queryReturn = null
+  if (!req.params.endDate){
+    queryReturn = CustomerModel.aggregate([
+      { $match: {_id: ObjectId(req.params.customerId)}},
+      { 
+        $project: {
+          serviceProviders: {
+            $map: {
+              input: {
                 $filter: {
-                  input: "$$sp.appointments", 
-                  as: "app", 
+                  input: "$serviceProviders", 
+                  as: "sp", 
                   cond: { 
-                    $and: [
-                      {$lte: [ "$$app.date", new Date(req.params.endDate)]},
-                      {$gte: [ "$$app.date", new Date(req.params.startDate)]}
-                    ]
-                    
+                    $eq: ["$$sp.providerId", ObjectId(req.params.serviceProviderId)]
+                  }
+                }
+              },
+              as: "sp",
+              in: {
+                providerId: "$$sp.providerId",
+                appointments: {
+                  $filter: {
+                    input: "$$sp.appointments", 
+                    as: "app", 
+                    cond: { 
+                      $and: [
+                        {$gte: [ "$$app.date", new Date(req.params.startDate)]}
+                      ]
+                      
+                    }
                   }
                 }
               }
             }
           }
         }
-      }
-    }]).exec().then(items => items[0])
+      }]).exec().then(items => items[0])
+  } else {
+    queryReturn = CustomerModel.aggregate([
+      { $match: {_id: ObjectId(req.params.customerId)}},
+      { 
+        $project: {
+          serviceProviders: {
+            $map: {
+              input: {
+                $filter: {
+                  input: "$serviceProviders", 
+                  as: "sp", 
+                  cond: { 
+                    $eq: ["$$sp.providerId", ObjectId(req.params.serviceProviderId)]
+                  }
+                }
+              },
+              as: "sp",
+              in: {
+                providerId: "$$sp.providerId",
+                appointments: {
+                  $filter: {
+                    input: "$$sp.appointments", 
+                    as: "app", 
+                    cond: { 
+                      $and: [
+                        {$gte: [ "$$app.date", new Date(req.params.startDate)]},
+                        {$lte: [ "$$app.date", new Date(req.params.endDate)]}
+                      ]
+                      
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }]).exec().then(items => items[0])
+  }
+  
   promiseResultHandler(res)(
-    serviceProvider
+    queryReturn
   );
 });
 
