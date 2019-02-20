@@ -9,7 +9,7 @@ import Login from './scenes/Login';
 import Welcome from './scenes/Welcome';
 import Agenda from './scenes/Agenda';
 import TimeScheduler from './scenes/TimeScheduler';
-import ConfirmScheduler from './scenes/ConfirmScheduler';
+import ConfirmAppointment from './scenes/ConfirmAppointment';
 import Profile from './scenes/Profile';
 import Admin from './scenes/Admin';
 import NextAppoitments from './scenes/Admin/NextAppointments';
@@ -36,7 +36,7 @@ class App extends Component {
             <PrivateRoute path="/schedule/time" component={TimeScheduler} />
             <PrivateRoute
               path="/schedule/confirm"
-              component={ConfirmScheduler}
+              component={ConfirmAppointment}
             />
           </Switch>
         </ConnectedRouter>
