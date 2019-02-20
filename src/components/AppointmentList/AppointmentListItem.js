@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { removeSchedule } from '../../actions';
+import { removeAppointment } from '../../actions';
 import {
   ListItem,
   ListItemText,
@@ -11,13 +11,17 @@ import {
 import { createAppointmentLabel } from '../../resources/utils';
 import DeleteRounded from '@material-ui/icons/DeleteRounded';
 
-const AppointmentListItem = ({ item, removeSchedule }) => (
+const AppointmentListItem = ({
+  serviceProviderId,
+  item,
+  removeAppointment,
+}) => (
   <ListItem>
     <ListItemText primary={createAppointmentLabel(item)} />
     <ListItemSecondaryAction>
       <IconButton
         onClick={evt => {
-          removeSchedule(item);
+          removeAppointment(serviceProviderId, item._id);
         }}
         aria-label="Delete"
       >
@@ -27,15 +31,19 @@ const AppointmentListItem = ({ item, removeSchedule }) => (
   </ListItem>
 );
 
+const mapStateToProps = store => ({
+  serviceProviderId: store.serviceProvider._id,
+});
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      removeSchedule,
+      removeAppointment,
     },
     dispatch,
   );
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(AppointmentListItem);

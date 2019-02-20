@@ -38,11 +38,6 @@ export const updateCustomer = (phone, customer) => dispatch => {
     .catch(err => console.error(err));
 };
 
-export const removeSchedule = () => dispatch => {
-  // Call Api... on success...
-  console.log('Implement remove schedule...');
-};
-
 export const setConfirmSchedules = schedules => ({
   type: confirmSchedulesActions.SET_SCHEDULES,
   schedules,
@@ -88,7 +83,14 @@ export const getHoursByDate = (serviceProviderId, date) => dispatch => {
 export const confirmAppointment = (...args) => dispatch => {
   Api.Appointments.add(...args)
     .then() // Create success dispatch to notification
-    .catch(err => console.error(`Error inserting new schedule:${err}`));
+    .catch(err => console.error(`Error inserting new appointment:${err}`));
+};
+
+export const removeAppointment = (serviceProviderId, slotId) => dispatch => {
+  // NEED TO IMPLEMENT
+  Api.Appointments.remove(serviceProviderId, slotId)
+    .then(response => console.log(response))
+    .catch(err => console.error(`Error removing appointment:${err}`));
 };
 
 // SERVICE PROVIDER
