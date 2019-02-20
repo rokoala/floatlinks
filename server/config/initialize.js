@@ -89,6 +89,8 @@ const axios = require('axios');
     },
   );
 
+  console.log(serviceProvider);
+
   // Create Customer
   await axios.post('http://localhost:3001/customer', {
     name: 'John',

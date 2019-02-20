@@ -85,10 +85,17 @@ export const confirmAppointment = (...args) => dispatch =>
     }) // Create success dispatch to notification
     .catch(err => console.error(`Error inserting new appointment:${err}`));
 
-export const removeAppointment = (serviceProviderId, slotId) => dispatch => {
-  // NEED TO IMPLEMENT
-  Api.Appointments.remove(serviceProviderId, slotId)
-    .then(response => console.log(response))
+export const removeAppointment = (
+  customerId,
+  serviceProviderId,
+  slotId,
+) => dispatch => {
+  Api.Appointments.remove(customerId, serviceProviderId, slotId)
+    .then(response => {
+      console.log(response);
+      // NEED TO GET NEW DATA OF DELETE
+      dispatch(push('/'));
+    })
     .catch(err => console.error(`Error removing appointment:${err}`));
 };
 

@@ -15,7 +15,6 @@ class Agenda extends PureComponent {
     this.props.getAgendaByServiceProviderId(this.props.serviceProviderId);
   }
   render() {
-    console.log(this.props);
     const CalendarRouter = withRouter(({ history }) => (
       <Calendar
         minDetail="year"

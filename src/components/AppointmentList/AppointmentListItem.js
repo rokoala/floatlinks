@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { removeAppointment } from '../../actions';
+import { withRouter } from 'react-router-dom';
 import {
   ListItem,
   ListItemText,
@@ -15,13 +16,14 @@ const AppointmentListItem = ({
   serviceProviderId,
   item,
   removeAppointment,
+  customerId,
 }) => (
   <ListItem>
     <ListItemText primary={createAppointmentLabel(item)} />
     <ListItemSecondaryAction>
       <IconButton
         onClick={evt => {
-          removeAppointment(serviceProviderId, item._id);
+          removeAppointment(customerId, serviceProviderId, item.slotId);
         }}
         aria-label="Delete"
       >
@@ -32,6 +34,7 @@ const AppointmentListItem = ({
 );
 
 const mapStateToProps = store => ({
+  customerId: store.customer._id,
   serviceProviderId: store.serviceProvider._id,
 });
 
@@ -43,7 +46,9 @@ const mapDispatchToProps = dispatch =>
     dispatch,
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(AppointmentListItem);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(AppointmentListItem),
+);

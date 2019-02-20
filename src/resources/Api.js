@@ -21,11 +21,11 @@ const Api = {
         customerId,
         serviceProviderId,
       }),
-    remove: (serviceProviderId, slotId) =>
-      axios
-        .delete
-        //`${API_URL}/appointment/serviceprovider/slot/${serviceProviderId}/${slotId}`,
-        (),
+    remove: (customerId, serviceProviderId, slotId) =>
+      axios.delete(
+        //customer/:customerId/:serviceProviderId/:slotId
+        `${API_URL}/appointment/customer/${customerId}/${serviceProviderId}/${slotId}`,
+      ),
     getAll: (customerId, serviceProviderId) =>
       axios.get(
         `${API_URL}/appointment/customer/${customerId}/${serviceProviderId}/${moment().format(
