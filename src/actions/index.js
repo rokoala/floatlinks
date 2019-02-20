@@ -58,8 +58,10 @@ export const setAppointments = appointments => ({
 export const getAppointments = (customerId, serviceProviderId) => dispatch => {
   Api.Appointments.getAll(customerId, serviceProviderId)
     .then(response => {
-      console.log(response);
-      dispatch(setAppointments(response.data));
+      console.log(response.data[0].serviceProviders[0].appointments);
+      dispatch(
+        setAppointments(response.data[0].serviceProviders[0].appointments),
+      );
     })
     .catch(err =>
       console.error(`Error fetching data from appointments: ${err}`),

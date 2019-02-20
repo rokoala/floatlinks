@@ -8,11 +8,12 @@ import {
   ListItemSecondaryAction,
   IconButton,
 } from '@material-ui/core';
+import { createAppointmentLabel } from '../../resources/utils';
 import DeleteRounded from '@material-ui/icons/DeleteRounded';
 
 const AppointmentListItem = ({ item, removeSchedule }) => (
   <ListItem>
-    <ListItemText primary={'12 Fevereiro 2019 - 15:00 -> 16:00'} />
+    <ListItemText primary={createAppointmentLabel(item)} />
     <ListItemSecondaryAction>
       <IconButton
         onClick={evt => {

@@ -2,11 +2,7 @@ import { appointmentActions } from '../actions/actionTypes';
 
 const initialState = {
   current: {},
-  list: [
-    // EXAMPLE
-    // { _id: 1, date: new Date(), time: null },
-    // { _id: 2, date: new Date(), time: null }
-  ],
+  list: [],
   availableAgenda: {
     slots: [],
   },
@@ -18,7 +14,7 @@ export const appointment = (state = initialState, action) => {
     case appointmentActions.SET_APPOINTMENTS:
       return {
         ...state,
-        list: action.list,
+        list: action.appointments,
       };
     case appointmentActions.SET_DATE:
       return {

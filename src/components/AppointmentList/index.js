@@ -4,7 +4,6 @@ import { Card, List, Typography } from '@material-ui/core';
 import AppointmentListItem from './AppointmentListItem';
 
 const AppointmentList = props => {
-  console.log(props);
   const { appointments } = props;
   return (
     <React.Fragment>
