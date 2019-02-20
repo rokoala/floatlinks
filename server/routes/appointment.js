@@ -9,7 +9,7 @@ ObjectId = require('mongodb').ObjectID;
 
 Fawn.init(mongoose);
 
-//Create a new appointment
+//Creates a new appointment
 router.post('/',  (req, res) => {
   validate(req.body, res, 'Request body is missing.');
   const slotId = ObjectId(req.body.slotId)
@@ -41,16 +41,19 @@ router.post('/',  (req, res) => {
             serviceProviders: {
               providerId: serviceProvider._id,
               name: serviceProvider.name,
-              providerPhone: serviceProvider.phone,
+              phone: serviceProvider.phone,
               appointments: [{
-                appointmentSlotId: serviceProvider.agenda.slots._id,
-                appointmentDate: serviceProvider.agenda.slots.slotDate,
+                slotId: serviceProvider.agenda.slots._id,
+                date: serviceProvider.agenda.slots.date,
                 startTime: serviceProvider.agenda.slots.startTime,
-                appointmentDuration: serviceProvider.agenda.slots.slotDuration,
+                slotDuration: serviceProvider.agenda.slots.slotDuration,
                 annotation: serviceProvider.agenda.slots.annotation
               }]
             }
           }
+        },
+        {
+          new: true
         }).exec()
 
         
@@ -62,16 +65,17 @@ router.post('/',  (req, res) => {
           {
             $addToSet: {
               'serviceProviders.$[outer].appointments': {
-                appointmentSlotId: serviceProvider.agenda.slots._id,
-                appointmentDate: serviceProvider.agenda.slots.slotDate,
+                slotId: serviceProvider.agenda.slots._id,
+                date: serviceProvider.agenda.slots.date,
                 startTime: serviceProvider.agenda.slots.startTime,
-                appointmentDuration: serviceProvider.agenda.slots.slotDuration,
+                slotDuration: serviceProvider.agenda.slots.slotDuration,
                 annotation: serviceProvider.agenda.slots.annotation
               }
             }
           },
           {
-            "arrayFilters": [{ "outer.providerId": serviceProvider._id }] 
+            "arrayFilters": [{ "outer.providerId": serviceProvider._id }],
+            "new": true 
           }).exec()
       }
       else {
@@ -95,8 +99,8 @@ router.post('/',  (req, res) => {
           }
         },
         {
-          "arrayFilters": [{ "outer._id": serviceProvider.agenda.slots._id }]
-          
+          "arrayFilters": [{ "outer._id": serviceProvider.agenda.slots._id }],
+          "new": true
         }
         ).exec()
         promiseResultHandler(res)(
@@ -118,6 +122,9 @@ router.post('/serviceprovider/slot/', (req, res) => {
         $addToSet: {
           'agenda.slots': req.body.newSlot
         }
+      },
+      {
+        "new": true
       }
     ).exec()
   );
@@ -132,6 +139,9 @@ router.delete('/serviceprovider/slot/:serviceProviderId/:slotId', (req, res) => 
             _id: req.params.slotId
           }
         }
+      },
+      {
+        "new": true
       }
     ).exec()
   );
@@ -150,14 +160,14 @@ router.get('/serviceprovider/:serviceProviderId/agenda/:startDate/:endDate?', (r
               as: "slots", 
               cond: { 
                 $and: [
-                  {$gte: ["$$slots.slotDate", new Date(req.params.startDate)]},
+                  {$gte: ["$$slots.date", new Date(req.params.startDate)]},
                   {$eq: ["$$slots.isOccupied", false]}
                 ]  
               }
             }
           }
         }
-      }]).exec()
+      }]).exec().then(items => items[0])
   }
   else {
     serviceProvider = ServiceProviderModel.aggregate([
@@ -170,15 +180,15 @@ router.get('/serviceprovider/:serviceProviderId/agenda/:startDate/:endDate?', (r
               as: "slots", 
               cond: { 
                 $and: [
-                  {$gte: ["$$slots.slotDate", new Date(req.params.startDate)]},
-                  {$lte: ["$$slots.slotDate", new Date(req.params.endDate)]},
+                  {$gte: ["$$slots.date", new Date(req.params.startDate)]},
+                  {$lte: ["$$slots.date", new Date(req.params.endDate)]},
                   {$eq: ["$$slots.isOccupied", false]}
                 ]  
               }
             }
           }
         }
-      }]).exec()
+      }]).exec().then(items => items[0])
   }
   
   promiseResultHandler(res)(
@@ -199,6 +209,7 @@ router.get('/customer/:customerId/:serviceProviderId', (req, res) => {
   );
 });
 
+//lists all appointments in customer collection for a particular service provider
 router.get('/customer/:customerId/:serviceProviderId/:startDate/:endDate', (req, res) => {
   let serviceProvider = CustomerModel.aggregate([
     { $match: {_id: ObjectId(req.params.customerId)}},
@@ -224,8 +235,8 @@ router.get('/customer/:customerId/:serviceProviderId/:startDate/:endDate', (req,
                   as: "app", 
                   cond: { 
                     $and: [
-                      {$lte: [ "$$app.appointmentDate", new Date(req.params.endDate)]},
-                      {$gte: [ "$$app.appointmentDate", new Date(req.params.startDate)]}
+                      {$lte: [ "$$app.date", new Date(req.params.endDate)]},
+                      {$gte: [ "$$app.date", new Date(req.params.startDate)]}
                     ]
                     
                   }
@@ -235,12 +246,13 @@ router.get('/customer/:customerId/:serviceProviderId/:startDate/:endDate', (req,
           }
         }
       }
-    }]).exec()
+    }]).exec().then(items => items[0])
   promiseResultHandler(res)(
     serviceProvider
   );
 });
 
+//removes a appointment from customers' collection, freeing the slot on serviceproviders' collection
 router.delete('/customer/:customerId/:serviceProviderId/:slotId', (req, res) => {
 
   let appointmentDeletion = CustomerModel.findOneAndUpdate(
@@ -255,7 +267,8 @@ router.delete('/customer/:customerId/:serviceProviderId/:slotId', (req, res) => 
       }
     },
     {
-      "multi": true
+      "multi": true,
+      "new": true
     }
   ).exec();
   let slotFreeing = ServiceProviderModel.findOneAndUpdate(
@@ -273,7 +286,8 @@ router.delete('/customer/:customerId/:serviceProviderId/:slotId', (req, res) => 
     {
       "arrayFilters": [
         { "outer._id": req.params.slotId }
-      ]
+      ],
+      "new": true
     }
   ).exec();
   promiseResultHandler(res)(
