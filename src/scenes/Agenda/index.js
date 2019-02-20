@@ -47,10 +47,6 @@ class Agenda extends PureComponent {
         <CalendarRouter />
         <ul className="legend">
           <li>
-            <div className="block day-scheduled" />
-            <Typography variant="caption">Meus horários</Typography>
-          </li>
-          <li>
             <div className="block day-available" />
             <Typography variant="caption">Disponível</Typography>
           </li>
