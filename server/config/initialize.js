@@ -11,11 +11,11 @@ const moment = require('moment');
     name: 'Dra. Alita',
     phone: 1611112222,
     password: 'alita',
-    defaultAppointmentDuration: 5,
+    defaultSlotDuration: 5,
     agenda: {
       slots: [
         {
-          slotDate: new Date(),
+          date: new Date(),
           startTime: 1000,
           slotDuration: 30,
           isOccupied: false,
@@ -24,7 +24,7 @@ const moment = require('moment');
           annotation: 'Horário teste',
         },
         {
-          slotDate: new Date(),
+          date: new Date(),
           startTime: 1100,
           slotDuration: 30,
           isOccupied: false,
@@ -33,7 +33,7 @@ const moment = require('moment');
           annotation: 'Horário teste no mesmo dia, horário diferente',
         },
         {
-          slotDate: moment()
+          date: moment()
             .add(1, 'days')
             .toDate(),
           startTime: 1100,
