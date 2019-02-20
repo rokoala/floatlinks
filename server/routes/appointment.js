@@ -242,7 +242,7 @@ router.get('/customer/:customerId/:serviceProviderId/:startDate/:endDate?', (req
             }
           }
         }
-      }]).exec().then(items => items[0])
+      }]).exec().then(items => items[0].serviceProviders[0])
   } else {
     queryReturn = CustomerModel.aggregate([
       { $match: {_id: ObjectId(req.params.customerId)}},
@@ -279,7 +279,7 @@ router.get('/customer/:customerId/:serviceProviderId/:startDate/:endDate?', (req
             }
           }
         }
-      }]).exec().then(items => items[0])
+      }]).exec().then(items => items[0].serviceProviders[0])
   }
   
   promiseResultHandler(res)(
