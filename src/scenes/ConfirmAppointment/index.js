@@ -7,7 +7,7 @@ import { confirmAppointment } from '../../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-class ConfirmScheduler extends PureComponent {
+class ConfirmAppointment extends PureComponent {
   render() {
     const ButtonConfirm = withRouter(({ history }) => (
       <Button
@@ -69,4 +69,4 @@ const mapDispatchToProps = dispatch =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ConfirmScheduler);
+)(ConfirmAppointment);

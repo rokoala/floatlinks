@@ -6,6 +6,7 @@ import {
   serviceProviderActions,
 } from './actionTypes';
 import Api from '../resources/Api';
+import { push } from 'connected-react-router';
 
 export const setCustomer = customer => ({
   type: customerActions.SET_CUSTOMER,
@@ -80,11 +81,12 @@ export const getHoursByDate = (serviceProviderId, date) => dispatch => {
     );
 };
 
-export const confirmAppointment = (...args) => dispatch => {
+export const confirmAppointment = (...args) => dispatch =>
   Api.Appointments.add(...args)
-    .then() // Create success dispatch to notification
+    .then(response => {
+      dispatch(push('/'));
+    }) // Create success dispatch to notification
     .catch(err => console.error(`Error inserting new appointment:${err}`));
-};
 
 export const removeAppointment = (serviceProviderId, slotId) => dispatch => {
   // NEED TO IMPLEMENT
