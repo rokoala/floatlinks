@@ -54,10 +54,7 @@ export const setAppointments = appointments => ({
 export const getAppointments = (customerId, serviceProviderId) => dispatch => {
   Api.Appointments.getAll(customerId, serviceProviderId)
     .then(response => {
-      console.log(response.data[0].serviceProviders[0].appointments);
-      dispatch(
-        setAppointments(response.data[0].serviceProviders[0].appointments),
-      );
+      dispatch(setAppointments(response.data.appointments));
     })
     .catch(err =>
       console.error(`Error fetching data from appointments: ${err}`),
@@ -72,7 +69,7 @@ export const setAppointmentAvailableHours = availableHours => ({
 export const getHoursByDate = (serviceProviderId, date) => dispatch => {
   Api.Appointments.getHoursByDate(serviceProviderId, date)
     .then(response =>
-      dispatch(setAppointmentAvailableHours(response.data[0].agenda.slots)),
+      dispatch(setAppointmentAvailableHours(response.data.agenda.slots)),
     )
     .catch(err =>
       console.error(
@@ -117,7 +114,7 @@ export const setAppointmentAvailableAgenda = availableAgenda => ({
 export const getAgendaByServiceProviderId = serviceProviderId => dispatch => {
   Api.Appointments.getAgenda(serviceProviderId, new Date()) //FIXED GET AGENDA FROM TODAY
     .then(response =>
-      dispatch(setAppointmentAvailableAgenda(response.data[0].agenda)),
+      dispatch(setAppointmentAvailableAgenda(response.data.agenda)),
     )
     .catch(err =>
       console.error(

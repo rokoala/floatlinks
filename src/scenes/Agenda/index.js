@@ -15,6 +15,7 @@ class Agenda extends PureComponent {
     this.props.getAgendaByServiceProviderId(this.props.serviceProviderId);
   }
   render() {
+    console.log(this.props);
     const CalendarRouter = withRouter(({ history }) => (
       <Calendar
         minDetail="year"
@@ -30,9 +31,9 @@ class Agenda extends PureComponent {
             slot =>
               (!slot.isOccupied &&
                 (view === 'month' &&
-                  moment(slot.slotDate).isSame(moment(date), 'day'))) ||
+                  moment(slot.date).isSame(moment(date), 'day'))) ||
               (view === 'year' &&
-                moment(slot.slotDate).isSame(moment(date), 'month')),
+                moment(slot.date).isSame(moment(date), 'month')),
           ).length === 0
         }
         onChange={date => {

@@ -28,7 +28,9 @@ const Api = {
         (),
     getAll: (customerId, serviceProviderId) =>
       axios.get(
-        `${API_URL}/appointment/customer/${customerId}/${serviceProviderId}`,
+        `${API_URL}/appointment/customer/${customerId}/${serviceProviderId}/${moment().format(
+          'YYYY-MM-DD',
+        )}`,
       ),
     getAgenda: (serviceProviderId, startDate) =>
       axios.get(
