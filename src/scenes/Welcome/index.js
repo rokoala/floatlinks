@@ -22,7 +22,7 @@ class Welcome extends PureComponent {
         <Button
           style={{ marginTop: 5 }}
           component={Link}
-          to="/schedule/day"
+          to="/service/schedule/day"
           variant="outlined"
           color="primary"
           size="large"

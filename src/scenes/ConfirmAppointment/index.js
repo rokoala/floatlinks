@@ -40,7 +40,7 @@ class ConfirmAppointment extends PureComponent {
           <Button
             style={{ margin: 5 }}
             component={Link}
-            to="/"
+            to="/service/"
             variant="outlined"
           >
             cancelar

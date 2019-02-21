@@ -37,7 +37,7 @@ class Agenda extends PureComponent {
         }
         onChange={date => {
           this.props.setDate(date);
-          history.push('/schedule/time');
+          history.push('/service/schedule/time');
         }}
       />
     ));
@@ -58,7 +58,7 @@ class Agenda extends PureComponent {
         <Button
           style={{ marginTop: 5 }}
           component={Link}
-          to="/"
+          to="/service/"
           variant="outlined"
         >
           Cancelar

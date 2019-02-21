@@ -15,6 +15,7 @@ import Admin from './scenes/Admin';
 import NextAppoitments from './scenes/Admin/NextAppointments';
 import NewCustomer from './scenes/Admin/NewCustomer';
 import PrivateRoute from './components/PrivateRoute';
+import HomeSwitch from './scenes/HomeSwitch';
 import { ConnectedRouter } from 'connected-react-router';
 import './App.css';
 
@@ -26,16 +27,20 @@ class App extends Component {
       <Provider store={Store}>
         <ConnectedRouter history={history}>
           <Switch>
+            <Route path="/" exact={true} component={HomeSwitch} />
             <Route path="/login" component={Login} />
             <Route path="/admin" exact={true} component={Admin} />
             <Route path="/admin/nextAppointments" component={NextAppoitments} />
             <Route path="/admin/newCustomer" component={NewCustomer} />
-            <PrivateRoute path="/" component={Welcome} exact={true} />
-            <PrivateRoute path="/profile" component={Profile} />
-            <PrivateRoute path="/schedule/day" component={Agenda} />
-            <PrivateRoute path="/schedule/time" component={TimeScheduler} />
+            <PrivateRoute path="/service/" component={Welcome} exact={true} />
+            <PrivateRoute path="/service/profile" component={Profile} />
+            <PrivateRoute path="/service/schedule/day" component={Agenda} />
             <PrivateRoute
-              path="/schedule/confirm"
+              path="/service/schedule/time"
+              component={TimeScheduler}
+            />
+            <PrivateRoute
+              path="/service/schedule/confirm"
               component={ConfirmAppointment}
             />
           </Switch>

@@ -23,7 +23,7 @@ class TimeSchedule extends PureComponent {
       <TimePicker
         onClick={time => {
           this.props.setAppointmentHour(time);
-          history.push('/schedule/confirm');
+          history.push('/service/schedule/confirm');
         }}
         hours={this.props.hours}
       />
@@ -35,7 +35,7 @@ class TimeSchedule extends PureComponent {
         <Button
           style={{ marginTop: 5 }}
           component={Link}
-          to="/schedule/day"
+          to="/service/schedule/day"
           variant="outlined"
           color="primary"
         >

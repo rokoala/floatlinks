@@ -82,7 +82,7 @@ export const getHoursByDate = (serviceProviderId, date) => dispatch => {
 export const confirmAppointment = (...args) => dispatch =>
   Api.Appointments.add(...args)
     .then(response => {
-      dispatch(push('/'));
+      dispatch(push('/service/'));
     }) // Create success dispatch to notification
     .catch(err => console.error(`Error inserting new appointment:${err}`));
 

@@ -1,9 +1,6 @@
 import { serviceProviderActions } from '../actions/actionTypes';
 
-const initialState = {
-  // example data
-  // name: 'consultório dra. yasmin'
-};
+const initialState = {};
 
 export const serviceProvider = (state = initialState, action) => {
   switch (action.type) {

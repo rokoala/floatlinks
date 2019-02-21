@@ -51,7 +51,7 @@ class Login extends PureComponent {
       customer: null,
       name: '',
       phone: '',
-      serviceProviderName: 'consultório dra. yasmin',
+      serviceProviderName: '',
       redirectToReferrer: false,
       showSetName: false,
       showMsgBox: false,
@@ -66,8 +66,14 @@ class Login extends PureComponent {
     this.handleSetName = this.handleSetName.bind(this);
   }
   componentDidMount() {
-    // this should not be here...
-    this.props.getServiceProvider(1611112222);
+    const hash = this.props.location.hash;
+    if (hash && hash.split('#')[1] !== '') {
+      this.props.getServiceProvider(hash.split('#')[1]);
+    }
+  }
+  componentWillReceiveProps(props) {
+    if (this.props.location.hash !== props.location.hash)
+      this.props.getServiceProvider(props.location.hash.split('#')[1]);
   }
   login() {
     const phone = parsePhone(this.state.phone);
@@ -116,90 +122,98 @@ class Login extends PureComponent {
         });
   }
   render() {
-    const { from } = this.props.location.state || { from: { pathname: '/' } };
+    const { from } = this.props.location.state || {
+      from: { pathname: '/service/' },
+    };
     const { redirectToReferrer, phone } = this.state;
 
     if (redirectToReferrer) return <Redirect to={from} />;
 
-    return (
-      <div className="display-flex flex-column full-w full-h">
-        <header
-          style={{ margin: '30px 0', flex: '0 0 50px' }}
-          className="full-w display-flex flex-center"
-        >
-          <img src={Logo} alt="Floatlinks" />
-        </header>
-        <div
-          style={{ flex: 1 }}
-          className="display-flex flex-column align-center flex-center"
-        >
-          <Typography
-            style={{
-              color: 'dodgerblue',
-              marginBottom: 10,
-              textAlign: 'center',
-              textTransform: 'capitalize',
-            }}
-            variant="h5"
+    if (this.props.serviceProvider && this.props.serviceProvider.name) {
+      return (
+        <div className="display-flex flex-column full-w full-h">
+          <header
+            style={{ margin: '30px 0', flex: '0 0 50px' }}
+            className="full-w display-flex flex-center"
           >
-            {this.state.serviceProviderName}
-          </Typography>
-          {!this.state.showSetName ? (
-            <React.Fragment>
-              <Typography style={{ margin: 25 }} variant="subtitle1">
-                Digite seu telefone para continuar
-              </Typography>
-              <form
-                onSubmit={this.handleLogin}
-                className="login-form display-flex flex-column"
-              >
-                <Input
-                  autoFocus
-                  value={phone}
-                  inputComponent={TextMaskCustom}
-                  onChange={this.handleChange}
-                  type="tel"
-                />
-                <Button
-                  onClick={this.handleLogin}
-                  variant="outlined"
-                  color="primary"
-                  size="medium"
+            <img src={Logo} alt="Floatlinks" />
+          </header>
+          <div
+            style={{ flex: 1 }}
+            className="display-flex flex-column align-center flex-center"
+          >
+            <Typography
+              style={{
+                color: 'dodgerblue',
+                marginBottom: 10,
+                textAlign: 'center',
+                textTransform: 'capitalize',
+              }}
+              variant="h5"
+            >
+              {this.props.serviceProvider.name}
+            </Typography>
+            {!this.state.showSetName ? (
+              <React.Fragment>
+                <Typography style={{ margin: 25 }} variant="subtitle1">
+                  Digite seu telefone para continuar
+                </Typography>
+                <form
+                  onSubmit={this.handleLogin}
+                  className="login-form display-flex flex-column"
                 >
-                  Ok
-                </Button>
-              </form>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <Typography style={{ margin: 25 }} variant="subtitle1">
-                Olá! Como podemos te chamar?
-              </Typography>
-              <form
-                onSubmit={this.handleSetName}
-                className="login-form display-flex flex-column"
-              >
-                <Input autoFocus onChange={this.handleChangeName} />
-                {this.state.name.length > 0 && (
+                  <Input
+                    autoFocus
+                    value={phone}
+                    inputComponent={TextMaskCustom}
+                    onChange={this.handleChange}
+                    type="tel"
+                  />
                   <Button
-                    onClick={this.handleSetName}
+                    onClick={this.handleLogin}
                     variant="outlined"
                     color="primary"
                     size="medium"
                   >
                     Ok
                   </Button>
-                )}
-              </form>
-            </React.Fragment>
-          )}
-          {this.state.showMsgBox &&
-            msgBox(this.state.msgBoxStatus, this.state.msgBoxText)}
+                </form>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <Typography style={{ margin: 25 }} variant="subtitle1">
+                  Olá! Como podemos te chamar?
+                </Typography>
+                <form
+                  onSubmit={this.handleSetName}
+                  className="login-form display-flex flex-column"
+                >
+                  <Input autoFocus onChange={this.handleChangeName} />
+                  {this.state.name.length > 0 && (
+                    <Button
+                      onClick={this.handleSetName}
+                      variant="outlined"
+                      color="primary"
+                      size="medium"
+                    >
+                      Ok
+                    </Button>
+                  )}
+                </form>
+              </React.Fragment>
+            )}
+            {this.state.showMsgBox &&
+              msgBox(this.state.msgBoxStatus, this.state.msgBoxText)}
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else return <div>Create page for not found serviceProvider</div>;
   }
 }
+
+const mapStateToProps = store => ({
+  serviceProvider: store.serviceProvider,
+});
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
@@ -212,6 +226,6 @@ const mapDispatchToProps = dispatch =>
   );
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(Login);

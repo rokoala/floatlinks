@@ -18,7 +18,7 @@ class Layout extends PureComponent {
         onClick={() => {
           // Handle logout with promise... remove session storage/cookie
           this.props.logout();
-          history.push('/');
+          history.push('/login');
         }}
       >
         <ExitIcon />
@@ -29,7 +29,7 @@ class Layout extends PureComponent {
       <IconButton
         onClick={event => {
           event.preventDefault();
-          history.push('/profile');
+          history.push('/service/profile');
         }}
       >
         <Avatar>{customer.name.charAt(0)}</Avatar>
@@ -39,7 +39,7 @@ class Layout extends PureComponent {
     const ServiceProviderButton = withRouter(({ history }) => (
       <Button
         onClick={event => {
-          history.push('/');
+          history.push('/service/');
         }}
         style={{ textTransform: 'none' }}
       >
