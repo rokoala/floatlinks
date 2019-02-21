@@ -6,7 +6,7 @@ import { Button } from '@material-ui/core';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import Layout from '../Layout';
 import AppointmentList from '../../components/AppointmentList';
-import { getAppointments, getServiceProvider } from '../../actions/';
+import { getAppointments } from '../../actions/';
 import './Welcome.css';
 
 class Welcome extends PureComponent {

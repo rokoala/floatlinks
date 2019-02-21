@@ -11,9 +11,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 class TimeSchedule extends PureComponent {
-  constructor(props) {
-    super(props);
-  }
   componentDidMount() {
     //TODO fetch data every time that get into this component...
     this.props.getHoursByDate(
