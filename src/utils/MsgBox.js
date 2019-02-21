@@ -3,7 +3,7 @@ import { Typography } from '@material-ui/core';
 
 export const msgBoxStatus = {
   SUCCESS: 0,
-  ERROR: 1
+  ERROR: 1,
 };
 
 export const msgBox = (status, text) => {
@@ -15,7 +15,7 @@ export const msgBox = (status, text) => {
             margin: '15px',
             border: '1px solid #97b997',
             padding: '10px',
-            borderRadius: '5px'
+            borderRadius: '5px',
           }}
         >
           <Typography style={{ color: '#21ad21' }} variant="h6">
@@ -30,7 +30,7 @@ export const msgBox = (status, text) => {
             margin: '15px',
             border: '1px solid red',
             padding: '10px',
-            borderRadius: '5px'
+            borderRadius: '5px',
           }}
         >
           <Typography style={{ color: 'red' }} variant="h6">

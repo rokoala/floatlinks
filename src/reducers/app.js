@@ -1,18 +1,18 @@
 import { appActions } from '../actions/actionTypes';
 
 const initialState = {
-  isAuthenticated: false
+  isAuthenticated: false,
 };
 
 export const app = (state = initialState, action) => {
   switch (action.type) {
     case appActions.AUTHENTICATE:
       return {
-        isAuthenticated: true
+        isAuthenticated: true,
       };
     case appActions.LOGOUT:
       return {
-        isAuthenticated: false
+        isAuthenticated: false,
       };
     default:
       return state;

@@ -12,14 +12,14 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: '20px'
+    padding: '20px',
   },
   avatar: {
     margin: 20,
     width: 250,
     height: 250,
-    fontSize: 100
-  }
+    fontSize: 100,
+  },
 });
 
 const formatPhone = phone =>
@@ -28,18 +28,18 @@ const formatPhone = phone =>
 class Profile extends PureComponent {
   state = {
     name: this.props.customer.name,
-    showSaveButton: false
+    showSaveButton: false,
   };
   handleChangeName = event => {
     this.setState({
       name: event.target.value,
-      showSaveButton: true
+      showSaveButton: true,
     });
   };
   onSave = () => {
     this.props.updateCustomer(this.props.customer.phone, {
       ...this.props.customer,
-      name: this.state.name
+      name: this.state.name,
     });
   };
   render() {
@@ -54,7 +54,7 @@ class Profile extends PureComponent {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              margin: '15px 0'
+              margin: '15px 0',
             }}
           >
             <TextField
@@ -80,18 +80,18 @@ class Profile extends PureComponent {
 }
 
 const mapStateToProps = store => ({
-  customer: store.customer
+  customer: store.customer,
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      updateCustomer
+      updateCustomer,
     },
-    dispatch
+    dispatch,
   );
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withStyles(styles)(Profile));

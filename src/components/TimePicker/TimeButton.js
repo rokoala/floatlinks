@@ -6,8 +6,8 @@ const styles = {
   selected: {
     color: 'blue',
     borderColor: 'blue',
-    cursor: 'default'
-  }
+    cursor: 'default',
+  },
 };
 
 class TimeButton extends PureComponent {

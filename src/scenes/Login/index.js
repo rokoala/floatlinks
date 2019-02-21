@@ -7,7 +7,7 @@ import Logo from '../../components/Logo/logo.svg';
 import Api from '../../resources/Api';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { setCustomer, authenticate } from '../../actions';
+import { setCustomer, authenticate, getServiceProvider } from '../../actions';
 import './Login.css';
 
 function TextMaskCustom(props) {
@@ -33,7 +33,7 @@ function TextMaskCustom(props) {
         /\d/,
         /\d/,
         /\d/,
-        /\d/
+        /\d/,
       ]}
       placeholderChar={'\u2000'}
       showMask
@@ -56,7 +56,7 @@ class Login extends PureComponent {
       showSetName: false,
       showMsgBox: false,
       msgBoxStatus: null,
-      msgBoxText: ''
+      msgBoxText: '',
     };
 
     this.login = this.login.bind(this);
@@ -65,6 +65,10 @@ class Login extends PureComponent {
     this.handleChangeName = this.handleChangeName.bind(this);
     this.handleSetName = this.handleSetName.bind(this);
   }
+  componentDidMount() {
+    // this should not be here...
+    this.props.getServiceProvider(1611112222);
+  }
   login() {
     const phone = parsePhone(this.state.phone);
     Api.login(phone, data => {
@@ -72,7 +76,7 @@ class Login extends PureComponent {
         this.setState({
           showSetName: true,
           customer: data.customer,
-          showMsgBox: false
+          showMsgBox: false,
         });
       } else {
         this.props.setCustomer(data.customer);
@@ -83,13 +87,13 @@ class Login extends PureComponent {
   }
   handleChangeName(event) {
     this.setState({
-      name: event.target.value
+      name: event.target.value,
     });
   }
   handleSetName() {
     Api.Customer.update(parsePhone(this.state.phone), {
       ...this.state.customer,
-      name: this.state.name
+      name: this.state.name,
     }).then(response => {
       this.props.setCustomer(response.data);
       this.props.authenticate();
@@ -98,7 +102,7 @@ class Login extends PureComponent {
   }
   handleChange(event) {
     this.setState({
-      phone: event.target.value
+      phone: event.target.value,
     });
   }
   handleLogin(event) {
@@ -108,7 +112,7 @@ class Login extends PureComponent {
       : this.setState({
           showMsgBox: true,
           msgBoxStatus: msgBoxStatus.ERROR,
-          msgBoxText: 'Telefone inválido'
+          msgBoxText: 'Telefone inválido',
         });
   }
   render() {
@@ -134,7 +138,7 @@ class Login extends PureComponent {
               color: 'dodgerblue',
               marginBottom: 10,
               textAlign: 'center',
-              textTransform: 'capitalize'
+              textTransform: 'capitalize',
             }}
             variant="h5"
           >
@@ -201,12 +205,13 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       setCustomer,
-      authenticate
+      authenticate,
+      getServiceProvider,
     },
-    dispatch
+    dispatch,
   );
 
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Login);

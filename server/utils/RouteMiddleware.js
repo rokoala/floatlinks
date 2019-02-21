@@ -26,7 +26,7 @@ module.exports = {
   promiseResultHandler: (res, options = {}) => (
     promise,
     successHandlerCb,
-    errorHandlerCb
+    errorHandlerCb,
   ) =>
     promise
       .then(success =>
@@ -35,10 +35,10 @@ module.exports = {
           res,
           options,
           successHandlerWrapper,
-          successHandlerCb
-        )
+          successHandlerCb,
+        ),
       )
       .catch(err =>
-        resultHandler(err, res, options, errorHandlerWrapper, errorHandlerCb)
-      )
+        resultHandler(err, res, options, errorHandlerWrapper, errorHandlerCb),
+      ),
 };

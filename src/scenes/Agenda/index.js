@@ -4,13 +4,16 @@ import Layout from '../Layout';
 import Calendar from 'react-calendar';
 import { Button, Typography } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
-import { setDate } from '../../actions';
+import { setDate, getAgendaByServiceProviderId } from '../../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import ScheduleList from '../../components/ScheduleList';
-import './DateScheduler.css';
+import moment from 'moment';
+import './Agenda.css';
 
-class DateScheduler extends PureComponent {
+class Agenda extends PureComponent {
+  componentDidMount() {
+    this.props.getAgendaByServiceProviderId(this.props.serviceProviderId);
+  }
   render() {
     const CalendarRouter = withRouter(({ history }) => (
       <Calendar
@@ -18,11 +21,20 @@ class DateScheduler extends PureComponent {
         locale="pt-BR"
         tileClassName={({ date }) => {
           // check if date is already scheduled by user
-          if (date.getDate() % 2 === 0 && date.getDay() !== 4)
-            return 'day-scheduled white-font';
+          // if (date.getDate() % 2 === 0 && date.getDay() !== 4)
+          //   return 'day-scheduled white-font';
         }}
-        // check if the day is already full
-        tileDisabled={({ date }) => date.getDay() === 4}
+        // check the days that are available
+        tileDisabled={({ date, view }) =>
+          this.props.slots.filter(
+            slot =>
+              (!slot.isOccupied &&
+                (view === 'month' &&
+                  moment(slot.date).isSame(moment(date), 'day'))) ||
+              (view === 'year' &&
+                moment(slot.date).isSame(moment(date), 'month')),
+          ).length === 0
+        }
         onChange={date => {
           this.props.setDate(date);
           history.push('/schedule/time');
@@ -35,15 +47,14 @@ class DateScheduler extends PureComponent {
         <CalendarRouter />
         <ul className="legend">
           <li>
-            <div className="block day-scheduled" />
-            <Typography variant="caption">Meus horários</Typography>
+            <div className="block day-available" />
+            <Typography variant="caption">Disponível</Typography>
           </li>
           <li>
             <div className="block day-unavailable" />
             <Typography variant="caption">Indisponível</Typography>
           </li>
         </ul>
-        <ScheduleList />
         <Button
           style={{ marginTop: 5 }}
           component={Link}
@@ -57,15 +68,21 @@ class DateScheduler extends PureComponent {
   }
 }
 
+const mapStateToProps = store => ({
+  slots: store.appointment.availableAgenda.slots,
+  serviceProviderId: store.serviceProvider._id,
+});
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      setDate
+      setDate,
+      getAgendaByServiceProviderId,
     },
-    dispatch
+    dispatch,
   );
 
 export default connect(
-  null,
-  mapDispatchToProps
-)(DateScheduler);
+  mapStateToProps,
+  mapDispatchToProps,
+)(Agenda);

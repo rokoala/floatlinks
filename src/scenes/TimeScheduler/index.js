@@ -6,44 +6,26 @@ import ArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import TimePicker from '../../components/TimePicker';
 import { withRouter } from 'react-router-dom';
 import { formatDate } from '../../utils/Formatter';
-import { setHour } from '../../actions';
+import { getHoursByDate, setAppointmentHour } from '../../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 class TimeSchedule extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      client: {
-        hours: []
-      }
-    };
-  }
   componentDidMount() {
-    // fetch data...
-    this.setState({
-      client: {
-        hours: [
-          { id: 0, label: '09:00 -> 10:00', available: true, selected: true },
-          { id: 1, label: '10:00 -> 11:00', available: true },
-          { id: 2, label: '11:00 -> 12:00', available: false },
-          { id: 3, label: '12:00 -> 13:00', available: false },
-          { id: 4, label: '13:00 -> 14:00', available: true },
-          { id: 5, label: '14:00 -> 15:00', available: true },
-          { id: 6, label: '15:00 -> 16:00', available: false },
-          { id: 7, label: '17:00 -> 18:00', available: true }
-        ]
-      }
-    });
+    //TODO fetch data every time that get into this component...
+    this.props.getHoursByDate(
+      this.props.serviceProviderId,
+      this.props.choosedDate,
+    );
   }
   render() {
     const TimePickerWithRouter = withRouter(({ history }) => (
       <TimePicker
         onClick={time => {
-          this.props.setHour(time);
+          this.props.setAppointmentHour(time);
           history.push('/schedule/confirm');
         }}
-        hours={this.state.client.hours}
+        hours={this.props.hours}
       />
     ));
 
@@ -57,7 +39,7 @@ class TimeSchedule extends PureComponent {
           variant="outlined"
           color="primary"
         >
-          {formatDate(this.props.date)}
+          {formatDate(this.props.choosedDate)}
           <ArrowDownIcon fontSize="small" style={{ marginLeft: 12 }} />
         </Button>
         <TimePickerWithRouter />
@@ -66,18 +48,21 @@ class TimeSchedule extends PureComponent {
   }
 }
 const mapStateToProps = store => ({
-  date: store.schedule.current.date
+  choosedDate: store.appointment.current.date,
+  hours: store.appointment.availableHours,
+  serviceProviderId: store.serviceProvider._id,
 });
 
 const dispatchStateToProps = dispatch =>
   bindActionCreators(
     {
-      setHour
+      getHoursByDate,
+      setAppointmentHour,
     },
-    dispatch
+    dispatch,
   );
 
 export default connect(
   mapStateToProps,
-  dispatchStateToProps
+  dispatchStateToProps,
 )(TimeSchedule);

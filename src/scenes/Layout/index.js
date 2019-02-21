@@ -74,17 +74,20 @@ class Layout extends PureComponent {
 
 const mapStateToProps = store => ({
   customer: store.customer,
-  serviceProvider: store.serviceProvider
+  serviceProvider: store.serviceProvider,
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      logout
+      logout,
     },
-    dispatch
+    dispatch,
   );
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Layout);
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Layout),
+);

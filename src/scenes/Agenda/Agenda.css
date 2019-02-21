@@ -7,6 +7,10 @@
   background-color: #37b3dc;
 }
 
+.day-available {
+  background-color: white;
+}
+
 .day-unavailable {
   background-color: gray;
 }
