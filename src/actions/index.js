@@ -6,6 +6,7 @@ import {
   serviceProviderActions,
 } from './actionTypes';
 import Api from '../resources/Api';
+import { Store } from '../store';
 import { push } from 'connected-react-router';
 
 export const setCustomer = customer => ({
@@ -92,9 +93,9 @@ export const removeAppointment = (
 ) => dispatch => {
   Api.Appointments.remove(customerId, serviceProviderId, slotId)
     .then(response => {
-      console.log(response);
       // NEED TO GET NEW DATA OF DELETE
-      dispatch(push('/'));
+      const store = Store.getState();
+      dispatch(getAppointments(store.customer._id, store.serviceProvider._id));
     })
     .catch(err => console.error(`Error removing appointment:${err}`));
 };
