@@ -3,7 +3,7 @@ import {
   customerActions,
   confirmSchedulesActions,
   appointmentActions,
-  serviceProviderActions,
+  serviceProviderActions
 } from './actionTypes';
 import Api from '../resources/Api';
 import { Store } from '../store';
@@ -11,25 +11,25 @@ import { push } from 'connected-react-router';
 
 export const setCustomer = customer => ({
   type: customerActions.SET_CUSTOMER,
-  customer,
+  customer
 });
 
 export const authenticate = () => ({
-  type: appActions.AUTHENTICATE,
+  type: appActions.AUTHENTICATE
 });
 
 export const logout = () => ({
-  type: appActions.LOGOUT,
+  type: appActions.LOGOUT
 });
 
 export const setDate = date => ({
   type: appointmentActions.SET_DATE,
-  date,
+  date
 });
 
 export const setAppointmentHour = hour => ({
   type: appointmentActions.SET_HOUR,
-  hour,
+  hour
 });
 
 export const updateCustomer = (phone, customer) => dispatch => {
@@ -42,12 +42,12 @@ export const updateCustomer = (phone, customer) => dispatch => {
 
 export const setConfirmSchedules = schedules => ({
   type: confirmSchedulesActions.SET_SCHEDULES,
-  schedules,
+  schedules
 });
 
 export const setAppointments = appointments => ({
   type: appointmentActions.SET_APPOINTMENTS,
-  appointments,
+  appointments
 });
 
 // APPOINTMENTS
@@ -58,24 +58,24 @@ export const getAppointments = (customerId, serviceProviderId) => dispatch => {
       dispatch(setAppointments(response.data.appointments));
     })
     .catch(err =>
-      console.error(`Error fetching data from appointments: ${err}`),
+      console.error(`Error fetching data from appointments: ${err}`)
     );
 };
 
 export const setAppointmentAvailableHours = availableHours => ({
   type: appointmentActions.SET_AVAILABLE_HOURS,
-  availableHours,
+  availableHours
 });
 
 export const getHoursByDate = (serviceProviderId, date) => dispatch => {
   Api.Appointments.getHoursByDate(serviceProviderId, date)
     .then(response =>
-      dispatch(setAppointmentAvailableHours(response.data.agenda.slots)),
+      dispatch(setAppointmentAvailableHours(response.data.agenda.slots))
     )
     .catch(err =>
       console.error(
-        `Error fetching data trying to get hours from serviceprovider:${err}`,
-      ),
+        `Error fetching data trying to get hours from serviceprovider:${err}`
+      )
     );
 };
 
@@ -89,7 +89,7 @@ export const confirmAppointment = (...args) => dispatch =>
 export const removeAppointment = (
   customerId,
   serviceProviderId,
-  slotId,
+  slotId
 ) => dispatch => {
   Api.Appointments.remove(customerId, serviceProviderId, slotId)
     .then(response => {
@@ -103,30 +103,30 @@ export const removeAppointment = (
 // SERVICE PROVIDER
 export const setServiceProvider = serviceProvider => ({
   type: serviceProviderActions.SET_SERVICE_PROVIDER,
-  serviceProvider,
+  serviceProvider
 });
 
 export const getServiceProvider = phoneId => dispatch => {
   Api.ServiceProvider.get(phoneId)
     .then(response => dispatch(setServiceProvider(response.data)))
     .catch(err =>
-      console.error(`Error fetching data from servicerProvider: ${err}`),
+      console.error(`Error fetching data from servicerProvider: ${err}`)
     );
 };
 
 export const setAppointmentAvailableAgenda = availableAgenda => ({
   type: appointmentActions.SET_AVAILABLE_AGENDA,
-  availableAgenda,
+  availableAgenda
 });
 
 export const getAgendaByServiceProviderId = serviceProviderId => dispatch => {
   Api.Appointments.getAgenda(serviceProviderId, new Date()) //FIXED GET AGENDA FROM TODAY
     .then(response =>
-      dispatch(setAppointmentAvailableAgenda(response.data.agenda)),
+      dispatch(setAppointmentAvailableAgenda(response.data.agenda))
     )
     .catch(err =>
       console.error(
-        `Error fetching data trying to get agenda from serviceprovider:${err}`,
-      ),
+        `Error fetching data trying to get agenda from serviceprovider:${err}`
+      )
     );
 };

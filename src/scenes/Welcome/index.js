@@ -13,7 +13,7 @@ class Welcome extends PureComponent {
   componentDidMount() {
     this.props.getAppointments(
       this.props.customerId,
-      this.props.serviceProviderId,
+      this.props.serviceProviderId
     );
   }
   render() {
@@ -38,18 +38,18 @@ class Welcome extends PureComponent {
 
 const mapStateToProps = store => ({
   customerId: store.customer._id,
-  serviceProviderId: store.serviceProvider._id,
+  serviceProviderId: store.serviceProvider._id
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      getAppointments,
+      getAppointments
     },
-    dispatch,
+    dispatch
   );
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(Welcome);

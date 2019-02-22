@@ -10,7 +10,7 @@ router.post('/', (req, res) => {
     CustomerModel.create(req.body),
     (res, doc, next) => {
       !doc || doc.length === 0 ? res.status(500).send(doc) : next();
-    },
+    }
   );
 });
 
@@ -22,8 +22,8 @@ router.get('/', (req, res) => {
 router.get('/:phone', (req, res) => {
   promiseResultHandler(res)(
     CustomerModel.findOne({
-      phone: req.params.phone,
-    }),
+      phone: req.params.phone
+    })
   );
 });
 
@@ -31,13 +31,13 @@ router.put('/:phone', (req, res) => {
   promiseResultHandler(res)(
     CustomerModel.findOneAndUpdate(
       {
-        phone: req.params.phone,
+        phone: req.params.phone
       },
       req.body,
       {
-        new: true,
-      },
-    ),
+        new: true
+      }
+    )
   );
 });
 

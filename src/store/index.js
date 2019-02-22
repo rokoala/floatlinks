@@ -9,5 +9,5 @@ export const history = createBrowserHistory();
 
 export const Store = createStore(
   createRootReducer(history),
-  composeWithDevTools(applyMiddleware(routerMiddleware(history), thunk)),
+  composeWithDevTools(applyMiddleware(routerMiddleware(history), thunk))
 );

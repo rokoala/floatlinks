@@ -10,7 +10,7 @@ const months = [
   'Setembro',
   'Outubro',
   'Novembro',
-  'Dezembro',
+  'Dezembro'
 ];
 
 export const convertMonth = monthNumber => {

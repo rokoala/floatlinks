@@ -7,7 +7,7 @@ const Api = {
   login(phone, cb) {
     return axios
       .post(`${API_URL}/login`, {
-        phone,
+        phone
       })
       .then(response => {
         this.isAuthenticated = true;
@@ -19,24 +19,24 @@ const Api = {
       axios.post(`${API_URL}/appointment/`, {
         slotId,
         customerId,
-        serviceProviderId,
+        serviceProviderId
       }),
     remove: (customerId, serviceProviderId, slotId) =>
       axios.delete(
         //customer/:customerId/:serviceProviderId/:slotId
-        `${API_URL}/appointment/customer/${customerId}/${serviceProviderId}/${slotId}`,
+        `${API_URL}/appointment/customer/${customerId}/${serviceProviderId}/${slotId}`
       ),
     getAll: (customerId, serviceProviderId) =>
       axios.get(
         `${API_URL}/appointment/customer/${customerId}/${serviceProviderId}/${moment().format(
-          'YYYY-MM-DD',
-        )}`,
+          'YYYY-MM-DD'
+        )}`
       ),
     getAgenda: (serviceProviderId, startDate) =>
       axios.get(
         `${API_URL}/appointment/serviceprovider/${serviceProviderId}/agenda/${moment(
-          startDate,
-        ).format('YYYY-MM-DD')}`,
+          startDate
+        ).format('YYYY-MM-DD')}`
       ),
     getHoursByDate: (serviceProviderId, startDate) => {
       const dayStart = moment(startDate).format('YYYY-MM-DD');
@@ -44,17 +44,17 @@ const Api = {
         .add(1, 'days')
         .format('YYYY-MM-DD');
       return axios.get(
-        `${API_URL}/appointment/serviceprovider/${serviceProviderId}/agenda/${dayStart}/${dayEnd}`,
+        `${API_URL}/appointment/serviceprovider/${serviceProviderId}/agenda/${dayStart}/${dayEnd}`
       );
-    },
+    }
   },
   ServiceProvider: {
-    get: phone => axios.get(`${API_URL}/serviceprovider/${phone}`),
+    get: phone => axios.get(`${API_URL}/serviceprovider/${phone}`)
   },
   Customer: {
     add: body =>
       axios.post(`${API_URL}/customer`, {
-        ...body,
+        ...body
       }),
     get: () =>
       axios
@@ -63,9 +63,9 @@ const Api = {
         .catch(err => console.error(err)),
     update: (phone, customer) =>
       axios.put(`${API_URL}/customer/` + phone, {
-        ...customer,
-      }),
-  },
+        ...customer
+      })
+  }
 };
 
 export default Api;

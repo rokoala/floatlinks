@@ -4,9 +4,9 @@ const initialState = {
   current: {},
   list: [],
   availableAgenda: {
-    slots: [],
+    slots: []
   },
-  availableHours: [],
+  availableHours: []
 };
 
 export const appointment = (state = initialState, action) => {
@@ -14,33 +14,33 @@ export const appointment = (state = initialState, action) => {
     case appointmentActions.SET_APPOINTMENTS:
       return {
         ...state,
-        list: action.appointments,
+        list: action.appointments
       };
     case appointmentActions.SET_DATE:
       return {
         ...state,
         current: {
           ...state.current,
-          date: action.date,
-        },
+          date: action.date
+        }
       };
     case appointmentActions.SET_HOUR:
       return {
         ...state,
         current: {
           ...state.current,
-          hour: action.hour,
-        },
+          hour: action.hour
+        }
       };
     case appointmentActions.SET_AVAILABLE_AGENDA:
       return {
         ...state,
-        availableAgenda: action.availableAgenda,
+        availableAgenda: action.availableAgenda
       };
     case appointmentActions.SET_AVAILABLE_HOURS:
       return {
         ...state,
-        availableHours: action.availableHours,
+        availableHours: action.availableHours
       };
 
     default:

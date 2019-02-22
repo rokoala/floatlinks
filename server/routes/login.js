@@ -7,7 +7,7 @@ router.post('/', (req, res) => {
   const { phone } = req.body;
 
   CustomerModel.findOne({
-    phone,
+    phone
   }).then(result => {
     // If the customer already exists, send back the customer
     if (result) res.json({ newUser: false, customer: result });

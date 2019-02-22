@@ -7,7 +7,7 @@ const initialState = [
     initTimeLabel: '14:00',
     endTimeLabel: '16:00',
     name: 'João',
-    status: 0, // confirmed
+    status: 0 // confirmed
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ const initialState = [
     initTimeLabel: '16:00',
     endTimeLabel: '18:00',
     name: 'Maria',
-    status: 1, // pending
+    status: 1 // pending
   },
   {
     id: 3,
@@ -23,8 +23,8 @@ const initialState = [
     initTimeLabel: '16:00',
     endTimeLabel: '18:00',
     name: 'Jose',
-    status: 2, // need confirmation
-  },
+    status: 2 // need confirmation
+  }
 ];
 
 export const confirmSchedules = (state = initialState, action) => {

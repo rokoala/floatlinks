@@ -18,7 +18,7 @@ class ConfirmAppointment extends PureComponent {
           this.props.confirmAppointment(
             this.props.hour.slotId,
             this.props.customerId,
-            this.props.serviceProviderId,
+            this.props.serviceProviderId
           );
         }}
       >
@@ -55,18 +55,18 @@ const mapStateToProps = store => ({
   date: store.appointment.current.date,
   hour: store.appointment.current.hour,
   customerId: store.customer._id,
-  serviceProviderId: store.serviceProvider._id,
+  serviceProviderId: store.serviceProvider._id
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      confirmAppointment,
+      confirmAppointment
     },
-    dispatch,
+    dispatch
   );
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(ConfirmAppointment);

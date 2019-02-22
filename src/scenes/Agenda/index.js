@@ -32,7 +32,7 @@ class Agenda extends PureComponent {
                 (view === 'month' &&
                   moment(slot.date).isSame(moment(date), 'day'))) ||
               (view === 'year' &&
-                moment(slot.date).isSame(moment(date), 'month')),
+                moment(slot.date).isSame(moment(date), 'month'))
           ).length === 0
         }
         onChange={date => {
@@ -70,19 +70,19 @@ class Agenda extends PureComponent {
 
 const mapStateToProps = store => ({
   slots: store.appointment.availableAgenda.slots,
-  serviceProviderId: store.serviceProvider._id,
+  serviceProviderId: store.serviceProvider._id
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       setDate,
-      getAgendaByServiceProviderId,
+      getAgendaByServiceProviderId
     },
-    dispatch,
+    dispatch
   );
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(Agenda);

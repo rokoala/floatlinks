@@ -13,5 +13,5 @@ export default history =>
     customer,
     appointment,
     confirmSchedules,
-    serviceProvider,
+    serviceProvider
   });

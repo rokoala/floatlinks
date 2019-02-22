@@ -5,7 +5,7 @@ import {
   BottomNavigation,
   BottomNavigationAction,
   Typography,
-  IconButton,
+  IconButton
 } from '@material-ui/core';
 import CalendarIcon from '@material-ui/icons/CalendarToday';
 import LoadingOverlay from 'react-loading-overlay';
@@ -17,7 +17,7 @@ import { withRouter } from 'react-router-dom';
 
 class Layout extends PureComponent {
   state = {
-    value: '/admin',
+    value: '/admin'
   };
   render() {
     const { serviceProvider } = this.props;
@@ -70,7 +70,7 @@ class Layout extends PureComponent {
               display: 'flex',
               justifyContent: 'space-around',
               boxShadow: '0px 0px 3px lightgrey',
-              borderTop: '1px solid rgba(0,0,0,0.09)',
+              borderTop: '1px solid rgba(0,0,0,0.09)'
             }}
             value={history.location.pathname}
           >
@@ -108,7 +108,7 @@ class Layout extends PureComponent {
 }
 
 const mapStateToProps = store => ({
-  serviceProvider: store.serviceProvider,
+  serviceProvider: store.serviceProvider
 });
 
 export default connect(mapStateToProps)(Layout);
