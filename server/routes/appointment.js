@@ -325,8 +325,9 @@ router.delete('/customer/:customerId/:serviceProviderId/:slotId', (req, res) => 
       "new": true
     }
   ).exec();
+  let fullProcessing = Promise.all([appointmentDeletion,slotFreeing]).then(items => items[0])
   promiseResultHandler(res)(
-    Promise.all([appointmentDeletion,slotFreeing])
+    fullProcessing
     
   );
 });

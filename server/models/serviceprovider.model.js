@@ -67,7 +67,8 @@ module.exports = mongoose.model(
         name: String,
         phone: {
             type: Number
-        }
+        },
+        _id: false
     }]
   })
 );

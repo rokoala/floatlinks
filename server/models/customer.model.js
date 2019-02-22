@@ -37,7 +37,8 @@ module.exports = mongoose.model(
             max: 6000,
             required: true
         },
-        annotation: String
+        annotation: String,
+        _id: false
       }]
     }]
   })
