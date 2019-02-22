@@ -3,7 +3,7 @@ const {
   server,
   database,
   user,
-  password,
+  password
 } = require('../config/database.config.json');
 
 const connectionURI =
@@ -12,7 +12,7 @@ const connectionURI =
 
 mongoose.connect(connectionURI, {
   useCreateIndex: true,
-  useNewUrlParser: true,
+  useNewUrlParser: true
 });
 
 module.exports = mongoose;

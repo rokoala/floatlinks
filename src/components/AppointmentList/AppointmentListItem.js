@@ -7,7 +7,7 @@ import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
-  IconButton,
+  IconButton
 } from '@material-ui/core';
 import { createAppointmentLabel } from '../../resources/utils';
 import DeleteRounded from '@material-ui/icons/DeleteRounded';
@@ -16,7 +16,7 @@ const AppointmentListItem = ({
   serviceProviderId,
   item,
   removeAppointment,
-  customerId,
+  customerId
 }) => (
   <ListItem>
     <ListItemText primary={createAppointmentLabel(item)} />
@@ -35,20 +35,20 @@ const AppointmentListItem = ({
 
 const mapStateToProps = store => ({
   customerId: store.customer._id,
-  serviceProviderId: store.serviceProvider._id,
+  serviceProviderId: store.serviceProvider._id
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      removeAppointment,
+      removeAppointment
     },
-    dispatch,
+    dispatch
   );
 
 export default withRouter(
   connect(
     mapStateToProps,
-    mapDispatchToProps,
-  )(AppointmentListItem),
+    mapDispatchToProps
+  )(AppointmentListItem)
 );

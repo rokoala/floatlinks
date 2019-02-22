@@ -15,7 +15,7 @@ class TimeSchedule extends PureComponent {
     //TODO fetch data every time that get into this component...
     this.props.getHoursByDate(
       this.props.serviceProviderId,
-      this.props.choosedDate,
+      this.props.choosedDate
     );
   }
   render() {
@@ -50,19 +50,19 @@ class TimeSchedule extends PureComponent {
 const mapStateToProps = store => ({
   choosedDate: store.appointment.current.date,
   hours: store.appointment.availableHours,
-  serviceProviderId: store.serviceProvider._id,
+  serviceProviderId: store.serviceProvider._id
 });
 
 const dispatchStateToProps = dispatch =>
   bindActionCreators(
     {
       getHoursByDate,
-      setAppointmentHour,
+      setAppointmentHour
     },
-    dispatch,
+    dispatch
   );
 
 export default connect(
   mapStateToProps,
-  dispatchStateToProps,
+  dispatchStateToProps
 )(TimeSchedule);

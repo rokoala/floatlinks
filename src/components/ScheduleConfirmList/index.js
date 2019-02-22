@@ -9,7 +9,7 @@ import {
   ListItemSecondaryAction,
   Tooltip,
   Typography,
-  IconButton,
+  IconButton
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,20 +19,20 @@ import EditIcon from '@material-ui/icons/Edit';
 const styles = theme => ({
   confirmedButton: {
     color: '#4cb97c',
-    borderColor: '#54FF9F',
+    borderColor: '#54FF9F'
   },
   pendingButton: {
     color: '#e0b721',
-    borderColor: '#e8e85a',
+    borderColor: '#e8e85a'
   },
   excludeButton: {
     color: 'red',
-    borderColor: 'red',
+    borderColor: 'red'
   },
   notificationTitle: {
     textAlign: 'center',
-    padding: 0,
-  },
+    padding: 0
+  }
 });
 
 const createStatusButton = (classes, status) => {
@@ -101,7 +101,7 @@ const ScheduleConfirmList = ({ confirmSchedules = [], classes }) => (
             <Button
               style={{
                 padding: '15px 3px',
-                minWidth: '30px',
+                minWidth: '30px'
               }}
               size="small"
             >
@@ -135,9 +135,9 @@ const ScheduleConfirmList = ({ confirmSchedules = [], classes }) => (
 );
 
 const mapStateToProps = store => ({
-  confirmSchedules: store.confirmSchedules,
+  confirmSchedules: store.confirmSchedules
 });
 
 export default connect(mapStateToProps)(
-  withStyles(styles)(ScheduleConfirmList),
+  withStyles(styles)(ScheduleConfirmList)
 );

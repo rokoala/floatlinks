@@ -1,7 +1,7 @@
 import { customerActions } from '../actions/actionTypes';
 
 const initialState = {
-  name: '',
+  name: ''
 };
 
 export const customer = (state = initialState, action) => {

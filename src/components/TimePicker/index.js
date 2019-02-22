@@ -24,7 +24,7 @@ export default class TimePicker extends Component {
           time={{
             label: label,
             available: true,
-            slotId: hour._id,
+            slotId: hour._id
           }}
           selected={hour.selected}
         />

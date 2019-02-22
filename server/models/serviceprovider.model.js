@@ -7,71 +7,72 @@ module.exports = mongoose.model(
     phone: {
       type: Number,
       required: true,
-      unique: true,
+      unique: true
     },
     password: {
       type: String,
-      required: true,
+      required: true
     },
     defaultSlotDuration: {
       type: Number,
-      required: true,
+      required: true
     },
     agenda: {
       slots: [
         {
           date: {
             type: Date,
-            required: true,
+            required: true
           },
           startTime: {
             type: Number,
             min: 0,
             max: 2359,
-            required: true,
+            required: true
           },
           slotDuration: {
             type: Number,
             min: 5,
             max: 6000,
-            required: true,
+            required: true
           },
           isOccupied: {
             type: Boolean,
-            required: true,
+            required: true
           },
           isPublic: {
             type: Boolean,
-            required: true,
+            required: true
           },
           customer: {
             customerId: {
               type: mongoose.Schema.Types.ObjectId,
-              ref: 'Customer',
+              ref: 'Customer'
             },
             name: String,
             phone: {
-              type: Number,
-            },
+              type: Number
+            }
           },
-          annotation: String,
-        },
+          annotation: String
+        }
       ],
       isOpen: {
-        type: Boolean,
-      },
+        type: Boolean
+      }
     },
     customers: [
       {
         customerId: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'Customer',
+          ref: 'Customer'
         },
         name: String,
         phone: {
-            type: Number
+          type: Number
         },
         _id: false
-    }]
+      }
+    ]
   })
 );

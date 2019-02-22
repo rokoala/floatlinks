@@ -11,13 +11,13 @@ const style = theme => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   avatar: {
     fontSize: 100,
     width: 200,
-    height: 200,
-  },
+    height: 200
+  }
 });
 
 function TextMaskCustom(props) {
@@ -43,7 +43,7 @@ function TextMaskCustom(props) {
         /\d/,
         /\d/,
         /\d/,
-        /\d/,
+        /\d/
       ]}
       placeholderChar={'\u2000'}
       showMask
@@ -59,7 +59,7 @@ class CustomerForm extends PureComponent {
     phone: '',
     showMsgBox: false,
     msgBoxStatus: null,
-    msgBoxText: '',
+    msgBoxText: ''
   };
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
@@ -74,20 +74,20 @@ class CustomerForm extends PureComponent {
               phone: '',
               showMsgBox: true,
               msgBoxStatus: msgBoxStatus.SUCCESS,
-              msgBoxText: 'Adicionado cliente',
+              msgBoxText: 'Adicionado cliente'
             });
           })
           .catch(err => {
             this.setState({
               showMsgBox: true,
               msgBoxStatus: msgBoxStatus.ERROR,
-              msgBoxText: 'Erro ao cadastrar',
+              msgBoxText: 'Erro ao cadastrar'
             });
           })
       : this.setState({
           showMsgBox: true,
           msgBoxStatus: msgBoxStatus.ERROR,
-          msgBoxText: 'Telefone inválido',
+          msgBoxText: 'Telefone inválido'
         });
   };
   render() {
@@ -131,5 +131,5 @@ const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
 export default connect(
   null,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(withStyles(style)(CustomerForm));

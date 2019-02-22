@@ -84,9 +84,9 @@ const axios = require('axios');
       defaultSlotDuration: 5,
       agenda: {
         slots: [],
-        isOpen: true,
-      },
-    },
+        isOpen: true
+      }
+    }
   );
 
   console.log(serviceProvider);
@@ -100,9 +100,9 @@ const axios = require('axios');
         providerId: serviceProvider.data._id,
         name: 'Dra. Alita',
         phone: 1611112222,
-        appointments: [],
-      },
-    ],
+        appointments: []
+      }
+    ]
   });
 
   // Create some slots
@@ -115,8 +115,8 @@ const axios = require('axios');
       isOccupied: false,
       isPublic: true,
       customer: null,
-      annotation: 'Horário teste',
-    },
+      annotation: 'Horário teste'
+    }
   });
 
   await axios.post('http://localhost:3001/appointment/serviceprovider/slot/', {
@@ -128,8 +128,8 @@ const axios = require('axios');
       isOccupied: false,
       isPublic: true,
       customer: null,
-      annotation: 'Horário teste no mesmo dia, horário diferente',
-    },
+      annotation: 'Horário teste no mesmo dia, horário diferente'
+    }
   });
 
   await axios.post('http://localhost:3001/appointment/serviceprovider/slot/', {
@@ -143,8 +143,8 @@ const axios = require('axios');
       isOccupied: false,
       isPublic: true,
       customer: null,
-      annotation: 'Horário teste um dia depois, horário diferente',
-    },
+      annotation: 'Horário teste um dia depois, horário diferente'
+    }
   });
 
   process.exit();
