@@ -40,9 +40,9 @@ module.exports = mongoose.model(
               required: true,
             },
             annotation: String,
-          },
-        ],
-      },
-    ],
-  }),
-);
+            _id: false
+          }
+        ]
+      }
+    ]
+  }));
