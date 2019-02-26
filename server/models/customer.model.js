@@ -40,6 +40,7 @@ module.exports = mongoose.model(
               required: true
             },
             annotation: String,
+            isConfirmed: Boolean,
             _id: false
           }
         ]

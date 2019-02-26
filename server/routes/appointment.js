@@ -62,6 +62,7 @@ router.post('/', (req, res) => {
                     date: serviceProvider.agenda.slots.date,
                     startTime: serviceProvider.agenda.slots.startTime,
                     slotDuration: serviceProvider.agenda.slots.slotDuration,
+                    isConfirmed: serviceProvider.agenda.slots.isConfirmed,
                     annotation: serviceProvider.agenda.slots.annotation
                   }
                 ]
@@ -88,6 +89,7 @@ router.post('/', (req, res) => {
                 date: serviceProvider.agenda.slots.date,
                 startTime: serviceProvider.agenda.slots.startTime,
                 slotDuration: serviceProvider.agenda.slots.slotDuration,
+                isConfirmed: serviceProvider.agenda.slots.isConfirmed,
                 annotation: serviceProvider.agenda.slots.annotation
               }
             }
@@ -136,13 +138,47 @@ router.post('/serviceprovider/slot/', (req, res) => {
       { _id: req.body.serviceProviderId },
       {
         $addToSet: {
-          'agenda.slots': req.body.newSlot
+          'agenda.slots': req.body.slot
         }
       },
       {
         new: true
       }
     ).exec()
+  );
+});
+
+//serviço para atualização do status do appointment
+router.put('/customer/appointment/confirmation/:customerId/:serviceProviderId/:slotId', (req, res) => {
+  promiseResultHandler(res)(
+    ServiceProvider.findOneAndUpdate(
+      { _id: req.params.serviceProviderId },
+      {
+        $set: {
+          'agenda.slots.$[outer].isConfirmed': req.body.isConfirmed
+        }
+      },
+      {
+        arrayFilters: [{ 'outer._id': req.params.slotId }],
+        new: true
+      }
+    ).exec()
+    .then(CustomerModel.findOneAndUpdate(
+      { _id: req.params.customerId },
+      {
+        $set: {
+          'serviceProviders.$[outer].appointments.$[inner].isConfirmed': req.body.isConfirmed
+        }
+      },
+      {
+        arrayFilters: [
+          { 'outer.providerId': req.params.serviceProviderId },
+          { 'inner.slotId': req.params.slotId }
+        ],
+        new: true
+      }
+    ).exec())
+    
   );
 });
 
@@ -166,7 +202,7 @@ router.delete(
     );
   }
 );
-
+//lists all available slots for a particular service provider in the date range
 router.get(
   '/serviceprovider/:serviceProviderId/agenda/:startDate/:endDate?',
   (req, res) => {
@@ -217,6 +253,78 @@ router.get(
         .exec()
         .then(items => items[0]);
     }
+
+    promiseResultHandler(res)(serviceProvider);
+  }
+);
+
+//lists all occupied slots in the date range
+router.get(
+  '/serviceprovider/:serviceProviderId/agenda/:startDate?/:endDate?',
+  (req, res) => {
+    let serviceProvider = null;
+    let filter = []
+    if(req.params.startDate){
+      filter.push({[$gte]: ['$$slots.date', new Date(req.params.startDate)]})
+    }
+    if(req.params.endDate){
+      filter.push({[$lte]: ['$$slots.date', new Date(req.params.endDate)]})
+    }
+    filter = filter.push({ $eq: ['$$slots.isOccupied', true] })
+    serviceProvider = ServiceProviderModel.aggregate([
+      { $match: { _id: ObjectId(req.params.serviceProviderId) } },
+      {
+        $project: {
+          'agenda.slots': {
+            $filter: {
+              input: '$agenda.slots',
+              as: 'slots',
+              cond: {
+                $and: filter
+              }
+            }
+          }
+        }
+      }
+    ])
+      .exec()
+      .then(items => items[0]);
+
+    promiseResultHandler(res)(serviceProvider);
+  }
+);
+
+router.get(
+  '/customer/:customerId/agenda/:startDate?/:endDate?',
+  (req, res) => {
+    let serviceProvider = null;
+    let filter = []
+    if(req.params.startDate){
+      filter = filter.push({[$gte]: ['$$slots.date', new Date(req.params.startDate)]})
+    }
+    if(req.params.endDate){
+      filter = filter.push({[$lte]: ['$$slots.date', new Date(req.params.endDate)]})
+    }
+    serviceProvider = ServiceProviderModel.aggregate([
+      { $match: { _id: ObjectId(req.params.customerId) } },
+      {
+        $project: {
+          'serviceProviders': {
+            $filter: {
+              input: '$serviceProviders',
+              as: 'serviceProvider',
+              cond: {
+                $and: [
+                  { filter }
+                ]
+              }
+            }
+          }
+        }
+      }
+    ])
+      .exec()
+      .then(items => items[0]);
 
     promiseResultHandler(res)(serviceProvider);
   }

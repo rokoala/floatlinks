@@ -54,6 +54,7 @@ module.exports = mongoose.model(
               type: Number
             }
           },
+          isConfirmed: Boolean,
           annotation: String
         }
       ],

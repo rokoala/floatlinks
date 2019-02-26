@@ -108,33 +108,35 @@ const axios = require('axios');
   // Create some slots
   await axios.post('http://localhost:3001/appointment/serviceprovider/slot/', {
     serviceProviderId: serviceProvider.data._id,
-    newSlot: {
+    slot: {
       date: new Date(),
       startTime: 1000,
       slotDuration: 30,
       isOccupied: false,
       isPublic: true,
       customer: null,
+      isConfirmed: false,
       annotation: 'Horário teste'
     }
   });
 
   await axios.post('http://localhost:3001/appointment/serviceprovider/slot/', {
     serviceProviderId: serviceProvider.data._id,
-    newSlot: {
+    slot: {
       date: new Date(),
       startTime: 1100,
       slotDuration: 30,
       isOccupied: false,
       isPublic: true,
       customer: null,
+      isConfirmed: false,
       annotation: 'Horário teste no mesmo dia, horário diferente'
     }
   });
 
   await axios.post('http://localhost:3001/appointment/serviceprovider/slot/', {
     serviceProviderId: serviceProvider.data._id,
-    newSlot: {
+    slot: {
       date: moment()
         .add(1, 'days')
         .toDate(),
@@ -143,6 +145,7 @@ const axios = require('axios');
       isOccupied: false,
       isPublic: true,
       customer: null,
+      isConfirmed: false,
       annotation: 'Horário teste um dia depois, horário diferente'
     }
   });
