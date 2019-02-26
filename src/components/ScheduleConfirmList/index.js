@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import {
   Button,
@@ -11,10 +11,16 @@ import {
   Typography,
   IconButton
 } from '@material-ui/core';
+import { getUpcomingAppointments } from '../../actions';
 import { withStyles } from '@material-ui/core/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 import EditIcon from '@material-ui/icons/Edit';
+import { bindActionCreators } from 'redux';
+import axios from 'axios';
+import moment from 'moment';
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 const styles = theme => ({
   confirmedButton: {
@@ -80,64 +86,85 @@ const createStatusButton = (classes, status) => {
   }
 };
 
-const ScheduleConfirmList = ({ confirmSchedules = [], classes }) => (
-  <React.Fragment>
-    <Typography style={{ color: '#1e0c79de', margin: 15 }} variant="h6">
-      Eventos Próximos
-    </Typography>
-    <Card style={{ width: '100%', padding: 10 }}>
-      <List dense={true}>
-        <ListItem>
-          <ListItemText
-            primary={
-              <Typography component="span" variant="subtitle1">
-                Horários
-              </Typography>
-            }
-          />
-        </ListItem>
-        {confirmSchedules.map(confirmSchedule => (
-          <ListItem style={{ margin: '10px 0' }} key={confirmSchedule.id}>
-            <Button
-              style={{
-                padding: '15px 3px',
-                minWidth: '30px'
-              }}
-              size="small"
-            >
-              <EditIcon style={{ color: 'grey' }} />
-            </Button>
-            <ListItemText
-              primary={
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <b>{confirmSchedule.initTimeLabel}</b>
-                  <ArrowForward style={{ fontSize: 15 }} />
-                  <b>{confirmSchedule.endTimeLabel}</b>
-                </div>
-              }
-              secondary={
-                <React.Fragment>
-                  <Typography component="span" color="textPrimary">
-                    {confirmSchedule.dayLabel}
+class ScheduleConfirmList extends PureComponent {
+  componentDidMount() {
+    // TODO: remove this...
+    axios.get(`${API_URL}/serviceprovider`).then(response => {
+      this.props.getUpcomingAppointments(response.data[0]._id, moment());
+    });
+  }
+  render() {
+    const { upcomingAppointments, classes } = this.props;
+    console.log(upcomingAppointments);
+    return (
+      <React.Fragment>
+        <Typography style={{ color: '#1e0c79de', margin: 15 }} variant="h6">
+          Eventos Próximos
+        </Typography>
+        <Card style={{ width: '100%', padding: 10 }}>
+          <List dense={true}>
+            <ListItem>
+              <ListItemText
+                primary={
+                  <Typography component="span" variant="subtitle1">
+                    Horários
                   </Typography>
-                  Cliente {confirmSchedule.name}
-                </React.Fragment>
-              }
-            />
-            <ListItemSecondaryAction>
-              {createStatusButton(classes, confirmSchedule.status)}
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
-      </List>
-    </Card>
-  </React.Fragment>
-);
+                }
+              />
+            </ListItem>
+            {upcomingAppointments.map(Appointment => (
+              <ListItem style={{ margin: '10px 0' }} key={Appointment._id}>
+                <Button
+                  style={{
+                    padding: '15px 3px',
+                    minWidth: '30px'
+                  }}
+                  size="small"
+                >
+                  <EditIcon style={{ color: 'grey' }} />
+                </Button>
+                <ListItemText
+                  primary={
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <b>{Appointment.initTimeLabel}</b>
+                      <ArrowForward style={{ fontSize: 15 }} />
+                      <b>{Appointment.endTimeLabel}</b>
+                    </div>
+                  }
+                  secondary={
+                    <React.Fragment>
+                      <Typography component="span" color="textPrimary">
+                        {Appointment.dayLabel}
+                      </Typography>
+                      Cliente {Appointment.name}
+                    </React.Fragment>
+                  }
+                />
+                <ListItemSecondaryAction>
+                  {createStatusButton(classes, Appointment.status)}
+                </ListItemSecondaryAction>
+              </ListItem>
+            ))}
+          </List>
+        </Card>
+      </React.Fragment>
+    );
+  }
+}
 
 const mapStateToProps = store => ({
-  confirmSchedules: store.confirmSchedules
+  upcomingAppointments: store.upcomingAppointments
 });
 
-export default connect(mapStateToProps)(
-  withStyles(styles)(ScheduleConfirmList)
-);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getUpcomingAppointments
+    },
+    dispatch
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(ScheduleConfirmList));

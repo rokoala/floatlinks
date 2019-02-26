@@ -46,6 +46,15 @@ const Api = {
       return axios.get(
         `${API_URL}/appointment/serviceprovider/${serviceProviderId}/agenda/${dayStart}/${dayEnd}`
       );
+    },
+    getUpcomingAppointments: (serviceProviderId, startDate) => {
+      const dayStart = moment(startDate).format('YYYY-MM-DD');
+      const dayEnd = moment(startDate)
+        .add(2, 'days') // next two days
+        .format('YYYY-MM-DD');
+      return axios.get(
+        `${API_URL}/appointment/serviceprovider/${serviceProviderId}/agenda/${dayStart}/${dayEnd}`
+      );
     }
   },
   ServiceProvider: {

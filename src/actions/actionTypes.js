@@ -19,6 +19,6 @@ export const appointmentActions = {
   SET_AVAILABLE_AGENDA: 'SET_AVAILABLE_AGENDA'
 };
 
-export const confirmSchedulesActions = {
-  SET_SCHEDULES: 'SET_SCHEDULES'
+export const upcomingAppointmentActions = {
+  SET_UPCOMING_APPOINTMENT: 'SET_UPCOMING_APPOINTMENT'
 };

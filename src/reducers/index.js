@@ -1,6 +1,6 @@
 import { customer } from './customer';
 import { appointment } from './appointment';
-import { confirmSchedules } from './confirmSchedules';
+import { upcomingAppointments } from './admin/upcomingAppointments';
 import { serviceProvider } from './serviceProvider';
 import { app } from './app';
 import { connectRouter } from 'connected-react-router';
@@ -12,6 +12,6 @@ export default history =>
     app,
     customer,
     appointment,
-    confirmSchedules,
+    upcomingAppointments,
     serviceProvider
   });

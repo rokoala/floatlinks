@@ -1,7 +1,7 @@
 import {
   appActions,
   customerActions,
-  confirmSchedulesActions,
+  upcomingAppointmentActions,
   appointmentActions,
   serviceProviderActions
 } from './actionTypes';
@@ -39,11 +39,6 @@ export const updateCustomer = (phone, customer) => dispatch => {
     })
     .catch(err => console.error(err));
 };
-
-export const setConfirmSchedules = schedules => ({
-  type: confirmSchedulesActions.SET_SCHEDULES,
-  schedules
-});
 
 export const setAppointments = appointments => ({
   type: appointmentActions.SET_APPOINTMENTS,
@@ -128,5 +123,24 @@ export const getAgendaByServiceProviderId = serviceProviderId => dispatch => {
       console.error(
         `Error fetching data trying to get agenda from serviceprovider:${err}`
       )
+    );
+};
+
+export const setUpcomingAppointments = upcomingAppointments => ({
+  type: upcomingAppointmentActions.SET_UPCOMING_APPOINTMENT,
+  upcomingAppointments
+});
+
+// ADMIN ACTIONS
+export const getUpcomingAppointments = (
+  serviceProviderId,
+  startDate
+) => dispatch => {
+  Api.Appointments.getUpcomingAppointments(serviceProviderId, startDate)
+    .then(response => {
+      dispatch(setUpcomingAppointments(response.data.agenda.slots));
+    })
+    .catch(err =>
+      console.error(`Error trying to get upcoming appointments ${err}`)
     );
 };
