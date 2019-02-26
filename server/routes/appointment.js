@@ -148,39 +148,46 @@ router.post('/serviceprovider/slot/', (req, res) => {
   );
 });
 
-//serviço para atualização do status do appointment
-router.put('/customer/appointment/confirmation/:customerId/:serviceProviderId/:slotId', (req, res) => {
-  promiseResultHandler(res)(
-    ServiceProvider.findOneAndUpdate(
-      { _id: req.params.serviceProviderId },
-      {
-        $set: {
-          'agenda.slots.$[outer].isConfirmed': req.body.isConfirmed
+//route for isConfirmed flag update
+router.put(
+  '/customer/confirmation/:customerId/:serviceProviderId/:slotId',
+  (req, res) => {
+    promiseResultHandler(res)(
+      ServiceProviderModel.findOneAndUpdate(
+        { _id: req.params.serviceProviderId },
+        {
+          $set: {
+            'agenda.slots.$[outer].isConfirmed': req.body.isConfirmed
+          }
+        },
+        {
+          arrayFilters: [{ 'outer._id': req.params.slotId }],
+          new: true
         }
-      },
-      {
-        arrayFilters: [{ 'outer._id': req.params.slotId }],
-        new: true
-      }
-    ).exec()
-    .then(CustomerModel.findOneAndUpdate(
-      { _id: req.params.customerId },
-      {
-        $set: {
-          'serviceProviders.$[outer].appointments.$[inner].isConfirmed': req.body.isConfirmed
-        }
-      },
-      {
-        arrayFilters: [
-          { 'outer.providerId': req.params.serviceProviderId },
-          { 'inner.slotId': req.params.slotId }
-        ],
-        new: true
-      }
-    ).exec())
-    
-  );
-});
+      )
+        .exec()
+        .then(
+          CustomerModel.findOneAndUpdate(
+            { _id: req.params.customerId },
+            {
+              $set: {
+                'serviceProviders.$[outer].appointments.$[inner].isConfirmed':
+                  req.body.isConfirmed
+              }
+            },
+            {
+              arrayFilters: [
+                { 'outer.providerId': req.params.serviceProviderId },
+                { 'inner.slotId': req.params.slotId }
+              ],
+              new: true
+            }
+          ).exec()
+        )
+        .then(items => items.agenda.slots)
+    );
+  }
+);
 
 router.delete(
   '/serviceprovider/slot/:serviceProviderId/:slotId',
@@ -260,17 +267,17 @@ router.get(
 
 //lists all occupied slots in the date range
 router.get(
-  '/serviceprovider/:serviceProviderId/agenda/:startDate?/:endDate?',
+  '/serviceprovider/:serviceProviderId/confirmation/:startDate?/:endDate?',
   (req, res) => {
     let serviceProvider = null;
-    let filter = []
-    if(req.params.startDate){
-      filter.push({[$gte]: ['$$slots.date', new Date(req.params.startDate)]})
+    let filter = [];
+    if (req.params.startDate) {
+      filter.push({ $gte: ['$$slots.date', new Date(req.params.startDate)] });
     }
-    if(req.params.endDate){
-      filter.push({[$lte]: ['$$slots.date', new Date(req.params.endDate)]})
+    if (req.params.endDate) {
+      filter.push({ $lte: ['$$slots.date', new Date(req.params.endDate)] });
     }
-    filter = filter.push({ $eq: ['$$slots.isOccupied', true] })
+    filter.push({ $eq: ['$$slots.isOccupied', true] });
     serviceProvider = ServiceProviderModel.aggregate([
       { $match: { _id: ObjectId(req.params.serviceProviderId) } },
       {
@@ -294,41 +301,40 @@ router.get(
   }
 );
 
-router.get(
-  '/customer/:customerId/agenda/:startDate?/:endDate?',
-  (req, res) => {
-    let serviceProvider = null;
-    let filter = []
-    if(req.params.startDate){
-      filter = filter.push({[$gte]: ['$$slots.date', new Date(req.params.startDate)]})
-    }
-    if(req.params.endDate){
-      filter = filter.push({[$lte]: ['$$slots.date', new Date(req.params.endDate)]})
-    }
-    serviceProvider = ServiceProviderModel.aggregate([
-      { $match: { _id: ObjectId(req.params.customerId) } },
-      {
-        $project: {
-          'serviceProviders': {
-            $filter: {
-              input: '$serviceProviders',
-              as: 'serviceProvider',
-              cond: {
-                $and: [
-                  { filter }
-                ]
-              }
+router.get('/customer/:customerId/agenda/:startDate?/:endDate?', (req, res) => {
+  let serviceProvider = null;
+  let filter = [];
+  if (req.params.startDate) {
+    filter = filter.push({
+      $gte: ['$$slots.date', new Date(req.params.startDate)]
+    });
+  }
+  if (req.params.endDate) {
+    filter = filter.push({
+      $lte: ['$$slots.date', new Date(req.params.endDate)]
+    });
+  }
+  serviceProvider = ServiceProviderModel.aggregate([
+    { $match: { _id: ObjectId(req.params.customerId) } },
+    {
+      $project: {
+        serviceProviders: {
+          $filter: {
+            input: '$serviceProviders',
+            as: 'serviceProvider',
+            cond: {
+              $and: [{ filter }]
             }
           }
         }
       }
-    ])
-      .exec()
-      .then(items => items[0]);
+    }
+  ])
+    .exec()
+    .then(items => items[0]);
 
-    promiseResultHandler(res)(serviceProvider);
-  }
-);
+  promiseResultHandler(res)(serviceProvider);
+});
 
 router.get('/customer/:customerId', (req, res) => {
   promiseResultHandler(res)(
