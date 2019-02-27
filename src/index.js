@@ -7,6 +7,7 @@ import { Store, history } from './store';
 import * as serviceWorker from './serviceWorker';
 
 import App from './app/views/layouts/app';
+import './index.css';
 
 const RootHtml = () => (
   <ReduxProvider store={Store}>

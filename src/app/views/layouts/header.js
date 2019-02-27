@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { LetterAvatar, Logout, Title } from '../../components';
+import { onClickGo } from '../../utils';
 
 const StyledHeader = styled.header`
   display: flex;
@@ -8,7 +10,7 @@ const StyledHeader = styled.header`
   box-shadow: 1px 1px 1px lightgray;
 `;
 
-const UserWrapper = styled.div`
+const UserHeader = styled.div`
   display: flex;
   margin-left: auto;
   align-items: center;
@@ -16,9 +18,11 @@ const UserWrapper = styled.div`
 
 const Header = () => (
   <StyledHeader>
-    {/* <ProfileIconButton />
-    <ServiceProviderButton /> */}
-    <UserWrapper>{/* <IconButtonSignout /> */}</UserWrapper>
+    <LetterAvatar onClick={onClickGo('/profile')} word="Hello" />
+    <Title onClick={onClickGo('/')}>Hello world</Title>
+    <UserHeader>
+      <Logout />
+    </UserHeader>
   </StyledHeader>
 );
 

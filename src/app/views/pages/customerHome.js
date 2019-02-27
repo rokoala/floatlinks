@@ -1,3 +1,11 @@
 import React from 'react';
+import { CustomerAppointment, ScheduleButton } from '../../components/';
 
-export default () => <div>Hello world</div>;
+const CustomerHome = () => (
+  <React.Fragment>
+    <ScheduleButton redirect="/schedule/day" />
+    <CustomerAppointment />
+  </React.Fragment>
+);
+
+export default CustomerHome;
