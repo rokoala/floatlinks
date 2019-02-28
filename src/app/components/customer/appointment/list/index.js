@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { List } from '@material-ui/core';
 import AppointmentItem from '../item';
 
-const CustomerAppointmentList = ({ appointments = [{ _id: '1' }] }) => (
+const CustomerAppointmentList = ({ appointments }) => (
   <List>
     {appointments.map(appointment => (
-      <AppointmentItem key={appointment._id} {...appointment} />
+      <AppointmentItem {...appointment} key={appointment._id} />
     ))}
   </List>
 );

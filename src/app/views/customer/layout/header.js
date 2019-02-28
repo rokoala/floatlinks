@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { LetterAvatar, Logout, Title } from '../../components';
-import { onClickGo } from '../../utils';
+import { LetterAvatar, Logout, Title } from '../../../components/customer';
+import { onClickGo } from '../../../utils';
 
 const StyledHeader = styled.header`
   display: flex;

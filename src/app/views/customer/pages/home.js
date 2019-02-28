@@ -1,5 +1,8 @@
 import React from 'react';
-import { CustomerAppointment, ScheduleButton } from '../../components/';
+import {
+  CustomerAppointment,
+  ScheduleButton
+} from '../../../components/customer';
 
 const CustomerHome = () => (
   <React.Fragment>
