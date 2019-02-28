@@ -3,19 +3,39 @@ import { Route, Switch } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider as ReduxProvider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-import { Store, history } from './store';
+import { Store, history } from './app/state/store';
 import * as serviceWorker from './serviceWorker';
 
-import Customer from './app/views/customer/';
-import ServiceProvider from './app/views/serviceProvider/';
+import routes from './app/routes';
 import './index.css';
+
+const AppRoute = ({
+  component: Component,
+  layout: Layout,
+  noLayout = false,
+  ...rest
+}) => (
+  <Route
+    {...rest}
+    render={props =>
+      noLayout ? (
+        <Component {...props} />
+      ) : (
+        <Layout>
+          <Component {...props} />
+        </Layout>
+      )
+    }
+  />
+);
 
 const RootHtml = () => (
   <ReduxProvider store={Store}>
     <ConnectedRouter history={history}>
       <Switch>
-        <Route path="/admin" exact={true} component={ServiceProvider} />
-        <Route path="/customer" exact={true} component={Customer} />
+        {routes.map(route => (
+          <AppRoute key={route.path} {...route} />
+        ))}
       </Switch>
     </ConnectedRouter>
   </ReduxProvider>

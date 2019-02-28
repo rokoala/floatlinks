@@ -1,17 +1,21 @@
 import React from 'react';
 import Header from './header';
-import Content from './content';
 import styled from 'styled-components';
-import { history } from '../../../../store';
 
 const Layout = styled.div`
   width: 100%;
   height: 100%;
 `;
 
-export default () => (
+const StyledContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export default ({ children }) => (
   <Layout>
     <Header />
-    <Content />
+    <StyledContent>{children}</StyledContent>
   </Layout>
 );

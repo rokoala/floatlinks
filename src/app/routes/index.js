@@ -1,3 +1,5 @@
+import { CustomerLayout } from '../views/customer/layout';
+
 import {
   CustomerHome,
   CustomerLogin,
@@ -7,19 +9,25 @@ import {
 
 const routes = [
   {
-    path: '',
+    path: '/',
+    exact: true,
+    layout: CustomerLayout,
     component: CustomerHome
   },
   {
     path: '/login',
+    noLayout: true,
+    layout: CustomerLayout,
     component: CustomerLogin
   },
   {
     path: '/schedule/day',
+    layout: CustomerLayout,
     component: CustomerAppointmentDay
   },
   {
     path: '/schedule/time',
+    layout: CustomerLayout,
     component: CustomerAppointmentTime
   }
 ];
