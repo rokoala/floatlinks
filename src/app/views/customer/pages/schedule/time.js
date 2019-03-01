@@ -12,8 +12,8 @@ import { formatDate } from '../../../../utils';
 
 class ScheduleTime extends PureComponent {
   componentDidMount() {
-    const { getHoursByDate, date } = this.props;
-    getHoursByDate('5c785ff53124d102d10b9bee', date);
+    const { date, getHoursByDate, serviceProviderId } = this.props;
+    getHoursByDate(serviceProviderId, date);
 
     this.handleClickTimePicker = this.handleClickTimePicker.bind(this);
   }
@@ -43,6 +43,7 @@ class ScheduleTime extends PureComponent {
 }
 
 const mapStateToProps = store => ({
+  serviceProviderId: store.serviceProvider._id,
   date: store.appointment.date,
   hours: store.agenda.hours
 });

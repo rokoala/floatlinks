@@ -7,14 +7,19 @@ import { appointmentOperations } from '../../../../state/ducks/appointment';
 
 class ScheduleConfirm extends PureComponent {
   render() {
+    const {
+      date,
+      confirmAppointment,
+      customerId,
+      hour,
+      serviceProviderId
+    } = this.props;
     return (
       <React.Fragment>
         <Typography variant="h6">Confirmar agendamento</Typography>
         <Card style={{ margin: 5, padding: 35, textAlign: 'center' }}>
-          <Typography variant="h5">{formatDate(this.props.date)}</Typography>
-          <Typography variant="h5">
-            {createHourLabel(this.props.hour)}
-          </Typography>
+          <Typography variant="h5">{formatDate(date)}</Typography>
+          <Typography variant="h5">{createHourLabel(hour)}</Typography>
         </Card>
         <div style={{ marginTop: 15 }}>
           <Button
@@ -22,11 +27,7 @@ class ScheduleConfirm extends PureComponent {
             variant="outlined"
             color="primary"
             onClick={evt => {
-              this.props.confirmAppointment(
-                this.props.hour.slotId,
-                '5c785ff53124d102d10b9bee',
-                '5c785ff53124d102d10b9bef'
-              );
+              confirmAppointment(hour.slotId, serviceProviderId, customerId);
             }}
           >
             confirmo
@@ -46,6 +47,8 @@ class ScheduleConfirm extends PureComponent {
 }
 
 const mapStateToProps = store => ({
+  servideProviderId: store.serviceProvider._id,
+  customerId: store.customer._id,
   date: store.appointment.date,
   hour: store.appointment.hour
 });

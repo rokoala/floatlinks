@@ -10,7 +10,8 @@ import { appointmentOperations } from '../../../../state/ducks/appointment';
 
 class ScheduleDay extends PureComponent {
   componentDidMount() {
-    this.props.getAgenda('5c785ff53124d102d10b9bee', new Date());
+    const { getAgenda, serviceProviderId } = this.props;
+    getAgenda(serviceProviderId, new Date());
   }
   render() {
     return (
@@ -48,6 +49,7 @@ class ScheduleDay extends PureComponent {
 }
 
 const mapStateToProps = store => ({
+  serviceProviderId: store.serviceProvider._id,
   slots: store.agenda.slots
 });
 
