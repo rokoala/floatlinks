@@ -4,7 +4,8 @@ import {
   CustomerHome,
   CustomerLogin,
   CustomerAppointmentDay,
-  CustomerAppointmentTime
+  CustomerAppointmentTime,
+  CustomerAppointmentConfirm
 } from '../views/customer/pages';
 
 const routes = [
@@ -29,6 +30,11 @@ const routes = [
     path: '/schedule/time',
     layout: CustomerLayout,
     component: CustomerAppointmentTime
+  },
+  {
+    path: '/schedule/confirm',
+    layout: CustomerLayout,
+    component: CustomerAppointmentConfirm
   }
 ];
 

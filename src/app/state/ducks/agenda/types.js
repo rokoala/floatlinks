@@ -1,1 +1,2 @@
-export const SET_DAYS = 'agenda/SET_DAYS';
+export const SET_SLOTS = 'agenda/SET_SLOTS';
+export const SET_HOURS = 'agenda/SET_HOURS';

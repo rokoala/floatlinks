@@ -1,8 +1,15 @@
 import * as types from './types';
 
-export const setAppointment = appointments => ({
-  type: types.SET_APPOINTMENT,
+export const setDate = date => ({
+  type: types.SET_DATE,
   payload: {
-    appointments
+    date
+  }
+});
+
+export const setHour = hour => ({
+  type: types.SET_HOUR,
+  payload: {
+    hour
   }
 });

@@ -1,21 +1,19 @@
-import { setDays } from './actions';
+import { setDays, setHours } from './actions';
 import axios from 'axios';
 import moment from 'moment';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const getAgendaByServiceProviderId = (
-  serviceProviderId,
-  startDate
-) => dispatch => {
+const get = (serviceProviderId, startDate) => dispatch => {
   axios
     .get(
       `${API_URL}/appointment/serviceprovider/${serviceProviderId}/agenda/${moment(
         startDate
       ).format('YYYY-MM-DD')}`
     )
-    .getAgenda(serviceProviderId, new Date()) //FIXED GET AGENDA FROM TODAY
-    .then(response => dispatch(setDays(response.data.agenda)))
+    .then(response => {
+      dispatch(setDays(response.data.agenda.slots));
+    })
     .catch(err =>
       console.error(
         `Error fetching data trying to get agenda from serviceprovider:${err}`
@@ -23,4 +21,24 @@ const getAgendaByServiceProviderId = (
     );
 };
 
-export { getAgendaByServiceProviderId };
+const getHoursByDate = (serviceProviderId, startDate) => dispatch => {
+  const dayStart = moment(startDate).format('YYYY-MM-DD');
+  const dayEnd = moment(startDate)
+    .add(1, 'days')
+    .format('YYYY-MM-DD');
+
+  axios
+    .get(
+      `${API_URL}/appointment/serviceprovider/${serviceProviderId}/agenda/${dayStart}/${dayEnd}`
+    )
+    .then(response => {
+      dispatch(setHours(response.data.agenda.slots));
+    })
+    .catch(err =>
+      console.error(
+        `Error fetching data trying to get agenda from serviceprovider:${err}`
+      )
+    );
+};
+
+export { get, getHoursByDate };

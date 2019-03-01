@@ -1,8 +1,15 @@
 import * as types from './types';
 
-export const setDays = days => ({
-  type: types.SET_DAYS,
+export const setDays = slots => ({
+  type: types.SET_SLOTS,
   payload: {
-    days
+    slots
+  }
+});
+
+export const setHours = hours => ({
+  type: types.SET_HOURS,
+  payload: {
+    hours
   }
 });

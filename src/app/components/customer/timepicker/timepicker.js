@@ -1,6 +1,6 @@
 import React from 'react';
 import TimeButton from './button';
-import { createHourLabel } from '../../../../resources/utils';
+import { createHourLabel } from '../../../utils';
 
 const TimePicker = ({ hours = [], onClick }) => (
   <div className="timepicker">

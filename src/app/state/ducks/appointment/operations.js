@@ -1,23 +1,20 @@
-import { setAppointment } from './actions';
+import { setDate, setHour } from './actions';
+import { push } from 'connected-react-router';
 import axios from 'axios';
-import moment from 'moment';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-// Get a list of all appointments
-const getAppointments = (customerId, serviceProviderId) => dispatch => {
+const confirm = (slotId, customerId, serviceProviderId) => dispatch => {
   axios
-    .get(
-      `${API_URL}/appointment/customer/${customerId}/${serviceProviderId}/${moment().format(
-        'YYYY-MM-DD'
-      )}`
-    )
-    .then(response => {
-      dispatch(setAppointment(response.data.appointments));
+    .post(`${API_URL}/appointment/`, {
+      slotId,
+      customerId,
+      serviceProviderId
     })
-    .catch(err =>
-      console.error(`Error fetching data from appointments: ${err}`)
-    );
+    .then(response => {
+      dispatch(push('/'));
+    })
+    .catch(err => console.error(`Error inserting new appointment:${err}`));
 };
 
-export { getAppointments };
+export { setDate, setHour, confirm };

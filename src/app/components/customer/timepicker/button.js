@@ -3,7 +3,7 @@ import { Button } from '@material-ui/core';
 
 const TimeButton = ({ onClick, label, ...hour }) => (
   <Button
-    onClick={() => onClick(...hour)}
+    onClick={() => onClick(hour)}
     style={{ margin: 5 }}
     variant="outlined"
     size="small"

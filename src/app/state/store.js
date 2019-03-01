@@ -8,10 +8,12 @@ import * as reducers from './ducks';
 
 export const history = createBrowserHistory();
 
+const rootReducers = combineReducers({
+  router: connectRouter(history),
+  ...reducers
+});
+
 export const Store = createStore(
-  combineReducers({
-    router: connectRouter(history),
-    reducers
-  }),
+  rootReducers,
   composeWithDevTools(applyMiddleware(routerMiddleware(history), thunk))
 );
