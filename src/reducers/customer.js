@@ -1,7 +1,9 @@
 import { customerActions } from '../actions/actionTypes';
 
 const initialState = {
-  name: ''
+  name: '',
+  phone: '',
+  serviceProviders: []
 };
 
 export const customer = (state = initialState, action) => {

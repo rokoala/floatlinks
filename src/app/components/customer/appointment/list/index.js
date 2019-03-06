@@ -6,7 +6,7 @@ import AppointmentItem from '../item';
 const CustomerAppointmentList = ({ appointments }) => (
   <List>
     {appointments.map(appointment => (
-      <AppointmentItem {...appointment} key={appointment._id} />
+      <AppointmentItem key={appointment.slotId} {...appointment} />
     ))}
   </List>
 );

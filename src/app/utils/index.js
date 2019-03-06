@@ -1,5 +1,8 @@
 import { history } from '../state/store';
 import moment from 'moment';
+import 'moment/locale/pt-br';
+
+moment.locale('pt-BR');
 
 export const createHourLabel = hour => {
   const aStartTime = hour.startTime.toString().split('');
