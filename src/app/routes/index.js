@@ -13,7 +13,8 @@ import { ServiceProviderLayout } from '../views/serviceProvider/layout';
 
 import {
   ServiceProviderHome,
-  ServiceProviderAddCustomer
+  ServiceProviderAddCustomer,
+  ServiceProviderNextAppointments
 } from '../views/serviceProvider/pages';
 
 const routes = [
@@ -63,7 +64,7 @@ const routes = [
   {
     path: '/admin/nextAppointments',
     layout: ServiceProviderLayout,
-    component: ServiceProviderHome
+    component: ServiceProviderNextAppointments
   }
 ];
 

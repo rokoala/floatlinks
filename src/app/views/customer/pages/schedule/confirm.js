@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Card, Typography } from '@material-ui/core';
-import { formatDate, createHourLabel } from '../../../../utils';
+import { createHourLabel } from '../../../../utils';
 import { connect } from 'react-redux';
 import { appointmentOperations } from '../../../../state/ducks/appointment';
+import moment from 'moment';
 
 class ScheduleConfirm extends PureComponent {
   render() {
@@ -18,7 +19,7 @@ class ScheduleConfirm extends PureComponent {
       <React.Fragment>
         <Typography variant="h6">Confirmar agendamento</Typography>
         <Card style={{ margin: 5, padding: 35, textAlign: 'center' }}>
-          <Typography variant="h5">{formatDate(date)}</Typography>
+          <Typography variant="h5">{moment(date).format('LL')}</Typography>
           <Typography variant="h5">{createHourLabel(hour)}</Typography>
         </Card>
         <div style={{ marginTop: 15 }}>

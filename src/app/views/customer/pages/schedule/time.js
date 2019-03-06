@@ -8,7 +8,7 @@ import { appointmentOperations } from '../../../../state/ducks/appointment';
 import { agendaOperations } from '../../../../state/ducks/agenda';
 import { connect } from 'react-redux';
 import { history } from '../../../../state/store';
-import { formatDate } from '../../../../utils';
+import moment from 'moment';
 
 class ScheduleTime extends PureComponent {
   componentDidMount() {
@@ -33,7 +33,7 @@ class ScheduleTime extends PureComponent {
           variant="outlined"
           color="primary"
         >
-          {formatDate(date)}
+          {moment(date).format('l')}
           <ArrowDownIcon fontSize="small" className={classes.icon} />
         </Button>
         <TimePicker onClick={this.handleClickTimePicker} hours={hours} />
