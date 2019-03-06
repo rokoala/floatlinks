@@ -27,7 +27,7 @@ class ScheduleConfirm extends PureComponent {
             variant="outlined"
             color="primary"
             onClick={evt => {
-              confirmAppointment(hour.slotId, serviceProviderId, customerId);
+              confirmAppointment(hour._id, customerId, serviceProviderId);
             }}
           >
             confirmo
@@ -47,7 +47,7 @@ class ScheduleConfirm extends PureComponent {
 }
 
 const mapStateToProps = store => ({
-  servideProviderId: store.serviceProvider._id,
+  serviceProviderId: store.serviceProvider._id,
   customerId: store.customer._id,
   date: store.appointment.date,
   hour: store.appointment.hour
