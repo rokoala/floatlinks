@@ -28,14 +28,16 @@ class AddCustomerForm extends PureComponent {
     msgBoxText: ''
   };
   handleChange = name => event => {
+    console.log(event.target.value);
     this.setState({ [name]: event.target.value });
   };
   handleClick = () => {
     const { addCustomer } = this.props;
     const phone = parsePhone(this.state.phone);
+    console.log(this.state.name);
 
     /[0-9]{11}/.test(phone)
-      ? addCustomer({ name: this.state.name, phone: phone })
+      ? addCustomer(this.state.name, phone)
           .then(response => {
             this.setState({
               name: '',
