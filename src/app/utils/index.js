@@ -1,4 +1,6 @@
+import React from 'react';
 import { history } from '../state/store';
+import MaskedInput from 'react-text-mask';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 
@@ -57,3 +59,36 @@ export const formatDate = date => {
         date.getFullYear()
     : null;
 };
+
+export const TextMaskCustom = props => {
+  const { inputRef, ...other } = props;
+
+  return (
+    <MaskedInput
+      {...other}
+      ref={ref => {
+        inputRef(ref ? ref.inputElement : null);
+      }}
+      mask={[
+        '(',
+        /[1-9]/,
+        /\d/,
+        ')',
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        '-',
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/
+      ]}
+      placeholderChar={'\u2000'}
+      showMask
+    />
+  );
+};
+
+export const parsePhone = phone => phone.replace(/(\(|\)|-)/g, '');

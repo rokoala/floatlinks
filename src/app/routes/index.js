@@ -9,6 +9,13 @@ import {
   CustomerAppointmentConfirm
 } from '../views/customer/pages';
 
+import { ServiceProviderLayout } from '../views/serviceProvider/layout';
+
+import {
+  ServiceProviderHome,
+  ServiceProviderAddCustomer
+} from '../views/serviceProvider/pages';
+
 const routes = [
   {
     path: '/',
@@ -41,6 +48,22 @@ const routes = [
     path: '/schedule/confirm',
     layout: CustomerLayout,
     component: CustomerAppointmentConfirm
+  },
+  {
+    path: '/admin',
+    exact: true,
+    layout: ServiceProviderLayout,
+    component: ServiceProviderHome
+  },
+  {
+    path: '/admin/add/customer',
+    layout: ServiceProviderLayout,
+    component: ServiceProviderAddCustomer
+  },
+  {
+    path: '/admin/nextAppointments',
+    layout: ServiceProviderLayout,
+    component: ServiceProviderHome
   }
 ];
 
