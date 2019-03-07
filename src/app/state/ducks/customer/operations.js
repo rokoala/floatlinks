@@ -24,7 +24,7 @@ const updateCustomer = (phone, customer) => dispatch => {
       ...customer
     })
     .then(response => {
-      dispatch(setCustomer(response.data));
+      dispatch(setCustomer(response));
     })
     .catch(err => console.error(err));
 };

@@ -27,6 +27,7 @@ const routes = [
   {
     path: '/login',
     noLayout: true,
+    routePrivate: false,
     layout: CustomerLayout,
     component: CustomerLogin
   },
