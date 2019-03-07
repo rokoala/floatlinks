@@ -32,4 +32,33 @@ const updateCustomer = (phone, customer) => dispatch =>
       return err;
     });
 
-export { addCustomer, setCustomer, updateCustomer };
+const getCustomer = phone => dispatch =>
+  axios
+    .get(`${API_URL}/customer/` + phone)
+    .then(response => {
+      dispatch(setCustomer(response.data));
+      return response;
+    })
+    .catch(err => {
+      console.error(err);
+      return err;
+    });
+
+const deleteAppointment = (customerId, serviceProviderId, slotId) => dispatch =>
+  axios
+    .delete(
+      `${API_URL}/appointment/customer/${customerId}/${serviceProviderId}/${slotId}`
+    )
+    .then(response => dispatch(setCustomer(response.data)))
+    .catch(err => {
+      console.error(err);
+      return err;
+    });
+
+export {
+  addCustomer,
+  deleteAppointment,
+  getCustomer,
+  setCustomer,
+  updateCustomer
+};

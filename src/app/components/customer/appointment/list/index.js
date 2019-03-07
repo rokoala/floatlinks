@@ -3,10 +3,14 @@ import PropTypes from 'prop-types';
 import { List } from '@material-ui/core';
 import AppointmentItem from '../item';
 
-const CustomerAppointmentList = ({ appointments }) => (
+const CustomerAppointmentList = ({ appointments, onClick }) => (
   <List>
     {appointments.map(appointment => (
-      <AppointmentItem key={appointment.slotId} {...appointment} />
+      <AppointmentItem
+        onClick={onClick}
+        key={appointment.slotId}
+        {...appointment}
+      />
     ))}
   </List>
 );

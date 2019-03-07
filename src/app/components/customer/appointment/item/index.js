@@ -8,13 +8,19 @@ import {
 import { createAppointmentLabel } from '../../../../utils';
 import DeleteRounded from '@material-ui/icons/DeleteRounded';
 
-const AppointmentItem = ({ onClick, startTime, slotDuration, date }) => (
+const AppointmentItem = ({
+  slotId,
+  onClick,
+  startTime,
+  slotDuration,
+  date
+}) => (
   <ListItem>
     <ListItemText
       primary={createAppointmentLabel(date, startTime, slotDuration)}
     />
     <ListItemSecondaryAction>
-      <IconButton onClick={onClick} aria-label="Delete">
+      <IconButton onClick={() => onClick(slotId)} aria-label="Delete">
         <DeleteRounded />
       </IconButton>
     </ListItemSecondaryAction>
