@@ -9,12 +9,14 @@ import { serviceProviderOperations } from '../../../state/ducks/serviceProvider'
 
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 class CustomerHome extends PureComponent {
   componentDidMount() {
-    axios.get('http://localhost:3001/customer').then(response => {
-      this.props.setCustomer(response.data[0]);
+    axios.get(`${API_URL}/customer`).then(response => {
+      this.props.setCustomer(response.data[2]);
     });
-    axios.get('http://localhost:3001/serviceprovider').then(response => {
+    axios.get(`${API_URL}/serviceprovider`).then(response => {
       this.props.setServiceProvider(response.data[0]);
     });
   }

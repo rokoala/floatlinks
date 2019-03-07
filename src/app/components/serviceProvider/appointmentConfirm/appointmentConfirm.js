@@ -63,7 +63,11 @@ const AppointmentConfirm = ({ nextAppointments }) => (
               }
             />
             <ListItemSecondaryAction>
-              <StatusButton status={appointment.isConfirmed} />
+              <StatusButton
+                appointment={appointment}
+                phone={appointment.customer.phone}
+                status={appointment.isConfirmed}
+              />
             </ListItemSecondaryAction>
           </ListItem>
         ))}
