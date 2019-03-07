@@ -4,10 +4,11 @@ import { Typography, Button, Input } from '@material-ui/core';
 import MsgBox, {
   msgBoxStatus
 } from '../../../components/serviceProvider/msgBox';
+import Logo from '../../../resources/logo.svg';
 import { loginOperations } from '../../../state/ducks/login';
 import { Redirect } from 'react-router-dom';
-// import Logo from '../../components/Logo/logo.svg';
 import { serviceProviderOperations } from '../../../state/ducks/serviceProvider';
+import { customerOperations } from '../../../state/ducks/customer';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 
@@ -58,18 +59,21 @@ class Login extends PureComponent {
       name: event.target.value
     });
   }
-  handleSetName() {
-    // Api.Customer.update(parsePhone(this.state.phone), {
-    //   ...this.state.customer,
-    //   name: this.state.name
-    // }).then(response => {
-    //   this.props.setCustomer(response.data);
-    //   this.setState({ redirectToReferrer: true });
-    // });
-  }
   handleChange(event) {
     this.setState({
       phone: event.target.value
+    });
+  }
+  handleSetName(event) {
+    event.preventDefault();
+    const { phone, customer, name } = this.state;
+    const { updateCustomer } = this.props;
+
+    updateCustomer(parsePhone(phone), {
+      ...customer,
+      name: name
+    }).then(() => {
+      this.setState({ redirectToReferrer: true, showMsgBox: false });
     });
   }
   handleLogin(event) {
@@ -91,7 +95,7 @@ class Login extends PureComponent {
     return (
       <div className={classes.loginWrapper}>
         <header className={classes.header}>
-          {/* <img src={Logo} alt="Floatlinks" /> */}
+          <img src={Logo} alt="Floatlinks" />
         </header>
         <div className={classes.loginContent}>
           <Typography className={classes.loginTitle} variant="h5">
@@ -158,6 +162,7 @@ const mapStateToProps = store => ({
 
 const mapDispatchToProps = {
   getServiceProvider: serviceProviderOperations.get,
+  updateCustomer: customerOperations.updateCustomer,
   login: loginOperations.login
 };
 

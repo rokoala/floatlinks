@@ -9,6 +9,10 @@ import * as serviceWorker from './serviceWorker';
 import routes from './app/routes';
 import './index.css';
 
+/**
+ * AppRoute check if the route is private, if not then display the component
+ * If the route is private, it does verify if is authorized, if not then redirect to login page
+ */
 const AppRoute = ({
   component: Component,
   layout: Layout,
@@ -16,33 +20,11 @@ const AppRoute = ({
   noLayout = false,
   authentication,
   ...rest
-}) =>
-  routePrivate ? (
-    <Route
-      {...rest}
-      render={props =>
-        authentication ? (
-          noLayout ? (
-            <Component {...props} />
-          ) : (
-            <Layout>
-              <Component {...props} />
-            </Layout>
-          )
-        ) : (
-          <Redirect
-            to={{
-              pathname: '/login',
-              state: { from: props.location }
-            }}
-          />
-        )
-      }
-    />
-  ) : (
-    <Route
-      {...rest}
-      render={props =>
+}) => (
+  <Route
+    {...rest}
+    render={props =>
+      !routePrivate ? (
         noLayout ? (
           <Component {...props} />
         ) : (
@@ -50,9 +32,25 @@ const AppRoute = ({
             <Component {...props} />
           </Layout>
         )
-      }
-    />
-  );
+      ) : authentication ? (
+        noLayout ? (
+          <Component {...props} />
+        ) : (
+          <Layout>
+            <Component {...props} />
+          </Layout>
+        )
+      ) : (
+        <Redirect
+          to={{
+            pathname: '/login',
+            state: { from: props.location }
+          }}
+        />
+      )
+    }
+  />
+);
 
 const AppRouteComponent = connect(store => ({
   authentication: store.login.authentication

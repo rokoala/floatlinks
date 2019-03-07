@@ -18,15 +18,18 @@ const addCustomer = (name, phone) => dispatch =>
     phone
   });
 
-const updateCustomer = (phone, customer) => dispatch => {
+const updateCustomer = (phone, customer) => dispatch =>
   axios
     .put(`${API_URL}/customer/` + phone, {
       ...customer
     })
     .then(response => {
-      dispatch(setCustomer(response));
+      dispatch(setCustomer(response.data));
+      return response;
     })
-    .catch(err => console.error(err));
-};
+    .catch(err => {
+      console.error(err);
+      return err;
+    });
 
 export { addCustomer, setCustomer, updateCustomer };
