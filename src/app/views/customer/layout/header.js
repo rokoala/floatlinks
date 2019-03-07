@@ -22,7 +22,7 @@ const Header = ({ customerName, serviceProviderName }) => (
     <LetterAvatar onClick={onClickGo('/profile')} word={customerName} />
     <Title onClick={onClickGo('/')}>{serviceProviderName}</Title>
     <UserHeader>
-      <Logout />
+      <Logout onClick={onClickGo('/login')} />
     </UserHeader>
   </StyledHeader>
 );
