@@ -54,16 +54,19 @@ const routes = [
   {
     path: '/admin',
     exact: true,
+    routePrivate: false,
     layout: ServiceProviderLayout,
     component: ServiceProviderHome
   },
   {
     path: '/admin/add/customer',
+    routePrivate: false,
     layout: ServiceProviderLayout,
     component: ServiceProviderAddCustomer
   },
   {
     path: '/admin/nextAppointments',
+    routePrivate: false,
     layout: ServiceProviderLayout,
     component: ServiceProviderNextAppointments
   }
