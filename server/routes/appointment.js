@@ -149,7 +149,7 @@ router.post('/serviceprovider/slot/', (req, res) => {
 });
 
 //route for isConfirmed flag update
-router.put(
+router.get(
   '/customer/confirmation/:customerId/:serviceProviderId/:slotId',
   (req, res) => {
     promiseResultHandler(res)(
@@ -157,7 +157,7 @@ router.put(
         { _id: req.params.serviceProviderId },
         {
           $set: {
-            'agenda.slots.$[outer].isConfirmed': req.body.isConfirmed
+            'agenda.slots.$[outer].isConfirmed': true //req.body.isConfirmed
           }
         },
         {
@@ -172,7 +172,8 @@ router.put(
             {
               $set: {
                 'serviceProviders.$[outer].appointments.$[inner].isConfirmed':
-                  req.body.isConfirmed
+                  //req.body.isConfirmed
+                  true
               }
             },
             {

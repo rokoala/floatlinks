@@ -10,10 +10,13 @@ import moment from 'moment';
 
 library.add(fab, faWhatsapp);
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const StatusButton = ({
   appointment,
   classes,
   serviceProviderName,
+  serviceProviderId,
   status
 }) => {
   if (status) {
@@ -45,7 +48,9 @@ const StatusButton = ({
                 .format('LL')
                 .toString()}*%0A*${createHourLabel(
                 appointment
-              )}*%0A%0AAcesse%20o%20link%20abaixo%20para%20confirmar:%0A%0Ahttp://www.google.com%0A%0AObrigado!`;
+              )}*%0A%0AAcesse%20o%20link%20abaixo%20para%20confirmar:%0A%0A${API_URL}/appointment/customer/confirmation/${
+                appointment.customer.customerId
+              }/${serviceProviderId}/${appointment._id}%0A%0AObrigado!`;
               window.open(url, '_blank');
             }}
           >
@@ -58,6 +63,7 @@ const StatusButton = ({
 };
 
 const mapStateToProps = store => ({
+  serviceProviderId: store.serviceProvider._id,
   serviceProviderName: store.serviceProvider.name
 });
 
